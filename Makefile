@@ -16,7 +16,7 @@ default:
 	@echo "======================================================="
 
 clean:
-	echo "Cleaning please wait ..."
+	@echo "Cleaning please wait ..."
 	@rm -f *~
 	@rm -f *.aux
 	@rm -f Abstract/*.aux
@@ -43,8 +43,7 @@ clean:
 	@rm -f $(THESIS).ps
 	@rm -f $(THESIS).dvi
 	@rm -f *#* 
-	echo "Cleaning complete!"
-	exit
+	@echo "Cleaning complete!"
 
 # mrproper: clean
 # 	@rm *.pdf *.vrb *.snm *.nav
