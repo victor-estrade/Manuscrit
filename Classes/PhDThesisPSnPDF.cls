@@ -987,8 +987,8 @@ wish to left align your text}
 
 	\small
 	%\begin{center}
-	\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-	\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}lm{#1}}
+	\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{##1}}
+	\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}lm{##1}}
 	
 	\label{jury} 																				%% Mettre à jour si des membres ont été ajoutés ou retirés / Update if members have been added or removed
 	\begin{flushleft}
@@ -1006,108 +1006,6 @@ wish to left align your text}
 	%\end{center}
 \end{textblock}
 
-% \thispagestyle{empty}
-% \newgeometry{noheadfoot=true,top=0cm,bottom=0cm,left=-0.6cm,right=1cm}
-% \begin{singlespace}
-% \computeTitlePageSpacing%
-% \begin{minipage}{0.3\linewidth}
-% 		{ \usebox{\PHD@leftbanner} }
-% \end{minipage}%
-% %\hfill
-% \begin{minipage}{0.67\linewidth}
-% 	\begin{flushright}
-    
-% 	% University Crest Long if college crest is defined
-% 	\ifPHD@collegeshield%
-% 		{\usebox{\PHD@crest}}
-% 		\vspace{.15\PHD@titlepagespacing}
-% 	\fi
-% 	% Crest
-	
-% 	\ifPHD@collegeshield%
-% 		%NOT USED YET
-%         \vspace{.15\PHD@titlepagespacing}
-% 		{\usebox{\PHD@collegecrest}}
-% 		\vspace{0.15\PHD@titlepagespacing}
-% 	\else
-% 		%\vspace*{-0.5cm}
-%         %\hspace*{0.2\linewidth}%
-%          %\hfill
-% 		\begin{minipage}[t]{0.35\linewidth}
-%         	{\usebox{\PHD@crest}}
-%         \end{minipage}%
-%          \hfill
-% 		\begin{minipage}[t]{0.35\linewidth}
-%         	{ \flushright \usebox{\PHD@rte}}
-%         \end{minipage}
-           
-% 		\vspace{0.1\PHD@titlepagespacing}
-% 	\fi	
-	
-	
-% 	% Title
-% 	{\Huge \bf \@title} % subtitle is defined
-	
-	
-% 	\vspace{0.05\PHD@titlepagespacing}
-% 	{\large PhD thesis of Paris Saclay University \\
-% 		Prepared at Université Paris Sud\\ %(TODO @Marc c'est ça le "nom de l'établissement ?)
-%         }
-        
-%         \vspace{0.02\PHD@titlepagespacing}
-%       %{\Huge \centering \textcolor{red}{DRAFT} \\
-%       %\textcolor{red}{reports due December, 21$^{\text{st}}$ 2018} }
-
-% 	\vspace{0.03\PHD@titlepagespacing} %\vspace{0.1\PHD@titlepagespacing}
-% 	{\large École doctorale n°580\\ Sciences et Technologies de l'Information et de la Communication (STIC) %Dénomination et sigle
-% PhD speciality: Informatics%voir spécialités par l’ED 
-% %\includegraphics[width=0.5\linewidth, height=2cm]{ED_logo}
-% }
-        
-% 	% Author
-% 	\vspace{0.05\PHD@titlepagespacing}
-%     {\large PhD Defended at Orsay on February 13^{\text{th}}$ 2019 by\\}
-% 	\vspace*{1em}
-%     \vspace*{0.02\PHD@titlepagespacing}
-% 	{\LARGE \bf \@author}
-% 	\vspace*{1em}
-	
-% 	\end{flushright}
-% 	% Supervisor
-%     { \large Jury's Composition:\\}
-%     \resizebox{\linewidth}{!}{% 
-%     \begin{tabular}{lr}
-%      M. Alexandre Gramfort & \\
-%     Professor & President \\
-    
-%     M. Liva Ralaivola &   \\
-%     Professor, Aix Marseille Université  & Rapporteur \\
-    
-%     M. Louis Wehenkel &  \\
-%     Professor, University of Liège  & Rapporteur \\
-    
-%     M. Pierre Pinson & \\
-%     Professor, Technical University of Denmark & Examinator  \\
-    
-%     M. Oliver Teytaud & \\
-%     Researcher, Facebook AI Research & Examinator  \\
-    
-%     Mme Isabelle Guyon & \\
-%     Professor, University of Paris Saclay & PhD advisor \\
-    
-%     M. Marc Schoenauer &   \\
-%     Professor, University of Paris Saclay & PhD co - advisor \\
-    
-%     M. Antoine Marot &  \\
-%     Researcher, RTE &  PhD co - advisor \\
-    
-%     \end{tabular}
-%     }
-    
-% 	\vspace{0.1\PHD@titlepagespacing}
-
-% \end{minipage}
-% \end{singlespace}
 \restoregeometry
 }
 
