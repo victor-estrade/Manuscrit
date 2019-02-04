@@ -1,0 +1,3031 @@
+% ******************************************************************************
+% ****************************** Custom Margin *********************************
+
+% Add `custommargin' in the document class options to use this section
+% Set {innerside margin / outerside margin / topmargin / bottom margin}  and
+% other page dimensions
+\ifsetCustomMargin
+  \RequirePackage[left=37mm,right=30mm,top=35mm,bottom=30mm]{geometry}
+  \setFancyHdr % To apply fancy header after geometry package is loaded
+\fi
+
+% Add spaces between paragraphs
+%\setlength{\parskip}{0.5em}
+% Ragged bottom avoids extra whitespaces between paragraphs
+\raggedbottom
+% To remove the excess top spacing for enumeration, list and description
+%\usepackage{enumitem}
+%\setlist[enumerate,itemize,description]{topsep=0em}
+
+% *****************************************************************************
+% ******************* Fonts (like different typewriter fonts etc.)*************
+
+% Add `customfont' in the document class option to use this section
+
+\ifsetCustomFont
+  % Set your custom font here and use `customfont' in options. Leave empty to
+  % load computer modern font (default LaTeX font).
+  %\RequirePackage{helvet}
+
+  % For use with XeLaTeX
+  %  \setmainfont[
+  %    Path              = ./libertine/opentype/,
+  %    Extension         = .otf,
+  %    UprightFont = LinLibertine_R,
+  %    BoldFont = LinLibertine_RZ, % Linux Libertine O Regular Semibold
+  %    ItalicFont = LinLibertine_RI,
+  %    BoldItalicFont = LinLibertine_RZI, % Linux Libertine O Regular Semibold Italic
+  %  ]
+  %  {libertine}
+  %  % load font from system font
+  %  \newfontfamily\libertinesystemfont{Linux Libertine O}
+\fi
+
+% *****************************************************************************
+% **************************** Custom Packages ********************************
+\usepackage{lipsum}
+
+% ************************* Algorithms and Pseudocode **************************
+
+%\usepackage{algpseudocode}
+
+
+% ********************Captions and Hyperreferencing / URL **********************
+
+% Captions: This makes captions of figures use a boldfaced small font.
+%\RequirePackage[small,bf]{caption}
+
+\RequirePackage[labelsep=space,tableposition=top]{caption}
+\renewcommand{\figurename}{Fig.} %to support older versions of captions.sty
+
+
+% *************************** Graphics and figures *****************************
+
+%\usepackage{rotating}
+%\usepackage{wrapfig}
+
+% Uncomment the following two lines to force Latex to place the figure.
+% Use [H] when including graphics. Note 'H' instead of 'h'
+%\usepackage{float}
+%\restylefloat{figure}
+
+% Subcaption package is also available in the sty folder you can use that by
+% uncommenting the following line
+% This is for people stuck with older versions of texlive
+%\usepackage{sty/caption/subcaption}
+\usepackage{subcaption}
+
+% ********************************** Tables ************************************
+\usepackage{booktabs} % For professional looking tables
+\usepackage{multirow}
+\usepackage{bibentry}
+\nobibliography*
+%\usepackage{multicol}
+%\usepackage{longtable}
+%\usepackage{tabularx}
+
+
+% *********************************** SI Units *********************************
+\usepackage{siunitx} % use this package module for SI units
+
+
+% ******************************* Line Spacing *********************************
+
+% Choose linespacing as appropriate. Default is one-half line spacing as per the
+% University guidelines
+
+% \doublespacing
+% \onehalfspacing
+% \singlespacing
+
+
+% ************************ Formatting / Footnote *******************************
+
+% Don't break enumeration (etc.) across pages in an ugly manner (default 10000)
+%\clubpenalty=500
+%\widowpenalty=500
+
+%\usepackage[perpage]{footmisc} %Range of footnote options
+
+
+% *****************************************************************************
+% *************************** Bibliography  and References ********************
+
+%\usepackage{cleveref} %Referencing without need to explicitly state fig /table
+
+% Add `custombib' in the document class option to use this section
+\ifuseCustomBib
+   \RequirePackage[square, sort, numbers, authoryear]{natbib} % CustomBib
+
+% If you would like to use biblatex for your reference management, as opposed to the default `natbibpackage` pass the option `custombib` in the document class. Comment out the previous line to make sure you don't load the natbib package. Uncomment the following lines and specify the location of references.bib file
+
+%\RequirePackage[backend=biber, style=numeric-comp, citestyle=numeric, sorting=nty, natbib=true]{biblatex}
+%\bibliography{References/references} %Location of references.bib only for biblatex
+
+\fi
+
+% changes the default name `Bibliography` -> `References'
+\renewcommand{\bibname}{References}
+
+
+% ******************************************************************************
+% ************************* User Defined Commands ******************************
+% ******************************************************************************
+
+% *********** To change the name of Table of Contents / LOF and LOT ************
+
+%\renewcommand{\contentsname}{My Table of Contents}
+%\renewcommand{\listfigurename}{My List of Figures}
+%\renewcommand{\listtablename}{My List of Tables}
+
+
+% ********************** TOC depth and numbering depth *************************
+
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+
+
+% ******************************* Nomenclature *********************************
+
+% To change the name of the Nomenclature section, uncomment the following line
+
+%\renewcommand{\nomname}{Symbols}
+
+
+% ********************************* Appendix ***********************************
+
+% The default value of both \appendixtocname and \appendixpagename is `Appendices'. These names can all be changed via:
+
+%\renewcommand{\appendixtocname}{List of appendices}
+%\renewcommand{\appendixname}{Appndx}
+
+% *********************** Configure Draft Mode **********************************
+
+% Uncomment to disable figures in `draft'
+% \setkeys{Gin}{draft=true}  % set draft to false to enable figures in `draft'
+
+% These options are active only during the draft mode
+% Default text is "Draft"
+% \SetDraftText{DRAFT}
+
+% Default Watermark location is top. Location (top/bottom)
+% \SetDraftWMPosition{bottom}
+
+% Draft Version - default is v1.0
+% \SetDraftVersion{v0.1}
+
+% Draft Text grayscale value (should be between 0-black and 1-white)
+% Default value is 0.75
+% \SetDraftGrayScale{0.8}
+
+
+% ******************************** Todo Notes **********************************
+%% Uncomment the following lines to have todonotes.
+
+% \ifsetDraft
+	%\usepackage[dvipsnames]{xcolor}
+	\definecolor{amethyst}{rgb}{0.6, 0.4, 0.8}
+	% http://latexcolor.com/ for other color and code to define them
+	\usepackage[colorinlistoftodos]{todonotes}
+	\newcommand{\benjamin}[1]{\todo[size=\small,inline,color=green!40]{#1  \-- Benjamin}}
+	\newcommand{\isabelle}[1]{\todo[size=\small,inline,color=red!50]{#1  \-- Isabelle}}
+	\newcommand{\balthazar}[1]{\todo[size=\small,inline,color=orange]{#1 \-- Balthazar}}
+	\newcommand{\antoine}[1]{\todo[size=\small,inline,color=amethyst]{#1 \-- Antoine}}
+	\newcommand{\marc}[1]{\todo[size=\small,inline,color=orange]{#1 \-- Marc}}
+	\newcommand{\patrick}[1]{\todo[size=\small,inline,color=amethyst]{#1 \-- Patrick}}
+	\newcommand{\remy}[1]{\todo[size=\small,inline,color=amethyst]{#1 \-- Remy}}
+	\newcommand{\nicolas}[1]{\todo[size=\small,inline,color=red!50]{#1  \-- Nicolas}}
+    
+	\newcommand{\louis}[1]{\todo[size=\small,inline,color=amethyst]{#1 \-- Louis Wehenkel}}
+	\newcommand{\liva}[1]{\todo[size=\small,inline,color=orange]{#1  \-- Liva Ralaivola}}
+%\else
+% \newcommand{\mynote}[1]{}
+%	\newcommand{\listoftodos}{}
+%	
+%	\newcommand{\benjamin}[1]{}
+%	\newcommand{\isabelle}[1]{}
+%	\newcommand{\balthazar}[1]{}
+%	\newcommand{\antoine}[1]{}
+%\fi
+
+% Example todo: \mynote{Hey! I have a note}
+\usepackage[normalem]{ulem}
+%\usepackage[shortlabels]{enumerate}
+
+% Custom stuff
+\newcommand*{\ie}{{\em i.e.~}}
+\newcommand*{\eg}{{\em e.g.~}}
+\newcommand*{\MyDef}{\mathrm{def}}
+\newcommand*{\eqdefU}{\ensuremath{\mathop{\overset{\MyDef}{=}}}}% Unscaled version
+\newcommand*{\eqdef}{\mathop{\overset{\MyDef}{\resizebox{\widthof{\eqdefU}}{\heightof{=}}{=}}}}
+
+\newcommand*{\icomplex}{\text{{\textit{!`}}}}
+\newcommand*{\nblayers}{\ensuremath{\eta}}
+\newcommand*{\dimtau}{\ensuremath{\alpha}}
+\newcommand*{\nbaction}{\ensuremath{\upsilon}}
+\newcommand*{\RR}{\mathbb{R}}
+\newcommand*{\W}{\bm{W}}
+\newcommand*{\w}{\bm{w}}
+\newcommand*{\cref}{{c^{\text{ref}}}}
+\newcommand*{\pref}{{p^{\text{ref}}}}
+\newcommand*{\cact}{{c^{(p)}}}
+\newcommand*{\creact}{{c^{(q)}}}
+\newcommand*{\pact}{{p^{(p)}}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand*{\x}{{\bm{x}}}
+\newcommand*{\taub}{{\bm{\tau}}}
+\newcommand*{\y}{{\bm{y}}}
+\newcommand*{\h}{{\bm{h}}}
+\newcommand*{\argmin}{{\text{argmin}}}
+\newcommand*{\ttrain}{\ensuremath{\mathcal{T}^{\text{train}}}}
+\newcommand*{\ttest}{\ensuremath{\mathcal{T}^{\text{test}}}}
+
+% double commands that do the same things
+\newcommand*{\yy}{{\y}}
+\newcommand*{\xx}{{\x}}
+\newcommand*{\ttt}{{\taub}}
+
+% macro for theorems
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{theorem*}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem*{remark}{Remark}
+
+%%%%%%%%%%% packages
+\usepackage{bm} % bold math
+\usepackage{nth}
+
+%both are required
+\usepackage{algorithm2e} % algorithm
+\usepackage{algorithmic} % algorithm too
+
+% \usepackage{unicode-math}
+% \setmathfont{xits-math.otf}
+
+% ******************************* TIKZ for professional drawings ****************
+\usepackage{tikz}
+
+\makeatletter
+\newcommand{\gettikzxy}[3]{%
+  \tikz@scan@one@point\pgfutil@firstofone#1\relax
+  \edef#2{\the\pgf@x}%
+  \edef#3{\the\pgf@y}%
+}
+\makeatother
+
+\newenvironment{changemargin}[2]{%
+\begin{list}{}{%
+\setlength{\topsep}{0pt}%
+\setlength{\leftmargin}{#1}%
+\setlength{\rightmargin}{#2}%
+\setlength{\listparindent}{\parindent}%
+\setlength{\itemindent}{\parindent}%
+\setlength{\parsep}{\parskip}%
+}%
+\item[]}{\end{list}}
+
+%colors
+\definecolor{mycolor2}{RGB}{230,159,0}
+\definecolor{mycolor1}{RGB}{86,180,233}
+\definecolor{mycolor3}{RGB}{43,159,120}
+\definecolor{coldim1}{rgb}{0.5,0.,0.5}
+\definecolor{coldim2}{rgb}{1.,0.5,0.}
+\colorlet{lightGray}{gray!40}
+\definecolor{dkgreen}{RGB}{0,71,49}
+\definecolor{colx}{RGB}{255,0,0}
+\definecolor{coly}{RGB}{0,120,255}
+\definecolor{coltau}{RGB}{1,100,32}
+
+\definecolor{Gray}{gray}{0.9}
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+\definecolor{Orange}{rgb}{1,0.5,0.2}
+\definecolor{Yellow}{rgb}{1,1,0}
+\definecolor{Green}{rgb}{0.5,0.9,0}
+\definecolor{Blue}{rgb}{0,0.7,1}
+\definecolor{LtBlue}{rgb}{0.4,0.8,1}
+\definecolor{DkBlue}{rgb}{0., 0.447,0.69}
+\definecolor{Purple}{rgb}{.7,0.5,1}
+
+
+\tikzstyle{fontbf} = [text centered, font=\bf]
+\tikzstyle{textbf} = [text centered]
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{shapes.misc}
+\usetikzlibrary{calc, intersections } %,through,backgrounds}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{arrows}
+% \usetikzlibrary{intersections,through,backgrounds}
+%\usetikzlibrary{shapes.multipart}
+%\usetikzlibrary{automata, positioning}
+\tikzset{
+         house/.pic={
+        code={ 
+        	%we give the centered dot as input coordinates
+            \draw [fill] (0,0) circle [radius=5pt] --++(0.0,0.5);
+            \draw[-] (-0.5,0.5) --++(0,1) --++(1,0) --++(0,-1) --++(-1,0);% main part
+            \draw[-] (-0.5,1.5) --++(0.5*1,0.5*1) --++(0.5*1,-0.5*1); %roof
+            \draw[-] (-0.5+0.75*1,0.5) --++(0,0.5*1) --++(-0.25*1,0) --++(0,-0.5*1); %door
+            \draw[-] (-0.5+0.15*1,-0.15*1+1+0.5) --++(0.25*1,0) --++(0,-0.25*1) --++(-0.25*1,0) --++(0,0.25*1); %window
+  }},
+%
+  firm/.pic={
+        code={ %we give the centered dot as input coordinates
+        	\draw [fill] (0,0) circle [radius=5pt] --++(0.0,0.5);
+            \draw[-] (-0.5*1.25,0.5) --++(0,0.5) ++(1.25,0) --++(0,-0.5) --++(-1.25,0); % main part
+            \draw[-] (-0.5*1.25,0.5+0.5) --++(0,0.25) --++(0.25,-0.25) --++(0,0.25) --++(0.25,-0.25)--++(0,0.25) --++(0.25,-0.25) --++(0,0.25) --++(0.25,-0.25); % --++(0,0.25); --++(0.25,-0.25)--++(0,0.25) --++(0.25,-0.25) --++(0,0.25) --++(0.25,-0.25); %roof
+            \draw[-] (4*0.25-0.5*1.25,0.5+0.5) --++(0,0.5) --++(0.25,0) --++(0,-0.5);
+            \draw[-] (4*0.25-0.5*1.25,1+0.5) to[out=0,in=180] ++(0.25,0.5); % fumee
+            \draw[-] (4*0.25+0.05-0.5*1.25,1+0.5) to[out=0,in=180] ++(0.25,0.5); % fumee
+            \draw[-] (4*0.25+2*0.05-0.5*1.25,1+0.5) to[out=0,in=180] ++(0.25,0.5); % fumee
+            \draw[-] (4*0.25+3*0.05-0.5*1.25,1+0.5) to[out=0,in=180] ++(0.25,0.5); % fumee
+  }},
+%  
+  nuke/.pic={
+        code={ %we give the centered dot as input coordinates            
+        	\draw [-,fill] (0,0) circle [radius=5pt] --++(0.0,0.5);
+            
+            \draw[-] (0.0-0.7,0.+0.5) to[out=60,in=-45] ++(0.1,0.8); % fumee
+            \draw[-] (0.0-0.7,0+0.5) --++(0.6,0);
+            \draw[-] (0.1-0.7,0.8+0.5) --++(0.4,0);
+            \draw[-] (0.6-0.7,0.+0.5) to[out=120,in=-135] ++(-0.1,0.8);
+            
+            \draw[-] (0.1-0.7,0.8+0.5) to[out=0,in=180] ++(0.25,0.5); % fumee
+            \draw[-] (0.1+0.1-0.7,0.8+0.5) to[out=0,in=180] ++(0.25,0.5); % fumee
+            \draw[-] (0.1+0.2-0.7,0.8+0.5) to[out=0,in=180] ++(0.25,0.5); % fumee
+            
+            \draw[-] (0.7-0.7,0.+0.5) to[out=60,in=-45] ++(0.1,0.8); % fumee
+            \draw[-] (0.7-0.7,0+0.5) --++(0.6,0);
+            \draw[-] (0.8-0.7,0.8+0.5) --++(0.4,0);
+            \draw[-] (1.3-0.7,0.+0.5) to[out=120,in=-135] ++(-0.1,0.8);
+            
+            \draw[-] (0.8-0.7,0.8+0.5) to[out=0,in=180]  ++(0.25,0.5); % fumee
+            \draw[-] (0.8+0.1-0.7,0.8+0.5) to[out=0,in=180]  ++(0.25,0.5); % fumee
+            \draw[-] (0.8+0.2-0.7,0.8+0.5) to[out=0,in=180]  ++(0.25,0.5); % fumee
+  }},
+  sub/.pic={
+        code={ %we give the centered dot as input coordinates
+            \draw [-,fill] (0,0) ++(-0.25,-0.25) --++(0,0.5) -- ++(0.5,0) --++(0,-0.5) --++(-0.5,0); % main part
+  }},
+  sub_grey/.pic={
+        code={ %we give the centered dot as input coordinates
+            \draw [-,fill=gray] (0,0) ++(-0.25,-0.25) --++(0,0.5) -- ++(0.5,0) --++(0,-0.5) --++(-0.5,0); % main part
+  }},
+%
+  powergrid/.pic={
+        code={ %we give the centered dot as input coordinates
+            \node[inner sep=0pt]  (S1) at (0,0) {};
+            \node[inner sep=0pt]  (S2) at (0,4) {};
+            \node[inner sep=0pt]  (S3) at (2,4) {};
+            \node[inner sep=0pt]  (S4) at (4,4) {};
+            \node[inner sep=0pt]  (S5) at (4,0) {};
+            
+            \node[inner sep=0pt]  (C1) at (-1.5, -1) {};
+            \node[inner sep=0pt]  (C2) at (4.8+0.5, 4+1) {};
+            \node[inner sep=0pt]  (C3) at (4.8+0.5, -1) {};
+            
+            \node[inner sep=0pt]  (P1) at (-1.5, 5) {};
+            \node[inner sep=0pt]  (P2) at (1.5, -1) {};
+            
+%             \node[inner sep=0pt]  (S1bis) at (0+1.4, 0+1.2) {};%(S1)++(1.6,1.2) {};
+            
+            %house 1
+            \path (C1)  pic[scale=0.3*#1, rotate=30] {firm}; %c_1
+            \path (C2)  pic[scale=0.3*#1] {house}; %c_3
+            \path (C3)  pic[scale=0.3*#1] {house}; %c_4
+            
+            \path (P2)  pic[scale=0.3*#1, rotate=-20] {nuke}; %p_2
+            \path (P1)  pic[scale=0.3*#1] {nuke}; %p_1
+            
+         	 \path (S1) pic[scale=0.5*#1] {sub};
+             \path (S2) pic[scale=0.5*#1] {sub};
+             \path (S3) pic[scale=0.5*#1] {sub};
+             \path (S4) pic[scale=0.5*#1] {sub};
+             \path (S5) pic[scale=0.5*#1] {sub};
+             
+
+             % inj
+             \draw[-,rotate=30, very thin] (S4) --(C2) ;
+             \draw[-,rotate=-40,  very thin] (P1) --(S2) ;               
+             \draw[-,rotate=30, very thin] (C1) --(S1) ;
+             \draw[-,rotate=-45, very thin] (S1) --(P2) ;
+             \draw[-,rotate=-45, very thin] (S5) --(C3) ;
+                
+              \node[right=5pt of C1] {$c_1$};
+              \node[right=5pt of C2] {$c_2$};
+              \node[right=5pt of C3] {$c_3$};
+              
+              \node[right=5pt of P1] {$p_1$};
+              \node[right=5pt of P2] {$p_2$};
+              
+             \node[left=5pt of S1] {sub. 1};
+             \node[left=5pt of S2] {sub. 2};
+             \node[above=5pt of S3] {sub. 3};
+             \node[right=5pt of S4] {sub. 4};
+             \node[right=5pt of S5] {sub. 5};
+              
+             %lines
+%              \draw[-,ultra thick] (S1) -- (S5);
+%              \draw[-,ultra thick] (S5)  --(S4); 
+%              \draw[-,ultra thick] (S1) --(S2);
+%              \draw[-,ultra thick] (S2) --(S3);
+%              \draw[-,ultra thick, double] (S3) --(S4); 
+%              \draw[-,ultra thick] (S1)  -- (S3);
+%              \draw[-,ultra thick] (S1) --(S4);
+
+             \draw[-,ultra thick] (S1) -- (S5) node[midway, above, align=left, inner sep=0pt] {$\text{l}_4$ \\ \vspace*{-0.5em}} ;
+             \draw[-,ultra thick] (S5)  --(S4) node[midway, left, align=left, inner sep=0pt] {$\text{l}_8  ~$ \\ \vspace*{-0.5em}};
+             \draw[-,ultra thick] (S1) --(S2) node[midway, left, align=left, inner sep=0pt] {$\text{l}_1  ~$ \\ \vspace*{-0.5em}};
+             \draw[-,ultra thick] (S2) --(S3) node[midway, above, align=left] {$\text{l}_5  $ \\ \vspace*{-0.5em}}  ;
+             
+
+             \draw[-,ultra thick] (S3) edge[bend right] (S4);
+             \node[above=1em, align=left, inner sep=0pt] (label_l6) at ($(S3)!0.5!(S4)$) {$\text{l}_6$};
+             
+              \draw[-,ultra thick] (S3) edge[bend left] (S4);
+              \node[below=1em, align=left, inner sep=0pt] (label_l7) at ($(S3)!0.5!(S4)$) {$\text{l}_7$\\ \vspace*{-1em}};
+             
+             \draw[-,ultra thick] (S1)  -- (S3) node[midway, above, left, align=left] {$\text{l}_2  ~$ \\ \vspace*{-0.5em}};
+             \draw[-,ultra thick] (S1) --(S4) node[midway, above, left, align=left] {$\text{l}_3 ~$ \\ \vspace*{-0.5em}}; 
+  }},
+%
+  cross/.style={cross out, draw, 
+         minimum size=2*(#1-\pgflinewidth), 
+         inner sep=0pt, outer sep=0pt},
+%
+   half_cross/.style={strike out, draw, 
+         minimum size=2*(#1-\pgflinewidth), 
+         inner sep=0pt, outer sep=0pt},
+         %
+  sub_1/.pic={
+        code={ %we give the centered dot as input coordinates
+        
+            \def\smalldep{0.02} % don't put 0...
+            \newcommand\longdep{2.}
+            \newcommand\lagobj{1.2}
+            
+            \node (SWITHLEGEND) at (-1,2+0.5*\longdep) {isolating breaker};
+            \node (BREAKER) at (-1,-0.5*\longdep) {disconnector};
+            
+            \node[inner sep=0pt]  (S1) at (0,2) {};
+            \node[inner sep=0pt]  (S2) at (6*\lagobj+1,2) {};
+            \node[inner sep=0pt]  (S3) at (0,0) {};
+            \node[inner sep=0pt]  (S4) at (6*\lagobj+1,0) {};
+           
+
+           
+            \node[inner sep=0pt]  (C1_bot) at (1,-\longdep) {};
+            \node[inner sep=0pt]  (C1_top) at (1,2+\smalldep) {};
+
+            \node[inner sep=0pt]  (l1_bot) at (1+\lagobj,0-\smalldep) {};
+            \node[inner sep=0pt]  (l1_top) at (1+\lagobj, 2+\longdep) {};
+           
+            \node[inner sep=0pt]  (l2_bot) at (1+2*\lagobj,0-\smalldep) {};
+            \node[inner sep=0pt]  (l2_top) at (1+2*\lagobj, 2+\longdep) {};
+
+            \node[inner sep=0pt]  (l3_bot) at (1+3*\lagobj,0-\smalldep) {};
+            \node[inner sep=0pt]  (l3_top) at (1+3*\lagobj, 2+\longdep) {};
+ 
+            \node[inner sep=0pt]  (l4_bot) at (1+4*\lagobj,0-\smalldep) {};
+            \node[inner sep=0pt]  (l4_top) at (1+4*\lagobj, 2+\longdep) {};
+           
+            \node[inner sep=0pt]  (p1_bot) at (1+5*\lagobj,0-\longdep) {};
+            \node[inner sep=0pt]  (p1_top) at (1+5*\lagobj,2+\smalldep) {};
+           
+          \draw[-,ultra thick, name path=bus_1] (S1) -- (S2) node[above=0.5em, align=left, inner sep=0pt] {busbar 1} ;
+          \draw[-,ultra thick, name path=bus_2] (S3) -- (S4) node[below=0.5em, align=left, inner sep=0pt] {busbar 2} ;
+         
+         
+  			\draw[name path=c_1] (C1_top) -- (C1_bot) node[left] {$\downarrow c_1$}; % pic[scale=0.5*#1, rotate=30] {firm};
+            \path [name intersections={of=bus_1 and c_1,by=c1_bus1}];
+			\node [cross=5pt] at (c1_bus1) {};
+            \path [name intersections={of=bus_2 and c_1,by=c1_bus2}];
+			\node [cross=5pt] at (c1_bus2) {};
+           
+             \draw[-,name path=l_1] (l1_bot) -- (l1_top) node[left] {$l_1$} node[above] {$\uparrow$} node[above=1em] {$\text{sub}\_2$}; % pic[scale=0.5*#1, rotate=30] {firm};
+            \path [name intersections={of=bus_1 and l_1,by=l1_bus1}];
+			\node [cross=5pt] at (l1_bus1) {};
+            \path [name intersections={of=bus_2 and l_1,by=l1_bus2}];
+			\node [cross=5pt] at (l1_bus2) {};
+           
+            \draw[-,name path=l_2] (l2_bot) -- (l2_top) node[left] {$l_2$} node[above] {$\uparrow$} node[above=1em] {$\text{sub}\_3$}; % pic[scale=0.5*#1, rotate=30] {firm};
+            \path [name intersections={of=bus_1 and l_2,by=l2_bus1}];
+			\node [cross=5pt] at (l2_bus1) {};
+            \path [name intersections={of=bus_2 and l_2,by=l2_bus2}];
+			\node [cross=5pt] at (l2_bus2) {};
+           
+            \draw[-,name path=l_3] (l3_bot) -- (l3_top) node[left] {$l_3$} node[above] {$\uparrow$} node[above=1em] {$\text{sub}\_4$}; % pic[scale=0.5*#1, rotate=30] {firm};
+            \path [name intersections={of=bus_1 and l_3,by=l3_bus1}];
+			\node [cross=5pt] at (l3_bus1) {};
+            \path [name intersections={of=bus_2 and l_3,by=l3_bus2}];
+			\node [cross=5pt] at (l3_bus2) {};
+           
+           \draw[-,name path=l_4] (l4_bot) -- (l4_top) node[left] {$l_4$} node[above] {$\uparrow$} node[above=1em] {$\text{sub}\_5$}; % pic[scale=0.5*#1, rotate=30] {firm};
+            \path [name intersections={of=bus_1 and l_4,by=l4_bus1}];
+			\node [cross=5pt] at (l4_bus1) {};
+            \path [name intersections={of=bus_2 and l_4,by=l4_bus2}];
+			\node [cross=5pt] at (l4_bus2) {};
+            
+            \draw[-,name path=p_1] (p1_top) -- (p1_bot) node[left] {$\downarrow p_1$}; % pic[scale=0.5*#1, rotate=30] {firm};
+            \path [name intersections={of=bus_1 and p_1,by=p1_bus1}];
+			\node [cross=5pt] at (p1_bus1) {};
+            \path [name intersections={of=bus_2 and p_1,by=p1_bus2}];
+			\node [cross=5pt] at (p1_bus2) {};
+           
+            \draw (S1) node[fill=black,inner sep=2pt] {} -- (S3) node[fill=black,inner sep=2pt] {} node[midway, draw, minimum size=5pt]  (switch) {};
+
+			%\node (test) at (switch) {OK NOW THIS IT};
+            
+          \node[inner sep=0pt, outer sep=0pt, left=8pt, below=8pt] (endNOTE2) at (c1_bus2) {};
+           \draw[dashed] (c1_bus2) circle(8pt);
+           \draw [-latex, ->] (BREAKER) edge[bend right] (endNOTE2);
+           
+           \node[below] (SWITHLEGEND2) at (SWITHLEGEND) {};
+          \node[inner sep=0pt, outer sep=0pt,left=8pt] (switch_pos) at (switch) {};
+           \draw[dashed] (switch) circle(8pt);
+           \draw [-latex, ->] (SWITHLEGEND2) edge[bend right] (switch_pos);
+           
+  }},
+%  
+  powergrid_2nodes/.pic={
+        code={ %we give the centered dot as input coordinates
+            \node[inner sep=0pt]  (S1) at (0,0) {};
+            \node[inner sep=0pt]  (S1_bus1) at (0.2*#1, 0) {};
+            \node[inner sep=0pt]  (S1_bus2) at (-0.2*#1, 0) {};
+            
+            \node[inner sep=0pt]  (S2) at (0,4) {};
+            \node[inner sep=0pt]  (S3) at (2,4) {};
+            \node[inner sep=0pt]  (S4) at (4,4) {};
+            \node[inner sep=0pt]  (S5) at (4,0) {};
+            
+            \node[inner sep=0pt]  (C1) at (-1.5, -1) {};
+            \node[inner sep=0pt]  (C2) at (4.8+0.5, 4+1) {};
+            \node[inner sep=0pt]  (C3) at (4.8+0.5, -1) {};
+            
+            \node[inner sep=0pt]  (P1) at (-1.5, 5) {};
+            \node[inner sep=0pt]  (P2) at (1.5, -1) {};
+            
+%             \node[inner sep=0pt]  (S1bis) at (0+1.4, 0+1.2) {};%(S1)++(1.6,1.2) {};
+            
+            %house 1
+            \path (C1)  pic[scale=0.3*#1, rotate=30] {firm}; %c_1
+            \path (C2)  pic[scale=0.3*#1] {house}; %c_3
+            \path (C3)  pic[scale=0.3*#1] {house}; %c_4
+            
+            \path (P2)  pic[scale=0.3*#1, rotate=-20] {nuke}; %p_2
+            \path (P1)  pic[scale=0.3*#1] {nuke}; %p_1
+            
+         	 \path (S1) pic[scale=1.5*#1] {sub_grey};
+             \path (S2) pic[scale=0.5*#1] {sub};
+             \path (S3) pic[scale=0.5*#1] {sub};
+             \path (S4) pic[scale=0.5*#1] {sub};
+             \path (S5) pic[scale=0.5*#1] {sub};
+             
+
+             % inj
+             \draw[-,rotate=30, very thin] (S4) --(C2) ;
+             \draw[-,rotate=-40,  very thin] (P1) --(S2) ;               
+             \draw[-,rotate=30, very thin] (S1_bus2) -- (C1);
+             \draw[-,rotate=-45, very thin] (S1_bus1) --(P2) ;
+             \draw[-,rotate=-45, very thin] (S5) --(C3) ;
+                
+                
+               %label
+              \node[right=5pt of C1] {$c_1$};
+              \node[below=3pt of C2] {$c_2$};
+              \node[left=5pt of C3] {$c_3$};
+              
+              \node[right=5pt of P1] {$p_1$};
+              \node[right=5pt of P2] {$p_2$};
+              
+             \node[left=8pt of S1] {sub. 1};
+             \node[left=5pt of S2] {sub. 2};
+             \node[above=5pt of S3] {sub. 3};
+             \node[right=5pt of S4] {sub. 4};
+             \node[right=5pt of S5] {sub. 5};
+             %lines
+%              \draw[-,ultra thick] (S1_bus1) -- (S5);
+%              \draw[-,ultra thick] (S5)  --(S4); 
+%              \draw[-,ultra thick] (S1_bus2) --(S2);
+%              \draw[-,ultra thick] (S2) --(S3);
+%              \draw[-,ultra thick, double] (S3) --(S4); 
+%              \draw[-,ultra thick] (S1_bus2)  -- (S3);
+%              \draw[-,ultra thick] (S1_bus1) --(S4);
+             
+             \draw[-,ultra thick] (S1_bus1) -- (S5) node[midway, above, align=left, inner sep=0pt] {$\text{l}_4$ \\ \vspace*{-0.5em}} ;
+             \draw[-,ultra thick] (S5)  --(S4) node[midway, left, align=left, inner sep=0pt] {$\text{l}_8  ~$ \\ \vspace*{-0.5em}};
+             \draw[-,ultra thick] (S1_bus2) --(S2) node[midway, left, align=left, inner sep=0pt] {$\text{l}_1  ~$ \\ \vspace*{-0.5em}};
+             \draw[-,ultra thick] (S2) --(S3) node[midway, above, align=left] {$\text{l}_5  $ \\ \vspace*{-0.5em}}  ;
+             
+             \draw[-,ultra thick] (S3) edge[bend right] (S4);
+             \node[above=1em, align=left, inner sep=0pt] (label_l6) at ($(S3)!0.5!(S4)$) {$\text{l}_6$};
+              \draw[-,ultra thick] (S3) edge[bend left] (S4);
+              \node[below=1em, align=left, inner sep=0pt] (label_l7) at ($(S3)!0.5!(S4)$) {$\text{l}_7$\\ \vspace*{-1em}};
+             
+             \draw[-,ultra thick] (S1_bus2)  -- (S3) node[midway, above, left, align=left] {$\text{l}_2  ~$ \\ \vspace*{-0.5em}};
+             \draw[-,ultra thick] (S1_bus1) --(S4) node[midway, above, left, align=left] {$\text{l}_3 ~$ \\ \vspace*{-0.5em}}; 
+             
+             \draw[fill=mycolor2] (S1_bus2) circle(3pt);
+             \draw[fill=mycolor1] (S1_bus1) circle(3pt);
+  }},
+%
+  sub_1_2nodes/.pic={
+        code={ %we give the centered dot as input coordinates
+        
+            \def\smalldep{0.02} % don't put 0...
+            \newcommand\longdep{2.}
+            \newcommand\lagobj{1.2}
+            
+            \node (NOTE1) at (-2,2+0.5*\longdep) {open};
+            \node (NOTE2) at (-2,-0.5*\longdep) {close};
+            
+            \node[inner sep=0pt]  (S1) at (0,2) {};
+            \node[inner sep=0pt]  (S2) at (6*\lagobj+1,2) {};
+            \node[inner sep=0pt]  (S3) at (0,0) {};
+            \node[inner sep=0pt]  (S4) at (6*\lagobj+1,0) {};
+           
+            \node[inner sep=0pt]  (C1_bot) at (1,-\longdep) {};
+            \node[inner sep=0pt]  (C1_top) at (1,2+\smalldep) {};
+
+            \node[inner sep=0pt]  (l1_bot) at (1+\lagobj,0-\smalldep) {};
+            \node[inner sep=0pt]  (l1_top) at (1+\lagobj, 2+\longdep) {};
+           
+            \node[inner sep=0pt]  (l2_bot) at (1+2*\lagobj,0-\smalldep) {};
+            \node[inner sep=0pt]  (l2_top) at (1+2*\lagobj, 2+\longdep) {};
+
+            \node[inner sep=0pt]  (l3_bot) at (1+3*\lagobj,0-\smalldep) {};
+            \node[inner sep=0pt]  (l3_top) at (1+3*\lagobj, 2+\longdep) {};
+ 
+            \node[inner sep=0pt]  (l4_bot) at (1+4*\lagobj,0-\smalldep) {};
+            \node[inner sep=0pt]  (l4_top) at (1+4*\lagobj, 2+\longdep) {};
+           
+            \node[inner sep=0pt]  (p1_bot) at (1+5*\lagobj,0-\longdep) {};
+            \node[inner sep=0pt]  (p1_top) at (1+5*\lagobj,2+\smalldep) {};
+           
+          \draw[-,ultra thick, name path=bus_1, color=mycolor1, loosely dashdotted] (S1) -- (S2) node[above=0.5em, align=left, inner sep=0pt] {busbar 1} ;
+          \draw[-,ultra thick, name path=bus_2, color=mycolor2, dashed] (S3) -- (S4) node[below=0.5em, align=left, inner sep=0pt] {busbar 2} ;
+         
+         
+  			\draw[name path=c_1, mycolor2, dashed] (C1_top) -- (C1_bot) node[left] {$\downarrow c_1$}; % pic[scale=0.5*#1, rotate=30] {firm};
+            \path [name intersections={of=bus_1 and c_1,by=c1_bus1}];
+			\node [half_cross=5pt] at (c1_bus1) {};
+            \path [name intersections={of=bus_2 and c_1,by=c1_bus2}];
+			\node [cross=5pt, color=red] at (c1_bus2) {};
+           
+             \draw[-,name path=l_1, mycolor2, dashed] (l1_bot) -- (l1_top) node[left] {$l_1$} node[above] {$\uparrow$} node[above=1em] {$\text{sub}\_2$}; % pic[scale=0.5*#1, rotate=30] {firm};
+            \path [name intersections={of=bus_1 and l_1,by=l1_bus1}];
+			\node [half_cross=5pt] at (l1_bus1) {};
+            \path [name intersections={of=bus_2 and l_1,by=l1_bus2}];
+			\node [cross=5pt, color=red] at (l1_bus2) {};
+           
+            \draw[-,name path=l_2, mycolor2, dashed] (l2_bot) -- (l2_top) node[left] {$l_2$} node[above] {$\uparrow$} node[above=1em] {$\text{sub}\_3$}; % pic[scale=0.5*#1, rotate=30] {firm};
+            \path [name intersections={of=bus_1 and l_2,by=l2_bus1}];
+			\node [half_cross=5pt] at (l2_bus1) {};
+            \path [name intersections={of=bus_2 and l_2,by=l2_bus2}];
+			\node [cross=5pt, color=red] at (l2_bus2) {};
+           
+            \draw[-, thick, name path=l_3, mycolor1, loosely dashdotted] (l3_bot) -- (l3_top) node[left] {$l_3$} node[above] {$\uparrow$} node[above=1em] {$\text{sub}\_4$}; % pic[scale=0.5*#1, rotate=30] {firm};
+            \path [name intersections={of=bus_1 and l_3,by=l3_bus1}];
+			\node [cross=5pt, color=red] at (l3_bus1) {};
+            \path [name intersections={of=bus_2 and l_3,by=l3_bus2}];
+			\node [half_cross=5pt] at (l3_bus2) {};
+           
+           \draw[-, thick, name path=l_4, mycolor1, loosely dashdotted] (l4_bot) -- (l4_top) node[left] {$l_4$} node[above] {$\uparrow$} node[above=1em] {$\text{sub}\_5$}; % pic[scale=0.5*#1, rotate=30] {firm};
+            \path [name intersections={of=bus_1 and l_4,by=l4_bus1}];
+			\node [cross=5pt, color=red] at (l4_bus1) {};
+            \path [name intersections={of=bus_2 and l_4,by=l4_bus2}];
+			\node [half_cross=5pt] at (l4_bus2) {};
+            
+            \draw[-, thick, name path=p_1, mycolor1, loosely dashdotted] (p1_top) -- (p1_bot) node[left] {$\downarrow p_1$}; % pic[scale=0.5*#1, rotate=30] {firm};
+            \path [name intersections={of=bus_1 and p_1,by=p1_bus1}];
+			\node [cross=5pt, color=red] at (p1_bus1) {};
+            \path [name intersections={of=bus_2 and p_1,by=p1_bus2}];
+			\node [half_cross=5pt] at (p1_bus2) {};
+           
+            \draw (S1) node[fill=black,inner sep=2pt] {} -- (S3) node[fill=black,inner sep=2pt] {} node[midway, draw, minimum size=5pt, fill=white] (MID2BAR) {};
+           \node[inner sep=0pt, outer sep=0pt, left=2pt of MID2BAR] (MID2BARL) {};
+           \node[inner sep=0pt, outer sep=0pt, right=2pt of MID2BAR] (MID2BARR) {};
+           \draw (MID2BARL) -- (MID2BARR);
+           
+           \node[inner sep=0pt, outer sep=0pt, left=8pt, above=8pt] (endNOTE1) at (c1_bus1) {};
+           \draw[dashed] (c1_bus1) circle(8pt);
+           \draw [-latex, ->] (NOTE1) edge[bend left] (endNOTE1);
+           
+           \node[inner sep=0pt, outer sep=0pt, left=8pt, below=8pt] (endNOTE2) at (c1_bus2) {};
+           \draw[dashed] (c1_bus2) circle(8pt);
+           \draw [-latex, ->] (NOTE2) edge[bend right] (endNOTE2);
+  }},
+%  
+  powergrid1/.pic={
+        code={ %we give the centered dot as input coordinates
+            \node[inner sep=0pt]  (S1) at (0,0) {};
+            \node[inner sep=0pt]  (S2) at (0,4) {};
+            \node[inner sep=0pt]  (S3) at (2,4) {};
+            \node[inner sep=0pt]  (S4) at (4,4) {};
+            \node[inner sep=0pt]  (S5) at (4,0) {};
+            
+            \node[inner sep=0pt]  (C1) at (-1.5, -1) {};
+            \node[inner sep=0pt]  (C2) at (4.8+0.5, 4+1) {};
+            \node[inner sep=0pt]  (C3) at (4.8+0.5, -1) {};
+            
+            \node[inner sep=0pt]  (P1) at (-1.5, 5) {};
+            \node[inner sep=0pt]  (P2) at (1.5, -1) {};
+
+            %house 1
+            \path (C1)  pic[scale=0.3*#1, rotate=30] {firm}; %c_1
+            \path (C2)  pic[scale=0.3*#1] {house}; %c_3
+            \path (C3)  pic[scale=0.3*#1] {house}; %c_4
+            
+            \path (P2)  pic[scale=0.3*#1, rotate=-20] {nuke}; %p_2
+            \path (P1) pic[scale=0.3*#1] {nuke}; %p_1
+            
+         	 \path (S1) pic[scale=0.5*#1] {sub};
+             \path (S2) pic[scale=0.5*#1] {sub};
+             \path (S3) pic[scale=0.5*#1] {sub};
+             \path (S4) pic[scale=0.5*#1] {sub};
+             \path (S5) pic[scale=0.5*#1] {sub};
+             
+
+             % inj
+             \draw[-,rotate=30, thin] (S4) --(C2) ;
+             \draw[-,rotate=-40, thin] (P1) --(S2) ;               
+             \draw[-,rotate=30, thin] (C1) --(S1) ;
+             \draw[-,rotate=-45, thin] (S1) --(P2) ;
+             \draw[-,rotate=-45, thin] (S5) --(C3) ;
+                
+             %lines
+             \draw[-,thick] (S1) -- (S5);
+             \draw[-,thick] (S5)  --(S4); 
+             \draw[-,ultra thick, dashed, red] (S1)  --(S2);
+             \draw[-,thick] (S2) --(S3);
+             \draw[-,thick, double] (S3) --(S4); 
+             \draw[-,thick] (S1)  -- (S3);
+             \draw[-,thick] (S1) --(S4);
+  }},
+%  
+  powergrid2/.pic={
+        code={ %we give the centered dot as input coordinates
+            \node[inner sep=0pt]  (S1) at (0,0) {};
+            \node[inner sep=0pt]  (S2) at (0,4) {};
+            \node[inner sep=0pt]  (S3) at (2,4) {};
+            \node[inner sep=0pt]  (S4) at (4,4) {};
+            \node[inner sep=0pt]  (S5) at (4,0) {};
+            
+            \node[inner sep=0pt]  (C1) at (-1.5, -1) {};
+            \node[inner sep=0pt]  (C2) at (4.8+0.5, 4+1) {};
+            \node[inner sep=0pt]  (C3) at (4.8+0.5, -1) {};
+            
+            \node[inner sep=0pt]  (P1) at (-1.5, 5) {};
+            \node[inner sep=0pt]  (P2) at (1.5, -1) {};
+
+            %house 1
+            \path (C1)  pic[scale=0.3*#1, rotate=30] {firm}; %c_1
+            \path (C2)  pic[scale=0.3*#1] {house}; %c_3
+            \path (C3)  pic[scale=0.3*#1] {house}; %c_4
+            
+            \path (P2)  pic[scale=0.3*#1, rotate=-20] {nuke}; %p_2
+            \path (P1)  pic[scale=0.3*#1] {nuke}; %p_1
+            
+         	 \path (S1) pic[scale=0.5*#1] {sub};
+             \path (S2) pic[scale=0.5*#1] {sub};
+             \path (S3) pic[scale=0.5*#1] {sub};
+             \path (S4) pic[scale=0.5*#1] {sub};
+             \path (S5) pic[scale=0.5*#1] {sub};
+             
+
+             % inj
+             \draw[-,rotate=30, thin] (S4) --(C2) ;
+             \draw[-,rotate=-40, thin] (P1) --(S2) ;               
+             \draw[-,rotate=30, thin] (C1) --(S1) ;
+             \draw[-,rotate=-45, thin] (S1) --(P2) ;
+             \draw[-,rotate=-45, thin] (S5) --(C3) ;
+                
+             %lines
+             \draw[-,thick] (S1) -- (S5);
+             \draw[-,thick] (S5)  --(S4); 
+             \draw[-,thick] (S1) --(S2); %l1
+             \draw[-,ultra thick, dashed, red] (S2) --(S3);
+             \draw[-,thick, double] (S3) --(S4); 
+             \draw[-,thick] (S1)  -- (S3);
+             \draw[-,thick] (S1) --(S4);
+  }},
+%
+  powergridk/.pic={
+        code={ %we give the centered dot as input coordinates
+            \node[inner sep=0pt]  (S1) at (0,0) {};
+            \node[inner sep=0pt]  (S2) at (0,4) {};
+            \node[inner sep=0pt]  (S3) at (2,4) {};
+            \node[inner sep=0pt]  (S4) at (4,4) {};
+            \node[inner sep=0pt]  (S5) at (4,0) {};
+            
+            \node[inner sep=0pt]  (C1) at (-1.5, -1) {};
+            \node[inner sep=0pt]  (C2) at (4.8+0.5, 4+1) {};
+            \node[inner sep=0pt]  (C3) at (4.8+0.5, -1) {};
+            
+            \node[inner sep=0pt]  (P1) at (-1.5, 5) {};
+            \node[inner sep=0pt]  (P2) at (1.5, -1) {};
+
+            %house 1
+            \path (C1)  pic[scale=0.3*#1, rotate=30] {firm}; %c_1
+            \path (C2)  pic[scale=0.3*#1] {house}; %c_3
+            \path (C3)  pic[scale=0.3*#1] {house}; %c_4
+            
+            \path (P2)  pic[scale=0.3*#1, rotate=-20] {nuke}; %p_2
+            \path (P1)  pic[scale=0.3*#1] {nuke}; %p_1
+            
+         	 \path (S1) pic[scale=0.5*#1] {sub};
+             \path (S2) pic[scale=0.5*#1] {sub};
+             \path (S3) pic[scale=0.5*#1] {sub};
+             \path (S4) pic[scale=0.5*#1] {sub};
+             \path (S5) pic[scale=0.5*#1] {sub};
+             
+
+             % inj
+             \draw[-,rotate=30, thin] (S4) --(C2) ;
+             \draw[-,rotate=-40, thin] (P1) --(S2) ;               
+             \draw[-,rotate=30, thin] (C1) --(S1) ;
+             \draw[-,rotate=-45, thin] (S1) --(P2) ;
+             \draw[-,rotate=-45, thin] (S5) --(C3) ;
+                
+             %lines
+             \draw[-,thick] (S1) -- (S5);
+             \draw[-,thick] (S5)  --(S4); 
+             \draw[-,thick] (S1) --(S2); %l1
+             \draw[-,thick] (S2) --(S3);
+             \draw[-,ultra thick, double] (S3) --(S4); 
+             \draw[-,thick, dashed, red] (S1)  -- (S3);
+             \draw[-,thick] (S1) --(S4);
+  }},
+%
+  powergridij/.pic={
+        code={ %we give the centered dot as input coordinates
+            \node[inner sep=0pt]  (S1) at (0,0) {};
+            \node[inner sep=0pt]  (S2) at (0,4) {};
+            \node[inner sep=0pt]  (S3) at (2,4) {};
+            \node[inner sep=0pt]  (S4) at (4,4) {};
+            \node[inner sep=0pt]  (S5) at (4,0) {};
+            
+            \node[inner sep=0pt]  (C1) at (-1.5, -1) {};
+            \node[inner sep=0pt]  (C2) at (4.8+0.5, 4+1) {};
+            \node[inner sep=0pt]  (C3) at (4.8+0.5, -1) {};
+            
+            \node[inner sep=0pt]  (P1) at (-1.5, 5) {};
+            \node[inner sep=0pt]  (P2) at (1.5, -1) {};
+
+            %house 1
+            \path (C1)  pic[scale=0.3*#1, rotate=30] {firm}; %c_1
+            \path (C2)  pic[scale=0.3*#1] {house}; %c_3
+            \path (C3)  pic[scale=0.3*#1] {house}; %c_4
+            
+            \path (P2)  pic[scale=0.3*#1, rotate=-20] {nuke}; %p_2
+            \path (P1)  pic[scale=0.3*#1] {nuke}; %p_1
+            
+         	 \path (S1) pic[scale=0.5*#1] {sub};
+             \path (S2) pic[scale=0.5*#1] {sub};
+             \path (S3) pic[scale=0.5*#1] {sub};
+             \path (S4) pic[scale=0.5*#1] {sub};
+             \path (S5) pic[scale=0.5*#1] {sub};
+             
+
+             % inj
+             \draw[-,rotate=30, thin] (S4) --(C2) ;
+             \draw[-,rotate=-40, thin] (P1) --(S2) ;               
+             \draw[-,rotate=30, thin] (C1) --(S1) ;
+             \draw[-,rotate=-45, thin] (S1) --(P2) ;
+             \draw[-,rotate=-45, thin] (S5) --(C3) ;
+                
+             %lines
+             \draw[-,thick] (S1) -- (S5);
+             \draw[-,ultra thick, dashed, red] (S5)  --(S4); 
+             \draw[-,thick] (S1) --(S2); %l1
+             \draw[-,thick] (S2) --(S3);
+             \draw[-,ultra thick, dashed, red] (S3) --(S4); 
+             \draw[-,thick] (S1)  -- (S3);
+             \draw[-,thick] (S1) --(S4);
+  }},
+%
+	neuron/.style={
+	circle,fill=black!25,minimum size=17pt,inner sep=0pt},
+	input_neuron/.style={neuron, fill=green!50},
+	hidden_neuron/.style={neuron, fill=red!50},
+	output_neuron/.style={neuron, fill=blue!50},
+%
+  lin_reg/.pic={
+        code={ %we give the centered dot as input coordinates
+        \def\layersep{2.5cm}
+        \def\ninj{5}
+        \def\n{8}
+        \tikzstyle{annot} = [text width=4em, text centered]
+     
+    % Draw the input layer nodes
+    \foreach \name / \y in {1,...,\ninj}
+    % This is the same as writing \foreach \name / \y in {1/1,2/2,3/3,4/4}
+        \node[input_neuron, pin=left:injection \y] (I-\name) at (0,-\y) {};
+
+    % Draw the hidden layer nodes
+    \foreach \name / \y in {1,...,\n}
+        \path[yshift=0.5cm]
+            node[output_neuron, pin=right:flows on line \y] (Y-\name) at (\layersep,-\y cm) {};
+   
+    \foreach \source in {1,...,\ninj}
+        \foreach \dest in {2,...,\n}
+            \draw[color=black!25] (I-\source) -- (Y-\dest);
+             
+    \foreach \source in {1,...,\ninj}
+            \draw (I-\source) -- (Y-1) node[midway] {$w_{\source, 1}$};
+                
+
+            
+	\node[annot,above of=Y-1, node distance=1cm] (hl) {Output layer};
+	% \draw[annot, above of=H-1] node {};
+	
+	%\node[left of=hl, node distance=1cm] (hl2) {};
+	
+	%\draw[name path=horz_line, color=white] (hl2) -- (hl);
+	%\draw[name path=input_line, color=white] (I-2) -- (I-1);
+	%\path [name intersections={of=input_line and horz_line,by=input_layer_spot}];
+    
+    % \draw[annot] (input_layer_spot) node {Input layer};
+    %\node[annot,above of=I-1, node distance=1.5cm] (il) {Input layer};
+    
+   
+        
+  }},
+  %
+  mlp/.pic={
+        code={ %we give the centered dot as input coordinates
+        \def\layersep{2.5cm}
+        \def\ninj{5}
+        \def\nh{6}
+        \def\n{8}
+        \tikzstyle{annot} = [text width=4em, text centered]
+     
+    % Draw the input layer nodes
+    \foreach \name / \y in {1,...,\ninj}
+    % This is the same as writing \foreach \name / \y in {1/1,2/2,3/3,4/4}
+        \node[input_neuron, pin=left:injection \y] (I-\name) at (0,-\y) {};
+
+    % Draw the hidden layer nodes
+    \foreach \name / \y in {1,...,\nh}
+        \path[yshift=0.5cm]
+            node[hidden_neuron] (H-\name) at (\layersep,-\y cm) {};
+ 
+     \foreach \name / \y in {1,...,\n}
+        \path[yshift=0.5cm]
+            node[output_neuron, pin=right:flows on line \y] (O-\name) at (2*\layersep,-\y cm) {};
+
+  
+    \foreach \source in {1,...,\ninj}
+        \foreach \dest in {1,...,\nh}
+            \draw[color=black!25] (I-\source) -- (H-\dest);
+    
+    \foreach \source in {1,...,\nh}
+        \foreach \dest in {1,...,\n}
+            \draw[color=black!25] (H-\source) -- (O-\dest);        
+    %\foreach \source in {1,...,\ninj}
+    %        \draw (I-\source) -- (H-1) node[midway] {$w_{\source, 1}$};
+                
+	\draw[white] (I-3) -- (H-3) node[midway, below, black] {$W^{(1)}$}; 
+    \draw[white] (H-3) -- (O-4) node[midway, below, black] {$W^{(2)}$};      
+	%\node[annot,above of=H-1, node distance=1cm] (hl) {Output layer};
+	
+	%\node[left of=hl, node distance=1cm] (hl2) {};
+	
+	%\draw[name path=horz_line, color=white] (hl2) -- (hl);
+	%\draw[name path=input_line, color=white] (I-2) -- (I-1);
+	%\path [name intersections={of=input_line and horz_line,by=input_layer_spot}];
+    
+    % \draw[annot] (input_layer_spot) node {Input layer};
+    %\node[annot,above of=I-1, node distance=1.5cm] (il) {Input layer};
+    
+   
+        
+  }},
+  %
+  loi_des_noeuds/.pic={
+  code={
+  \node (E1) at (0,0) {$\swarrow$}; %$i_{1 \to k}$};
+  \node (E2) at (4,0) {$\searrow$}; %$i_{2 \to k}$};
+  \node (E3) at (0,4) {$\nwarrow$}; %$i_{3 \to k}$};
+  \node (E4) at (4,4) {}; %{$i_{\to k}$};
+  \path (E4.center) pic[scale=0.4]{nuke};
+  
+  \node[inner sep=8pt] (C) at (2,2) {bus $k$};
+  
+  \draw (C) circle(16pt);
+  \draw[->, postaction={on each segment={mid_arrow=red}}] (E1) -- (C) node[midway, below] {$i_{1 \to k}$}; 
+  \draw[->, postaction={on each segment={mid_arrow=red}}] (E2) -- (C) node[midway, below] {$i_{2 \to k}$}; 
+  \draw[->, postaction={on each segment={mid_arrow=red}}] (E3) -- (C) node[midway, below] {$i_{j \to k}$}; 
+  \draw[->, postaction={on each segment={mid_arrow=red}}] (E4) -- (C)  node[midway, below] {$i_{\to k}$};
+  %\node[] {$i_{ \to k}$}; 
+  
+  \node[below=0pt of E1] (E12) {bus 1};
+  \node[below=0pt of E2] (E22) {bus 2};
+  \node[above=0pt of E3] (E32) {bus $j$};
+  
+  \node[inner sep=8pt] (LABEL) at (2,-1.1) {Kirchoff's current law:};
+  \node[inner sep=8pt] (LABEL1) at (2,-1.7) {$i_{1 \to k} + i_{2 \to k} + i_{3 \to k} +  i_{ \to k} = 0$};
+  }},
+  %
+  mid_arrow/.style={postaction={decorate,decoration={
+        markings,
+        mark=at position .5 with {\arrow[#1]{stealth}}
+      }}},
+  % 
+  on each segment/.style={
+    decorate,
+    decoration={
+      show path construction,
+      moveto code={},
+      lineto code={
+        \path [#1]
+        (\tikzinputsegmentfirst) -- (\tikzinputsegmentlast);
+      },
+      curveto code={
+        \path [#1] (\tikzinputsegmentfirst)
+        .. controls
+        (\tikzinputsegmentsupporta) and (\tikzinputsegmentsupportb)
+        ..
+        (\tikzinputsegmentlast);
+      },
+      closepath code={
+        \path [#1]
+        (\tikzinputsegmentfirst) -- (\tikzinputsegmentlast);
+      },
+    },
+  },
+  %
+  loi_des_mailles/.pic={
+  code={
+  \def\vertsep{0pt}
+  \def\horzsep{15pt}
+  \def\horzsize{20pt}
+  \node[inner sep=0pt, outer sep=0pt] (A) at (0,0) {};
+  \node[right=\horzsize of A] (B) {};
+  \node[above=0.5*\vertsep of B] (C) {};
+  \node[right=\horzsep of C] (D) {};
+  \node[below=0.5*\vertsep of D] (E) {};
+  \node[below=0.5*\vertsep of E] (F) {};
+  \node[left=\horzsep of F] (G) {};
+  
+  \node[right=\horzsize of E] (H) {};
+  \node[right=0pt of H] (HH)  {$\to$ bus $k$};
+  \node[left=0pt of A] (HHH)  {bus $j$ $\leftarrow$};
+  
+  \draw (A.center) -- (B.center) -- (C.center) -- (D.center) -- (F.center) -- (G.center) -- (B.center);
+  \draw[color = white] (B) -- (E) node[midway, color=black] {$y_{j,k}$};
+  
+  \draw (E.center) -- (H.center);
+  
+  \path[postaction={on each segment={mid_arrow=red}}] (A.center) -- (B.center) node[midway, below] {$i_{j \to k}$}; 
+    
+   %\node[inner sep=8pt] (LABEL) at (\horzsep+\horzsize,-1.1) {$u_{j} - u_k = z_{j,k}~i_{j \to k}$};
+   %\node[inner sep=8pt] (LABEL) at (\horzsep+\horzsize,-1.6) {$z_{j,k} = r_{j,k} + \icomplex x_{j,k}$};
+  %\node[inner sep=8pt] (LABEL1) at (\horzsep+\horzsize,-2.3) {$i_{j \to k } = y_{j,k}~(u_{j} - u_k)$};
+  %\node[inner sep=8pt] (LABEL2) at (\horzsep+\horzsize,-2.9) {$ y_{j,k} = (g_{j,k} + \icomplex b_{i,k}$};
+  \node[inner sep=8pt] (LABEL) at (\horzsep+\horzsize,-2) {
+  $\begin{aligned}
+  i_{j \to k} = y_{j,k} . (v_{j} - v_k)\\
+%   z_{j,k} &= r_{j,k} + \icomplex x_{j,k} \\
+%   i_{j \to k } &= y_{j,k}~(u_{j} - u_k) \\
+  y_{j,k} &= g_{j,k} + \icomplex b_{j,k} \in \mathcal{C} \\
+  \end{aligned}$
+  };
+  }},
+  %
+  sub1_split_1_eq/.pic={
+  code={
+  \node (S4) at (3.46, 2) {S4}; %$i_{1 \to k}$};
+  \node (S3) at (2.57,3.06) {S3}; %$i_{2 \to k}$};
+  \node (S2) at (0,4) {S2}; %$i_{3 \to k}$};
+  \node (S5) at (4,0) {S5}; %$i_{3 \to k}$};
+  
+  \node (P2) at (3.46, -2) {}; %{$i_{\to k}$};
+  \path (P2.center) pic[scale=0.4]{nuke};
+  
+  \node (C1) at (-2, -3.46) {}; %{$i_{\to k}$};
+  \path (C1.center) pic[scale=0.4]{house};
+   \node[inner sep=8pt] (C) at (0,0) {};
+   
+   
+     \draw[->, postaction={on each segment={mid_arrow=red}}] (S2) --(C.center) node[midway, below] {$i_{2 \to A}$};
+   \draw[->, postaction={on each segment={mid_arrow=red}}] (S3) --(C.center) node[midway, below] {$i_{3 \to A}$};
+   \draw[->, postaction={on each segment={mid_arrow=red}}] (S4) --(C.center) node[midway, below] {$i_{4 \to A}$};
+   \draw[->, postaction={on each segment={mid_arrow=red}}] (S5) --(C.center) node[midway, below] {$i_{5 \to A}$};
+   \draw[->, postaction={on each segment={mid_arrow=red}}] (P2.center) --(C.center) node[midway, below] {$i_{p_2 \to A}$};
+   \draw[->, postaction={on each segment={mid_arrow=red}}] (C1.center) --(C.center) node[midway, below] {$i_{c_1 \to A}$};
+   
+  
+   \draw[fill=white] (C) circle(16pt);
+   \node (CC) at (C) {bus A};
+  
+ 
+  \node[inner sep=8pt] (LABEL) at (0,-5) {
+  $\left\{ \begin{aligned}
+  &i_{2 \to A} + i_{3 \to A} + i_{4 \to A} + i_{5 \to A} + \\
+  &i_{p_2 \to A} +  i_{c_1 \to A} = 0
+  \end{aligned} \right.$
+  };
+  }},
+  %
+  sub1_split_2_eq/.pic={
+  code={
+  \node (S4) at (3.46, 2) {S4}; %$i_{1 \to k}$};
+  \node (S3) at (2.57,3.06) {S3}; %$i_{2 \to k}$};
+  \node (S2) at (0,4) {S2}; %$i_{3 \to k}$};
+  \node (S5) at (4,0) {S5}; %$i_{3 \to k}$};
+  
+  \node (P2) at (3.46, -2) {}; %{$i_{\to k}$};
+  \path (P2.center) pic[scale=0.4]{nuke};
+  
+  \node (C1) at (-2, -3.46) {}; %{$i_{\to k}$};
+  \path (C1.center) pic[scale=0.4]{house};
+  
+   \node[inner sep=8pt] (B1) at (-0.5,0.5) {};
+   \node[inner sep=8pt] (B2) at (0.5,-0.5) {};
+   
+   
+     \draw[->, postaction={on each segment={mid_arrow=red}}, mycolor2] (S2) --(B1.center) node[midway, below, black] {$i_{2 \to A}$};
+   \draw[->, postaction={on each segment={mid_arrow=red}}, mycolor2] (S3) --(B1.center) node[midway, below, black] {$i_{3 \to A}$};
+   \draw[->, postaction={on each segment={mid_arrow=red}}, mycolor1] (S4) --(B2.center) node[midway, below, black] {$i_{4 \to B}$};
+   \draw[->, postaction={on each segment={mid_arrow=red}}, mycolor1] (S5) --(B2.center) node[midway, below, black] {$i_{5 \to B}$};
+   \draw[->, postaction={on each segment={mid_arrow=red}}, mycolor1] (P2.center) --(B2.center) node[midway, below, black] {$i_{p_2 \to B}$};
+   \draw[->, postaction={on each segment={mid_arrow=red}}, mycolor2] (C1.center) --(B1.center) node[midway, below, black] {$i_{c_1 \to A}$};
+   
+  
+   \draw[color=mycolor2, fill=white] (B1) circle(16pt);
+   \node (CC) at (B1) {bus A};
+   
+   \draw[color=mycolor1,fill=white] (B2) circle(16pt);
+   \node (CC) at (B2) {bus B};  
+ 
+  \node[inner sep=8pt] (LABEL) at (0,-5) {
+  $\begin{aligned}
+  \left\{ i_{p_2 \to A} + i_{2 \to A} + i_{3 \to A} \right. &= 0  & \text{bus A}\\
+  \left\{ i_{c_1 \to B} + i_{4 \to B} + i_{5 \to B} \right. &= 0 & \text{bus B}\\
+  \end{aligned}$
+  };
+  }},
+  %
+  boxes_ann/.pic={
+        code={ %we give the centered dot as input coordinates
+        \def\layersep{2.5cm}
+        \def\ninj{5}
+        \def\nh{6}
+        \def\n{8}
+        \tikzstyle{annot} = [text width=4em, text centered]
+     
+           \newcommand\boxw{2.9}; % width of the box
+      	   \newcommand\boxh{0.8}; % height of the box
+           \newcommand\alen{0.7}; %arrow length
+           \newcommand\vs{-0.65}; %vertical size between title and figure
+           
+           % ground truth
+           \newcommand\shiftv{0}; % vertical shift for figure
+
+            
+           % architecture
+           \renewcommand\shiftv{-4.4}; % vertical shift for figure
+           \newcommand\hh{0.5} % vertical length of arrows
+       	   \newcommand\hvodot{0.2} % vertical half size of the "bigodot" and "bigoplus"
+           \newcommand\vwbox{0.5} %vertical size of the "weight layer box
+           \newcommand\hwbox{1.5} %horizontal size of the "weight layer box
+           \newcommand\hlcarch{-3} % horizontal lag to center the architecture plot with respect to the other (model and ground truth)
+           \newcommand\bboxh{1} % big big width
+           \newcommand\othervertlag{0.3} %dont touch, it is for height adjustments
+           
+           %title
+            \node (GT) at (0.2+0.5*\alen,\shiftv) {GD architecture: };
+            
+            % injections
+            \node[colx] (INJ) at (-1.8+\hlcarch, \vs+\shiftv-\bboxh+\othervertlag) {};
+            \draw[colx] (INJ) node[above] {Injection};
+            \draw[colx] (INJ) node[below] {$\xx$};
+ 			\draw[double, ->, colx] (INJ) ++(0.7,0) --++(\alen, 0); 
+            
+            %Encoder
+            \node (E) at (-0.7+1*\alen+\hlcarch, \vs+\shiftv-\bboxh+\othervertlag) {$\bm{E}(\cdot)$};
+            \draw (E)  ++(-0.5*\hwbox, -0.5*\vwbox )  -- ++(\hwbox,0)-- ++(0,\vwbox)-- ++(-\hwbox,0)-- ++(0,-\vwbox) ;
+            \node[inner sep=0pt] (CROSS) at (-0.7+1*\alen+\hlcarch+\hh+0.5*\hwbox, \vs+\shiftv-\bboxh+\othervertlag) {};
+            \draw (E) -- (CROSS.center);
+            
+            \node[inner sep=-1pt] (LT_L) at (-0.7+1*\alen+\hlcarch+\hh+0.5*\hwbox, \vs+\shiftv-\hh-\bboxh+\othervertlag) {};
+            % \draw (CROSS) node[above] {} -- (LT_L);
+			\draw[->] (CROSS.center) -- (LT_L.center) -- ++(\hh,0);
+          
+          	\node (e) at (-0.2+1*\alen+\hlcarch+2*\hh+0.5*\hwbox, \vs+\shiftv-\hh-\bboxh+\othervertlag) {$\bm{e}(\cdot)$};
+            \draw (e)  ++(-0.5*\hwbox, -0.5*\vwbox )  -- ++(\hwbox,0)-- ++(0,\vwbox)-- ++(-\hwbox,0)-- ++(0,-\vwbox) ;
+            
+             \node (TAU) at (-0.3+1*\alen+\hlcarch+2*\hh+1.5*\hwbox, \vs+\shiftv-\hh-\bboxh+\othervertlag) {};
+             \draw[->] (e) node[right] {} -- ++(\hh+0.6,0);
+             \draw[coltau] (TAU) node {$\odot \ttt$};
+             
+             \node (ARROWTAU) at (-0.3+1*\alen+\hlcarch+2*\hh+1.5*\hwbox, \vs+\shiftv-\hh-\bboxh-2*\hh+\othervertlag) {};
+             \draw[coltau, double, ->] (ARROWTAU.center) -- (TAU);
+             \draw [coltau] (ARROWTAU) node[below] {Interventions};
+             
+             \node (d) at (-0.3+1*\alen+\hlcarch+3*\hh+2*\hwbox, \vs+\shiftv-\hh-\bboxh+\othervertlag) {};
+             \draw [->] (TAU) ++(0.3,0) -- ++(\hh,0);
+             \draw (d) node {$\bm{d}(\cdot)$};
+            \draw (d)  ++(-0.5*\hwbox, -0.5*\vwbox )  -- ++(\hwbox,0)-- ++(0,\vwbox)-- ++(-\hwbox,0)-- ++(0,-\vwbox) ;
+            
+            \node[inner sep=0pt] (LT_R) at (-0.2+1*\alen+\hlcarch+3*\hh+2*\hwbox+2*\hh, \vs+\shiftv-\hh-\bboxh+\othervertlag) {};
+            \draw (d) ++(0.4,0)  -- (LT_R.center);
+            
+            \node (JOIN) at (-0.2+1*\alen+\hlcarch+3*\hh+2*\hwbox+2*\hh, \vs+\shiftv-\bboxh+\othervertlag) {};
+            \draw[->] (CROSS.center) -- (JOIN);
+            \draw (JOIN) node {$\oplus$};
+            \draw[->] (LT_R.center) -- (JOIN);
+            
+            \node (D) at (0.5+1*\alen+\hlcarch+3*\hh+2*\hwbox+3*\hh, \vs+\shiftv-\bboxh+\othervertlag) {$\bm{D}(\cdot)$};
+            \draw (D)  ++(-0.5*\hwbox, -0.5*\vwbox )  -- ++(\hwbox,0)-- ++(0,\vwbox)-- ++(-\hwbox,0)-- ++(0,-\vwbox) ;
+            \draw[->] (JOIN) -- (D);
+            
+            %output
+            \node (Y) at (0.5+1*\alen+\hlcarch+3*\hh+3*\hwbox+3*\hh, \vs+\shiftv-\bboxh+\othervertlag) {};
+            \draw[double, ->, coly] (D) -- (Y);
+            \draw[coly] (Y) node[above right ] {Flows};
+            \draw[coly] (Y) node[below right ] {$\hat{\yy} = NN(\xx; \ttt)$};
+			
+            % bounding box
+            \draw (-1.8+\hlcarch+0.8, \vs+\shiftv+\othervertlag) -- (0.5+1*\alen+\hlcarch+3*\hh+3*\hwbox+3*\hh-0.5, \vs+\shiftv+\othervertlag) -- ++(0,-2*\bboxh) -- (-1.8+\hlcarch+0.8,\vs+\shiftv-2*\bboxh+\othervertlag) -- ++(0,+2*\bboxh);
+           
+           \gettikzxy{(CROSS)}{\cx}{\cy}
+           \gettikzxy{(JOIN)}{\jx}{\jy}
+           
+           \draw[coltau] (\cx-1, \vs+\shiftv-0.8*\bboxh+\othervertlag) -- ++(0,0.1) -- ++(2*\cx+2*\jx-5,0) -- ++(0,0.1) node[above] {GD Block} -- ++(0,-0.1) -- ++(2*\cx+2*\jx,0) -- ++(0,-0.1) ;
+           
+          	\draw[<-] (INJ) ++(0.5*\hwbox+0.15,-0.1) --++(0,-1) node[below] {dim $p$} ;
+            \draw[<-] (E) ++(0.5*\hwbox+0.3,-0.1) --++(0,-1) node[below] {dim $h$} ;
+            \draw[<-] (TAU) ++(-0.45,-0.1) --++(0,-1+\hh) node[below] {dim $c$} ;
+            \draw[<-] (d) ++(+0.5*\hwbox+0.15,-0.1) --++(0,-1+\hh) node[below] {dim $h$} ;
+            \draw[<-] (D) ++(0.5*\hwbox+0.15,-0.1) --++(0,-1) node[below] {dim $l$} ;
+            
+                      % architecture
+           \renewcommand\shiftv{-8}; % vertical shift for figure
+			\newcommand\shiftOH{0.5}; % vertical shift for OH compare to LSI
+            
+           %title
+            \node (GT) at (0.2+0.5*\alen,\shiftv) {One hot architecture: };
+            
+            % injections
+            \node[colx] (INJ) at (-1.9+\hlcarch, \vs+\shiftv-\bboxh+\othervertlag+\shiftOH) {};
+            \draw[colx] (INJ) node[above] {Injection};
+            \draw[colx] (INJ) node[below] {$\xx$};
+ 			%\draw[double, ->, colx] (INJ) ++(0.7,0) --++(\alen, 0) ; 
+            
+            \node[coltau] (TAU) at (-1.9+\hlcarch, \vs+\shiftv-\bboxh+\othervertlag-\shiftOH) {};
+            \draw[coltau] (TAU) node[above] {$\ttt$};
+            \draw[coltau] (TAU) node[below] {Interventions};
+            
+            %Encoder
+            \node (E) at (-0.7+1*\alen+\hlcarch, \vs+\shiftv-\bboxh+\othervertlag) {$\bm{E}(\cdot)$};
+            \node (E1) at (-0.25-0.7+1*\alen+\hlcarch, \vs+\shiftv-\bboxh+\othervertlag+0.05) {};
+            \node (E2) at (-0.25-0.7+1*\alen+\hlcarch, \vs+\shiftv-\bboxh+\othervertlag-0.05) {};
+            
+            \draw[->, double, colx] (INJ) ++(0.7,0) |- (E1) ; 
+            \draw[->, double, coltau] (TAU) ++(0.7,0) |- (E2) ; 
+            
+            \draw (E)  ++(-0.5*\hwbox, -0.5*\vwbox )  -- ++(\hwbox,0)-- ++(0,\vwbox)-- ++(-\hwbox,0)-- ++(0,-\vwbox) ;
+            
+            \node[inner sep=0pt] (CROSS) at (-0.7+1*\alen+\hlcarch+\hh+0.5*\hwbox, \vs+\shiftv-\bboxh+\othervertlag) {};
+            \draw (E) -- (CROSS.center);
+            
+            \node[inner sep=-1pt] (LT_L) at (-0.7+1*\alen+\hlcarch+\hh+0.5*\hwbox, \vs+\shiftv-\hh-\bboxh+\othervertlag) {};
+			\draw[->] (CROSS.center) -- (LT_L.center) -- ++(\hh,0);
+          
+          	\node (e) at (-0.2+1*\alen+\hlcarch+2*\hh+0.5*\hwbox, \vs+\shiftv-\hh-\bboxh+\othervertlag) {$\bm{e}(\cdot)$};
+            \draw (e)  ++(-0.5*\hwbox, -0.5*\vwbox )  -- ++(\hwbox,0)-- ++(0,\vwbox)-- ++(-\hwbox,0)-- ++(0,-\vwbox) ;
+            
+             \node (TAU) at (-0.3+1*\alen+\hlcarch+2*\hh+1.5*\hwbox, \vs+\shiftv-\hh-\bboxh+\othervertlag) {};
+             \draw[->] (e) node[right] {} -- ++(3*\hh+0.6,0);
+             
+             \node (d) at (-0.3+1*\alen+\hlcarch+3*\hh+2*\hwbox, \vs+\shiftv-\hh-\bboxh+\othervertlag) {};
+             \draw (d) node {$\bm{d}(\cdot)$};
+            \draw (d)  ++(-0.5*\hwbox, -0.5*\vwbox )  -- ++(\hwbox,0)-- ++(0,\vwbox)-- ++(-\hwbox,0)-- ++(0,-\vwbox) ;
+            
+            \node[inner sep=0pt] (LT_R) at (-0.2+1*\alen+\hlcarch+3*\hh+2*\hwbox+2*\hh, \vs+\shiftv-\hh-\bboxh+\othervertlag) {};
+            \draw (d) ++(0.4,0)  -- (LT_R.center);
+            
+            \node (JOIN) at (-0.2+1*\alen+\hlcarch+3*\hh+2*\hwbox+2*\hh, \vs+\shiftv-\bboxh+\othervertlag) {};
+            \draw[->] (CROSS.center) -- (JOIN);
+            \draw (JOIN) node {$\oplus$};
+            \draw[->] (LT_R.center) -- (JOIN);
+            
+            \node (D) at (0.5+1*\alen+\hlcarch+3*\hh+2*\hwbox+3*\hh, \vs+\shiftv-\bboxh+\othervertlag) {$\bm{D}(\cdot)$};
+            \draw (D)  ++(-0.5*\hwbox, -0.5*\vwbox )  -- ++(\hwbox,0)-- ++(0,\vwbox)-- ++(-\hwbox,0)-- ++(0,-\vwbox) ;
+            \draw[->] (JOIN) -- (D);
+            
+            %output
+            \node (Y) at (0.5+1*\alen+\hlcarch+3*\hh+3*\hwbox+3*\hh, \vs+\shiftv-\bboxh+\othervertlag) {};
+            \draw[double, ->, coly] (D) -- (Y);
+            \draw[coly] (Y) node[above right ] {Flows};
+            \draw[coly] (Y) node[below right ] {$\hat{\yy} = NN(\xx; \ttt)$};
+			
+            % bounding box
+            \draw (-1.8+\hlcarch+0.8, \vs+\shiftv+\othervertlag) -- (0.5+1*\alen+\hlcarch+3*\hh+3*\hwbox+3*\hh-0.5, \vs+\shiftv+\othervertlag) -- ++(0,-2*\bboxh) -- (-1.8+\hlcarch+0.8,\vs+\shiftv-2*\bboxh+\othervertlag) -- ++(0,+2*\bboxh);
+           
+           \gettikzxy{(CROSS)}{\cx}{\cy}
+           \gettikzxy{(JOIN)}{\jx}{\jy}
+           
+           \draw (\cx-1, \vs+\shiftv-0.8*\bboxh+\othervertlag) -- ++(0,0.1) -- ++(2*\cx+2*\jx-5,0) -- ++(0,0.1) node[above] {regular "ResNet block"} -- ++(0,-0.1) -- ++(2*\cx+2*\jx,0) -- ++(0,-0.1) ;
+           
+            \draw[<-] (E) ++(-0.5*\hwbox-0.15,-0.1) --++(0,-1) node[below] {dim $p+c$} ;
+            \draw[<-] (E) ++(0.5*\hwbox+0.3,-0.1) --++(0,-1) node[below] {dim $h$} ;
+            \draw[<-] (TAU) --++(0,-1+\hh) node[below] {dim $c$} ;
+            \draw[<-] (d) ++(+0.5*\hwbox+0.15,-0.1) --++(0,-1+\hh) node[below] {dim $h$} ;
+            \draw[<-] (D) ++(0.5*\hwbox+0.15,-0.1) --++(0,-1) node[below] {dim $l$} ;
+  }},
+  %
+  lsi_oh/.pic={
+        code={ %we give the centered dot as input coordinates
+      	   \newcommand\boxw{2.9}; % width of the box
+      	   \newcommand\boxh{0.8}; % height of the box
+           \newcommand\alen{0.7}; %arrow length
+           \newcommand\vs{-0.65}; %vertical size between title and figure
+           
+           % ground truth
+           \newcommand\shiftv{0}; % vertical shift for figure
+
+            
+           % architecture
+           \renewcommand\shiftv{-4.4}; % vertical shift for figure
+           \newcommand\hh{0.5} % vertical length of arrows
+       	   \newcommand\hvodot{0.2} % vertical half size of the "bigodot" and "bigoplus"
+           \newcommand\vwbox{0.5} %vertical size of the "weight layer box
+           \newcommand\hwbox{1.5} %horizontal size of the "weight layer box
+           \newcommand\hlcarch{-3} % horizontal lag to center the architecture plot with respect to the other (model and ground truth)
+           \newcommand\bboxh{1} % big big width
+           \newcommand\othervertlag{0.3} %dont touch, it is for height adjustments
+           
+           %title
+            \node (GT) at (0.2+0.5*\alen,\shiftv) {GD architecture: };
+            
+            % injections
+            \node[colx] (INJ) at (-1.8+\hlcarch, \vs+\shiftv-\bboxh+\othervertlag) {};
+            \draw[colx] (INJ) node[above] {Injection};
+            \draw[colx] (INJ) node[below] {$\xx$};
+ 			\draw[double, ->, colx] (INJ) ++(0.7,0) --++(\alen, 0); 
+            
+%             %Encoder
+            \node (E) at (-0.7+1*\alen+\hlcarch, \vs+\shiftv-\bboxh+\othervertlag) {$\bm{E}(\cdot)$};
+            \draw (E)  ++(-0.5*\hwbox, -0.5*\vwbox )  -- ++(\hwbox,0)-- ++(0,\vwbox)-- ++(-\hwbox,0)-- ++(0,-\vwbox) ;
+            \node[inner sep=0pt] (CROSS) at (-0.7+1*\alen+\hlcarch+\hh+0.5*\hwbox, \vs+\shiftv-\bboxh+\othervertlag) {};
+            \draw (E) -- (CROSS.center);
+            
+            \node[inner sep=-1pt] (LT_L) at (-0.7+1*\alen+\hlcarch+\hh+0.5*\hwbox, \vs+\shiftv-\hh-\bboxh+\othervertlag) {};
+            % \draw (CROSS) node[above] {} -- (LT_L);
+			\draw[->] (CROSS.center) -- (LT_L.center) -- ++(\hh,0);
+          
+          	\node (e) at (-0.2+1*\alen+\hlcarch+2*\hh+0.5*\hwbox, \vs+\shiftv-\hh-\bboxh+\othervertlag) {$\bm{e}(\cdot)$};
+            \draw (e)  ++(-0.5*\hwbox, -0.5*\vwbox )  -- ++(\hwbox,0)-- ++(0,\vwbox)-- ++(-\hwbox,0)-- ++(0,-\vwbox) ;
+            
+             \node (TAU) at (-0.3+1*\alen+\hlcarch+2*\hh+1.5*\hwbox, \vs+\shiftv-\hh-\bboxh+\othervertlag) {};
+             \draw[->] (e) node[right] {} -- ++(\hh+0.6,0);
+             \draw[coltau] (TAU) node {$\odot \ttt$};
+             
+             \node (ARROWTAU) at (-0.3+1*\alen+\hlcarch+2*\hh+1.5*\hwbox, \vs+\shiftv-\hh-\bboxh-2*\hh+\othervertlag) {};
+             \draw[coltau, double, ->] (ARROWTAU.center) -- (TAU);
+             \draw [coltau] (ARROWTAU) node[below] {Structure};
+             
+             \node (d) at (-0.3+1*\alen+\hlcarch+3*\hh+2*\hwbox, \vs+\shiftv-\hh-\bboxh+\othervertlag) {};
+             \draw [->] (TAU) ++(0.3,0) -- ++(\hh,0);
+             \draw (d) node {$\bm{d}(\cdot)$};
+            \draw (d)  ++(-0.5*\hwbox, -0.5*\vwbox )  -- ++(\hwbox,0)-- ++(0,\vwbox)-- ++(-\hwbox,0)-- ++(0,-\vwbox) ;
+            
+            \node[inner sep=0pt] (LT_R) at (-0.2+1*\alen+\hlcarch+3*\hh+2*\hwbox+2*\hh, \vs+\shiftv-\hh-\bboxh+\othervertlag) {};
+            \draw (d) ++(0.4,0)  -- (LT_R.center);
+            
+            \node (JOIN) at (-0.2+1*\alen+\hlcarch+3*\hh+2*\hwbox+2*\hh, \vs+\shiftv-\bboxh+\othervertlag) {};
+            \draw[->] (CROSS.center) -- (JOIN);
+            \draw (JOIN) node {$\oplus$};
+            \draw[->] (LT_R.center) -- (JOIN);
+            
+            \node (D) at (0.5+1*\alen+\hlcarch+3*\hh+2*\hwbox+3*\hh, \vs+\shiftv-\bboxh+\othervertlag) {$\bm{D}(\cdot)$};
+            \draw (D)  ++(-0.5*\hwbox, -0.5*\vwbox )  -- ++(\hwbox,0)-- ++(0,\vwbox)-- ++(-\hwbox,0)-- ++(0,-\vwbox) ;
+            \draw[->] (JOIN) -- (D);
+            
+            %output
+            \node (Y) at (0.5+1*\alen+\hlcarch+3*\hh+3*\hwbox+3*\hh, \vs+\shiftv-\bboxh+\othervertlag) {};
+            \draw[double, ->, coly] (D) -- (Y);
+            \draw[coly] (Y) node[above right ] {Flows};
+            \draw[coly] (Y) node[below right ] {$\hat{\yy} = NN(\xx; \ttt)$};
+			
+            % bounding box
+            \draw (-1.8+\hlcarch+0.8, \vs+\shiftv+\othervertlag) -- (0.5+1*\alen+\hlcarch+3*\hh+3*\hwbox+3*\hh-0.5, \vs+\shiftv+\othervertlag) -- ++(0,-2*\bboxh) -- (-1.8+\hlcarch+0.8,\vs+\shiftv-2*\bboxh+\othervertlag) -- ++(0,+2*\bboxh);
+           
+           \gettikzxy{(CROSS)}{\cx}{\cy}
+           \gettikzxy{(JOIN)}{\jx}{\jy}
+           
+           \draw[coltau] (\cx-1, \vs+\shiftv-0.8*\bboxh+\othervertlag) -- ++(0,0.1) -- ++(2*\cx+2*\jx-5,0) -- ++(0,0.1) node[above] {GD Block} -- ++(0,-0.1) -- ++(2*\cx+2*\jx,0) -- ++(0,-0.1) ;
+           
+          	\draw[<-] (INJ) ++(0.5*\hwbox+0.15,-0.1) --++(0,-1) node[below] {dim $p$} ;
+            \draw[<-] (E) ++(0.5*\hwbox+0.3,-0.1) --++(0,-1) node[below] {$h_{\x}$, dim $h$} ;
+            \draw[<-] (TAU) ++(-0.45,-0.1) --++(0,-1+\hh) node[below] {dim $\dimtau$} ;
+            \draw[<-] (d) ++(+0.5*\hwbox+0.15,-0.1) --++(0,-1+\hh) node[below] {$h_{\ttt}$, dim $h$} ;
+            \draw[<-] (D) ++(0.5*\hwbox+0.15,-0.1) --++(0,-1) node[below] {dim $l$} ;
+            
+                      % architecture
+           \renewcommand\shiftv{-8.5}; % vertical shift for figure
+			\newcommand\shiftOH{0.5}; % vertical shift for OH compare to LSI
+            
+           %title
+            \node (GT) at (0.2+0.5*\alen,\shiftv) {One Hot architecture: };
+            
+            % injections
+            \node[colx] (INJ) at (-1.9+\hlcarch, \vs+\shiftv-\bboxh+\othervertlag+\shiftOH) {};
+            \draw[colx] (INJ) node[above] {Injection};
+            \draw[colx] (INJ) node[below] {$\xx$};
+ 			%\draw[double, ->, colx] (INJ) ++(0.7,0) --++(\alen, 0) ; 
+            
+            \node[coltau] (TAU) at (-1.9+\hlcarch, \vs+\shiftv-\bboxh+\othervertlag-\shiftOH) {};
+            \draw[coltau] (TAU) node[above] {$\ttt$};
+            \draw[coltau] (TAU) node[below] {Structure};
+            
+%             %Encoder
+            \node (E) at (-0.7+1*\alen+\hlcarch, \vs+\shiftv-\bboxh+\othervertlag) {$\bm{E}(\cdot)$};
+            \node (E1) at (-0.25-0.7+1*\alen+\hlcarch, \vs+\shiftv-\bboxh+\othervertlag+0.05) {};
+            \node (E2) at (-0.25-0.7+1*\alen+\hlcarch, \vs+\shiftv-\bboxh+\othervertlag-0.05) {};
+            
+            \draw[->, double, colx] (INJ) ++(0.7,0) |- (E1) ; 
+            \draw[->, double, coltau] (TAU) ++(0.7,0) |- (E2) ; 
+            
+            \draw (E)  ++(-0.5*\hwbox, -0.5*\vwbox )  -- ++(\hwbox,0)-- ++(0,\vwbox)-- ++(-\hwbox,0)-- ++(0,-\vwbox) ;
+            
+            \node[inner sep=0pt] (CROSS) at (-0.7+1*\alen+\hlcarch+\hh+0.5*\hwbox, \vs+\shiftv-\bboxh+\othervertlag) {};
+            \draw (E) -- (CROSS.center);
+            
+            \node[inner sep=-1pt] (LT_L) at (-0.7+1*\alen+\hlcarch+\hh+0.5*\hwbox, \vs+\shiftv-\hh-\bboxh+\othervertlag) {};
+			\draw[->] (CROSS.center) -- (LT_L.center) -- ++(\hh,0);
+          
+          	\node (e) at (-0.2+1*\alen+\hlcarch+2*\hh+0.5*\hwbox, \vs+\shiftv-\hh-\bboxh+\othervertlag) {$\bm{e}(\cdot)$};
+            \draw (e)  ++(-0.5*\hwbox, -0.5*\vwbox )  -- ++(\hwbox,0)-- ++(0,\vwbox)-- ++(-\hwbox,0)-- ++(0,-\vwbox) ;
+            
+             \node (TAU) at (-0.3+1*\alen+\hlcarch+2*\hh+1.5*\hwbox, \vs+\shiftv-\hh-\bboxh+\othervertlag) {};
+             \draw[->] (e) node[right] {} -- ++(3*\hh+0.6,0);
+             
+             \node (d) at (-0.3+1*\alen+\hlcarch+3*\hh+2*\hwbox, \vs+\shiftv-\hh-\bboxh+\othervertlag) {};
+             \draw (d) node {$\bm{d}(\cdot)$};
+            \draw (d)  ++(-0.5*\hwbox, -0.5*\vwbox )  -- ++(\hwbox,0)-- ++(0,\vwbox)-- ++(-\hwbox,0)-- ++(0,-\vwbox) ;
+            
+            \node[inner sep=0pt] (LT_R) at (-0.2+1*\alen+\hlcarch+3*\hh+2*\hwbox+2*\hh, \vs+\shiftv-\hh-\bboxh+\othervertlag) {};
+            \draw (d) ++(0.4,0)  -- (LT_R.center);
+            
+            \node (JOIN) at (-0.2+1*\alen+\hlcarch+3*\hh+2*\hwbox+2*\hh, \vs+\shiftv-\bboxh+\othervertlag) {};
+            \draw[->] (CROSS.center) -- (JOIN);
+            \draw (JOIN) node {$\oplus$};
+            \draw[->] (LT_R.center) -- (JOIN);
+            
+            \node (D) at (0.5+1*\alen+\hlcarch+3*\hh+2*\hwbox+3*\hh, \vs+\shiftv-\bboxh+\othervertlag) {$\bm{D}(\cdot)$};
+            \draw (D)  ++(-0.5*\hwbox, -0.5*\vwbox )  -- ++(\hwbox,0)-- ++(0,\vwbox)-- ++(-\hwbox,0)-- ++(0,-\vwbox) ;
+            \draw[->] (JOIN) -- (D);
+            
+            %output
+            \node (Y) at (0.5+1*\alen+\hlcarch+3*\hh+3*\hwbox+3*\hh, \vs+\shiftv-\bboxh+\othervertlag) {};
+            \draw[double, ->, coly] (D) -- (Y);
+            \draw[coly] (Y) node[above right ] {Flows};
+            \draw[coly] (Y) node[below right ] {$\hat{\yy} = NN(\xx; \ttt)$};
+			
+            % bounding box
+            \draw (-1.8+\hlcarch+0.8, \vs+\shiftv+\othervertlag) -- (0.5+1*\alen+\hlcarch+3*\hh+3*\hwbox+3*\hh-0.5, \vs+\shiftv+\othervertlag) -- ++(0,-2*\bboxh) -- (-1.8+\hlcarch+0.8,\vs+\shiftv-2*\bboxh+\othervertlag) -- ++(0,+2*\bboxh);
+           
+           \gettikzxy{(CROSS)}{\cx}{\cy}
+           \gettikzxy{(JOIN)}{\jx}{\jy}
+           
+           \draw (\cx-1, \vs+\shiftv-0.8*\bboxh+\othervertlag) -- ++(0,0.1) -- ++(2*\cx+2*\jx-5,0) -- ++(0,0.1) node[above] {regular "ResNet block"} -- ++(0,-0.1) -- ++(2*\cx+2*\jx,0) -- ++(0,-0.1) ;
+           
+            \draw[<-] (E) ++(-0.5*\hwbox-0.15,-0.1) --++(0,-1) node[below] {dim $p+\dimtau$} ;
+            \draw[<-] (E) ++(0.5*\hwbox+0.3,-0.1) --++(0,-1) node[below] {dim $h$} ;
+            \draw[<-] (TAU) --++(0,-1+\hh) node[below] {dim $\dimtau$} ;
+            \draw[<-] (d) ++(+0.5*\hwbox+0.15,-0.1) --++(0,-1+\hh) node[below] {dim $h$} ;
+            \draw[<-] (D) ++(0.5*\hwbox+0.15,-0.1) --++(0,-1) node[below] {dim $l$} ;
+            
+  }},
+  %
+  dropout_example/.pic={
+  code={
+  \node[circle, draw, thick] (i1) {};
+	\node[circle, draw, thick, above=2em of i1] (i2) {};
+	\node[circle, draw, thick, above=2em of i2] (i3) {};
+	\node[circle, draw, thick, below=2em of i1] (i4) {};
+	\node[circle, draw, thick, below=2em of i4] (i5) {};
+	
+	\node[circle, draw, thick, right=4em of i1] (h1) {};
+	\node[circle, draw, thick, right=4em of i2] (h2) {};
+	\node[circle, draw, thick, right=4em of i3] (h3) {};
+	\node[circle, draw, thick, right=4em of i4] (h4) {};
+	\node[circle, draw, thick, right=4em of i5] (h5) {};
+	
+	\node[circle, draw, thick, right=4em of h1] (hh1) {};
+	\node[circle, draw, thick, right=4em of h2] (hh2) {};
+	\node[circle, draw, thick, right=4em of h3] (hh3) {};
+	\node[circle, draw, thick, right=4em of h4] (hh4) {};
+	\node[circle, draw, thick, right=4em of h5] (hh5) {};
+	
+	\node[circle, draw, thick, right=4em of hh2] (o1) {};
+	\node[circle, draw, thick, right=4em of hh4] (o2) {};
+	
+	\draw[-stealth, thick] (i1) -- (h1);
+	\draw[-stealth, thick] (i1) -- (h2);
+	\draw[-stealth, thick] (i1) -- (h3);
+	\draw[-stealth, thick] (i1) -- (h4);
+	\draw[-stealth, thick] (i1) -- (h5);
+	\draw[-stealth, thick] (i2) -- (h1);
+	\draw[-stealth, thick] (i2) -- (h2);
+	\draw[-stealth, thick] (i2) -- (h3);
+	\draw[-stealth, thick] (i2) -- (h4);
+	\draw[-stealth, thick] (i2) -- (h5);
+	\draw[-stealth, thick] (i3) -- (h1);
+	\draw[-stealth, thick] (i3) -- (h2);
+	\draw[-stealth, thick] (i3) -- (h3);
+	\draw[-stealth, thick] (i3) -- (h4);
+	\draw[-stealth, thick] (i3) -- (h5);
+	\draw[-stealth, thick] (i4) -- (h1);
+	\draw[-stealth, thick] (i4) -- (h2);
+	\draw[-stealth, thick] (i4) -- (h3);
+	\draw[-stealth, thick] (i4) -- (h4);
+	\draw[-stealth, thick] (i4) -- (h5);
+	\draw[-stealth, thick] (i5) -- (h1);
+	\draw[-stealth, thick] (i5) -- (h2);
+	\draw[-stealth, thick] (i5) -- (h3);
+	\draw[-stealth, thick] (i5) -- (h4);
+	\draw[-stealth, thick] (i5) -- (h5);
+	
+	\draw[-stealth, thick] (h1) -- (hh1);
+	\draw[-stealth, thick] (h1) -- (hh2);
+	\draw[-stealth, thick] (h1) -- (hh3);
+	\draw[-stealth, thick] (h1) -- (hh4);
+	\draw[-stealth, thick] (h1) -- (hh5);
+	\draw[-stealth, thick] (h2) -- (hh1);
+	\draw[-stealth, thick] (h2) -- (hh2);
+	\draw[-stealth, thick] (h2) -- (hh3);
+	\draw[-stealth, thick] (h2) -- (hh4);
+	\draw[-stealth, thick] (h2) -- (hh5);
+	\draw[-stealth, thick] (h3) -- (hh1);
+	\draw[-stealth, thick] (h3) -- (hh2);
+	\draw[-stealth, thick] (h3) -- (hh3);
+	\draw[-stealth, thick] (h3) -- (hh4);
+	\draw[-stealth, thick] (h3) -- (hh5);
+	\draw[-stealth, thick] (h4) -- (hh1);
+	\draw[-stealth, thick] (h4) -- (hh2);
+	\draw[-stealth, thick] (h4) -- (hh3);
+	\draw[-stealth, thick] (h4) -- (hh4);
+	\draw[-stealth, thick] (h4) -- (hh5);
+	\draw[-stealth, thick] (h5) -- (hh1);
+	\draw[-stealth, thick] (h5) -- (hh2);
+	\draw[-stealth, thick] (h5) -- (hh3);
+	\draw[-stealth, thick] (h5) -- (hh4);
+	\draw[-stealth, thick] (h5) -- (hh5);
+	
+	
+	\draw[-stealth, thick] (hh1) -- (o1);
+	\draw[-stealth, thick] (hh1) -- (o2);
+	\draw[-stealth, thick] (hh2) -- (o1);
+	\draw[-stealth, thick] (hh2) -- (o2);
+	\draw[-stealth, thick] (hh3) -- (o1);
+	\draw[-stealth, thick] (hh3) -- (o2);
+	\draw[-stealth, thick] (hh4) -- (o1);
+	\draw[-stealth, thick] (hh4) -- (o2);
+	\draw[-stealth, thick] (hh5) -- (o1);
+	\draw[-stealth, thick] (hh5) -- (o2);
+	
+	\draw[-stealth, double, dashed, thick] (5.5,0) -- node[above] {dropout} (8.6, 0);
+	
+	
+	%%% BOUNDARY %%%
+	
+	\node[circle, draw, thick, red, fill=red!10, right=15em of hh1] (i1) {};
+	\node[circle, draw, thick, red, fill=red!10, above=2em of i1] (i2) {};
+	\node[circle, draw, thick, above=2em of i2] (i3) {};
+	\node[circle, draw, thick, below=2em of i1] (i4) {};
+	\node[circle, draw, thick, below=2em of i4] (i5) {};
+	
+	\node[red] (icr) at (i1) {$\mathlarger{\mathlarger{\mathlarger{\mathlarger{\mathlarger{\bm{\times}}}}}}$};
+	\node[red] (icr) at (i2) {$\mathlarger{\mathlarger{\mathlarger{\mathlarger{\mathlarger{\bm{\times}}}}}}$};
+	
+	\node[circle, draw, thick, red, fill=red!10, right=4em of i1] (h1) {};
+	\node[circle, draw, thick, right=4em of i2] (h2) {};
+	\node[circle, draw, thick, red, fill=red!10, right=4em of i3] (h3) {};
+	\node[circle, draw, thick, red, fill=red!10, right=4em of i4] (h4) {};
+	\node[circle, draw, thick, right=4em of i5] (h5) {};
+	
+	\node[red] (icr) at (h1) {$\mathlarger{\mathlarger{\mathlarger{\mathlarger{\mathlarger{\bm{\times}}}}}}$};
+	\node[red] (icr) at (h3) {$\mathlarger{\mathlarger{\mathlarger{\mathlarger{\mathlarger{\bm{\times}}}}}}$};
+	\node[red] (icr) at (h4) {$\mathlarger{\mathlarger{\mathlarger{\mathlarger{\mathlarger{\bm{\times}}}}}}$};
+	
+	\node[circle, draw, thick, right=4em of h1] (hh1) {};
+	\node[circle, draw, thick, red, fill=red!10, right=4em of h2] (hh2) {};
+	\node[circle, draw, thick, right=4em of h3] (hh3) {};
+	\node[circle, draw, thick, red, fill=red!10, right=4em of h4] (hh4) {};
+	\node[circle, draw, thick, right=4em of h5] (hh5) {};
+	
+	\node[red] (icr) at (hh2) {$\mathlarger{\mathlarger{\mathlarger{\mathlarger{\mathlarger{\bm{\times}}}}}}$};
+	\node[red] (icr) at (hh4) {$\mathlarger{\mathlarger{\mathlarger{\mathlarger{\mathlarger{\bm{\times}}}}}}$};
+	
+	\node[circle, draw, thick, right=4em of hh2] (o1) {};
+	\node[circle, draw, thick, right=4em of hh4] (o2) {};
+	
+	\draw[-stealth, thick] (i3) -- (h2);
+	\draw[-stealth, thick] (i3) -- (h5);
+	\draw[-stealth, thick] (i4) -- (h2);
+	\draw[-stealth, thick] (i4) -- (h5);
+	\draw[-stealth, thick] (i5) -- (h2);
+	\draw[-stealth, thick] (i5) -- (h5);
+	
+	\draw[-stealth, thick] (h2) -- (hh1);
+	\draw[-stealth, thick] (h2) -- (hh3);
+	\draw[-stealth, thick] (h2) -- (hh5);
+	\draw[-stealth, thick] (h5) -- (hh1);
+	\draw[-stealth, thick] (h5) -- (hh3);
+	\draw[-stealth, thick] (h5) -- (hh5);
+	
+	\draw[-stealth, thick] (hh1) -- (o1);
+	\draw[-stealth, thick] (hh1) -- (o2);
+	\draw[-stealth, thick] (hh3) -- (o1);
+	\draw[-stealth, thick] (hh3) -- (o2);
+	\draw[-stealth, thick] (hh5) -- (o1);
+	\draw[-stealth, thick] (hh5) -- (o2);
+}},
+%
+plain_arch/.pic={
+        code={ %we give the centered dot as input coordinates
+        \def\layersep{1cm}
+        \def\ninj{5}
+        \def\nh{5}
+        \def\n{1}
+        \tikzstyle{annot} = [text width=4em, text centered]
+     
+    % Draw the input layer nodes
+    \foreach \name / \y in {1,...,\ninj}
+    % This is the same as writing \foreach \name / \y in {1/1,2/2,3/3,4/4}
+        \node[input_neuron] (I-\name) at (\y,0) {};
+
+    % Draw the hidden layer nodes
+    \foreach \name / \y in {1,...,\nh}
+        \path[yshift=0.5cm]
+            node[hidden_neuron] (H-\name) at (\y cm, \layersep cm) {};
+            
+    \foreach \name / \y in {1,...,\nh}
+        \path[yshift=0.5cm]
+            node[hidden_neuron] (H2-\name) at (\y cm, 2*\layersep cm) {};
+ 
+     \foreach \name / \y in {1,...,\n}
+        \path[yshift=0.5cm]
+            node[output_neuron] (O-\name) at (\y + 2 cm, 3*\layersep cm) {};
+
+  
+    \foreach \source in {1,...,\ninj}
+        \foreach \dest in {1,...,\nh}
+            \draw[color=black!25] (I-\source) -- (H-\dest);
+   
+       \foreach \source in {1,...,\nh}
+        \foreach \dest in {1,...,\nh}
+            \draw[color=black!25] (H-\source) -- (H2-\dest);
+            
+    \foreach \source in {1,...,\nh}
+        \foreach \dest in {1,...,\n}
+            \draw[color=black!25] (H2-\source) -- (O-\dest);        
+    %\foreach \source in {1,...,\ninj}
+    %        \draw (I-\source) -- (H-1) node[midway] {$w_{\source, 1}$};
+                
+	%\draw[white] (I-3) -- (H-3) node[midway, below, black] {$W^{(1)}$}; 
+    %\draw[white] (H-3) -- (O-4) node[midway, below, black] {$W^{(2)}$};      
+	%\node[annot,above of=H-1, node distance=1cm] (hl) {Output layer};
+	
+	%\node[left of=hl, node distance=1cm] (hl2) {};
+	
+	%\draw[name path=horz_line, color=white] (hl2) -- (hl);
+	%\draw[name path=input_line, color=white] (I-2) -- (I-1);
+	%\path [name intersections={of=input_line and horz_line,by=input_layer_spot}];
+    
+    % \draw[annot] (input_layer_spot) node {Input layer};
+    %\node[annot,above of=I-1, node distance=1.5cm] (il) {Input layer};
+    
+   
+        
+  }},
+%
+ref_arch/.pic={
+        code={ 
+              %\renewcommand\squaresize{1} %size of the units
+            \newcommand\squaresize{1} 
+            \newcommand\shiftlayer{3}
+            \newcommand\vshiftforH{1/2}  %vertical shift for vertical alignment of hidden layers
+            \newcommand\vshiftfory{0}  %vertical shift for vertical alignment of outputs layers
+            
+            \node (c1) at (0,0) {};
+            \node (c2) at (0, -\squaresize) {};
+            \node (c3) at (0, -2*\squaresize) {};
+            \node (c4) at (0, 2*\squaresize) {}; % = P1
+            \node (c5) at (0, \squaresize) {}; % = P2
+            
+            %first layer
+            \node (h1) at (\shiftlayer, 2*\squaresize+\vshiftforH) {};
+            \node (h2) at (\shiftlayer, \squaresize+\vshiftforH) {};
+            \node (h3) at (\shiftlayer, +\vshiftforH) {};
+            \node (h4) at (\shiftlayer, -\squaresize+\vshiftforH) {};
+            \node (h5) at (\shiftlayer, -2*\squaresize+\vshiftforH) {};
+            \node (h6) at (\shiftlayer, -3*\squaresize+\vshiftforH) {}; 
+           
+            \node (hleft1) at (\shiftlayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hleft2) at (\shiftlayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hleft3) at (\shiftlayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hleft4) at (\shiftlayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hleft5) at (\shiftlayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hleft6) at (\shiftlayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hright1) at (\shiftlayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hright2) at (\shiftlayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hright3) at (\shiftlayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hright4) at (\shiftlayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hright5) at (\shiftlayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hright6) at (\shiftlayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+ 
+ 			% second hidden layer
+ 			\newcommand\shiftthislayer{2*\shiftlayer}
+            \node (hh1) at (\shiftthislayer, 2*\squaresize+\vshiftforH) {};
+            \node (hh2) at (\shiftthislayer, \squaresize+\vshiftforH) {};
+            \node (hh3) at (\shiftthislayer, +\vshiftforH) {};
+            \node (hh4) at (\shiftthislayer, -\squaresize+\vshiftforH) {};
+            \node (hh5) at (\shiftthislayer, -2*\squaresize+\vshiftforH) {};
+            \node (hh6) at (\shiftthislayer, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhleft1) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhleft2) at (\shiftthislayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhleft3) at (\shiftthislayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hhleft4) at (\shiftthislayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhleft5) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhleft6) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhright1) at (\shiftthislayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhright2) at (\shiftthislayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhright3) at (\shiftthislayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hhright4) at (\shiftthislayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhright5) at (\shiftthislayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhright6) at (\shiftthislayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            %third hidden layer
+ 			\renewcommand\shiftthislayer{3*\shiftlayer}
+            \node (hhh1) at (\shiftthislayer, 2*\squaresize+\vshiftforH) {};
+            \node (hhh2) at (\shiftthislayer, \squaresize+\vshiftforH) {};
+            \node (hhh3) at (\shiftthislayer, +\vshiftforH) {};
+            \node (hhh4) at (\shiftthislayer, -\squaresize+\vshiftforH) {};
+            \node (hhh5) at (\shiftthislayer, -2*\squaresize+\vshiftforH) {};
+            \node (hhh6) at (\shiftthislayer, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhhleft1) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhhleft2) at (\shiftthislayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhhleft3) at (\shiftthislayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hhhleft4) at (\shiftthislayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhhleft5) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhhleft6) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhhright1) at (\shiftthislayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhhright2) at (\shiftthislayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhhright3) at (\shiftthislayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hhhright4) at (\shiftthislayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhhright5) at (\shiftthislayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhhright6) at (\shiftthislayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {};  
+            
+            %output layer
+ 			\renewcommand\shiftthislayer{4*\shiftlayer}
+            \node (f1) at (\shiftthislayer, 3*\squaresize+\vshiftfory) {};
+            \node (f2) at (\shiftthislayer, 2*\squaresize+\vshiftfory) {};
+            \node (f3) at (\shiftthislayer, 1*\squaresize+\vshiftfory) {};
+            \node (f4) at (\shiftthislayer, 0*\squaresize+\vshiftfory) {}; 
+            \node (f5) at (\shiftthislayer, -1*\squaresize+\vshiftfory) {};
+            \node (f6) at (\shiftthislayer, -2*\squaresize+\vshiftfory) {};
+            \node (f7) at (\shiftthislayer, -3*\squaresize+\vshiftfory) {};
+            
+            \node (fleft1) at (\shiftthislayer-0.5*\squaresize, 3*\squaresize+\vshiftfory) {};
+            \node (fleft2) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftfory) {};
+            \node (fleft3) at (\shiftthislayer-0.5*\squaresize, 1*\squaresize+\vshiftfory) {};
+            \node (fleft4) at (\shiftthislayer-0.5*\squaresize, 0*\squaresize+\vshiftfory) {}; 
+            \node (fleft5) at (\shiftthislayer-0.5*\squaresize, -1*\squaresize+\vshiftfory) {};
+            \node (fleft6) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftfory) {};
+            \node (fleft7) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftfory) {};
+            
+            %draw the stuff
+            \draw[mycolor1] (c1) node {$x_1$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c2) node {$x_2$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c3) node {$x_3$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c4) node {$x_4$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c5) node {$x_5$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            
+            \draw (h1) circle(0.5*\squaresize);
+            \draw (h2) circle(0.5*\squaresize);
+            \draw (h3) circle(0.5*\squaresize);
+            \draw (h4) circle(0.5*\squaresize);
+            \draw (h5) circle(0.5*\squaresize);
+            \draw (h6) circle(0.5*\squaresize);
+           
+            \foreach \x in {1, 2, 3, 4, 5}
+    			\foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (c\x) ++(0.5*\squaresize, 0) -- (hleft\y); }
+                     
+             \foreach \x in {1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (hright\x) -- (hhleft\y); }
+            
+            \draw (hh1) circle(0.5*\squaresize);
+            \draw (hh2) circle(0.5*\squaresize);
+            \draw (hh3) circle(0.5*\squaresize);
+            \draw (hh4) circle(0.5*\squaresize);
+            \draw (hh5) circle(0.5*\squaresize);
+            \draw (hh6) circle(0.5*\squaresize);     
+            
+             \foreach \x in {1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (hhright\x) -- (hhhleft\y); }                     
+
+            \draw (hhh1) circle(0.5*\squaresize);
+            \draw (hhh2) circle(0.5*\squaresize);
+            \draw (hhh3) circle(0.5*\squaresize);
+            \draw (hhh4) circle(0.5*\squaresize);
+            \draw (hhh5) circle(0.5*\squaresize);
+            \draw (hhh6) circle(0.5*\squaresize);     
+            
+            
+            \draw[mycolor2] (f1) node {$\hat{y}_1$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f2) node {$\hat{y}_2$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f3) node {$\hat{y}_3$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f4) node {$\hat{y}_4$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f5) node {$\hat{y}_5$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f6) node {$\hat{y}_6$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f7) node {$\hat{y}_7$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+       
+           \foreach \x in {1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 2, 3, 4, 5, 6, 7} 
+       				 {\draw[lightGray] (hhhright\x) -- (fleft\y); }  
+    }},
+%
+arch_topo_ref/.pic={
+        code={ 
+              %\renewcommand\squaresize{1} %size of the units
+            \newcommand\squaresize{1} 
+            \newcommand\shiftlayer{3}
+            \newcommand\vshiftforH{1/2}  %vertical shift for vertical alignment of hidden layers
+            \newcommand\vshiftfory{0}  %vertical shift for vertical alignment of outputs layers
+            
+            \node (c1) at (0,0) {};
+            \node (c2) at (0, -\squaresize) {};
+            \node (c3) at (0, -2*\squaresize) {};
+            \node (c4) at (0, 2*\squaresize) {}; % = P1
+            \node (c5) at (0, \squaresize) {}; % = P2
+            
+            %first layer
+            \node (h1) at (\shiftlayer, 2*\squaresize+\vshiftforH) {};
+            \node (h2) at (\shiftlayer, \squaresize+\vshiftforH) {};
+            \node (h3) at (\shiftlayer, +\vshiftforH) {};
+            \node (h4) at (\shiftlayer, -\squaresize+\vshiftforH) {};
+            \node (h5) at (\shiftlayer, -2*\squaresize+\vshiftforH) {};
+            \node (h6) at (\shiftlayer, -3*\squaresize+\vshiftforH) {}; 
+           
+            \node (hleft1) at (\shiftlayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hleft2) at (\shiftlayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hleft3) at (\shiftlayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hleft4) at (\shiftlayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hleft5) at (\shiftlayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hleft6) at (\shiftlayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hright1) at (\shiftlayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hright2) at (\shiftlayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hright3) at (\shiftlayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hright4) at (\shiftlayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hright5) at (\shiftlayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hright6) at (\shiftlayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+ 
+ 			% second hidden layer
+ 			\newcommand\shiftthislayer{2*\shiftlayer}
+            \node (hh1) at (\shiftthislayer, 2*\squaresize+\vshiftforH) {};
+            \node (hh2) at (\shiftthislayer, \squaresize+\vshiftforH) {};
+            \node (hh3) at (\shiftthislayer, +\vshiftforH) {};
+            \node (hh4) at (\shiftthislayer, -\squaresize+\vshiftforH) {};
+            \node (hh5) at (\shiftthislayer, -2*\squaresize+\vshiftforH) {};
+            \node (hh6) at (\shiftthislayer, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhleft1) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhleft2) at (\shiftthislayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhleft3) at (\shiftthislayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hhleft4) at (\shiftthislayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhleft5) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhleft6) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhright1) at (\shiftthislayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhright2) at (\shiftthislayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhright3) at (\shiftthislayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hhright4) at (\shiftthislayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhright5) at (\shiftthislayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhright6) at (\shiftthislayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            %third hidden layer
+ 			\renewcommand\shiftthislayer{3*\shiftlayer}
+            \node (hhh1) at (\shiftthislayer, 2*\squaresize+\vshiftforH) {};
+            \node (hhh2) at (\shiftthislayer, \squaresize+\vshiftforH) {};
+            \node (hhh3) at (\shiftthislayer, +\vshiftforH) {};
+            \node (hhh4) at (\shiftthislayer, -\squaresize+\vshiftforH) {};
+            \node (hhh5) at (\shiftthislayer, -2*\squaresize+\vshiftforH) {};
+            \node (hhh6) at (\shiftthislayer, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhhleft1) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhhleft2) at (\shiftthislayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhhleft3) at (\shiftthislayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hhhleft4) at (\shiftthislayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhhleft5) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhhleft6) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhhright1) at (\shiftthislayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhhright2) at (\shiftthislayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhhright3) at (\shiftthislayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hhhright4) at (\shiftthislayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhhright5) at (\shiftthislayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhhright6) at (\shiftthislayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {};  
+            
+            %output layer
+ 			\renewcommand\shiftthislayer{4*\shiftlayer}
+            \node (f1) at (\shiftthislayer, 3*\squaresize+\vshiftfory) {};
+            \node (f2) at (\shiftthislayer, 2*\squaresize+\vshiftfory) {};
+            \node (f3) at (\shiftthislayer, 1*\squaresize+\vshiftfory) {};
+            \node (f4) at (\shiftthislayer, 0*\squaresize+\vshiftfory) {}; 
+            \node (f5) at (\shiftthislayer, -1*\squaresize+\vshiftfory) {};
+            \node (f6) at (\shiftthislayer, -2*\squaresize+\vshiftfory) {};
+            \node (f7) at (\shiftthislayer, -3*\squaresize+\vshiftfory) {};
+            
+            \node (fleft1) at (\shiftthislayer-0.5*\squaresize, 3*\squaresize+\vshiftfory) {};
+            \node (fleft2) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftfory) {};
+            \node (fleft3) at (\shiftthislayer-0.5*\squaresize, 1*\squaresize+\vshiftfory) {};
+            \node (fleft4) at (\shiftthislayer-0.5*\squaresize, 0*\squaresize+\vshiftfory) {}; 
+            \node (fleft5) at (\shiftthislayer-0.5*\squaresize, -1*\squaresize+\vshiftfory) {};
+            \node (fleft6) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftfory) {};
+            \node (fleft7) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftfory) {};
+            
+            %draw the stuff
+            \draw[mycolor1] (c1) node {$x_1$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c2) node {$x_2$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c3) node {$x_3$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c4) node {$x_4$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c5) node {$x_5$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            
+            \draw (h1) circle(0.5*\squaresize);
+            \draw (h2) circle(0.5*\squaresize);
+            \draw (h3) circle(0.5*\squaresize);
+            \draw (h4) circle(0.5*\squaresize);
+            \draw (h5) circle(0.5*\squaresize);
+            \draw (h6) circle(0.5*\squaresize);
+           
+            \foreach \x in {1, 2, 3, 4, 5}
+    			\foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (c\x) ++(0.5*\squaresize, 0) -- (hleft\y); }
+                     
+             \foreach \x in {1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 4, 6}%{1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (hright\x) -- (hhleft\y); }
+            
+            \draw (hh1) circle(0.5*\squaresize);
+            %\draw (hh2) circle(0.5*\squaresize);
+            %\draw (hh3) circle(0.5*\squaresize);
+            \draw (hh4) circle(0.5*\squaresize);
+            %\draw (hh5) circle(0.5*\squaresize);
+            \draw (hh6) circle(0.5*\squaresize);     
+            
+             \foreach \x in {1, 4, 6}%{1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (hhright\x) -- (hhhleft\y); }                     
+
+            \draw (hhh1) circle(0.5*\squaresize);
+            \draw (hhh2) circle(0.5*\squaresize);
+            \draw (hhh3) circle(0.5*\squaresize);
+            \draw (hhh4) circle(0.5*\squaresize);
+            \draw (hhh5) circle(0.5*\squaresize);
+            \draw (hhh6) circle(0.5*\squaresize);     
+            
+            
+            \draw[mycolor2] (f1) node {$\hat{y}_1$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f2) node {$\hat{y}_2$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f3) node {$\hat{y}_3$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f4) node {$\hat{y}_4$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f5) node {$\hat{y}_5$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f6) node {$\hat{y}_6$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f7) node {$\hat{y}_7$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+       
+           \foreach \x in {1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 2, 3, 4, 5, 6, 7} 
+       				 {\draw[lightGray] (hhhright\x) -- (fleft\y); }  
+    }},
+%
+arch_tau_1/.pic={
+        code={ 
+              %\renewcommand\squaresize{1} %size of the units
+            \newcommand\squaresize{1} 
+            \newcommand\shiftlayer{3}
+            \newcommand\vshiftforH{1/2}  %vertical shift for vertical alignment of hidden layers
+            \newcommand\vshiftfory{0}  %vertical shift for vertical alignment of outputs layers
+            
+            \node (c1) at (0,0) {};
+            \node (c2) at (0, -\squaresize) {};
+            \node (c3) at (0, -2*\squaresize) {};
+            \node (c4) at (0, 2*\squaresize) {}; % = P1
+            \node (c5) at (0, \squaresize) {}; % = P2
+            
+            %first layer
+            \node (h1) at (\shiftlayer, 2*\squaresize+\vshiftforH) {};
+            \node (h2) at (\shiftlayer, \squaresize+\vshiftforH) {};
+            \node (h3) at (\shiftlayer, +\vshiftforH) {};
+            \node (h4) at (\shiftlayer, -\squaresize+\vshiftforH) {};
+            \node (h5) at (\shiftlayer, -2*\squaresize+\vshiftforH) {};
+            \node (h6) at (\shiftlayer, -3*\squaresize+\vshiftforH) {}; 
+           
+            \node (hleft1) at (\shiftlayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hleft2) at (\shiftlayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hleft3) at (\shiftlayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hleft4) at (\shiftlayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hleft5) at (\shiftlayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hleft6) at (\shiftlayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hright1) at (\shiftlayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hright2) at (\shiftlayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hright3) at (\shiftlayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hright4) at (\shiftlayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hright5) at (\shiftlayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hright6) at (\shiftlayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+ 
+ 			% second hidden layer
+ 			\newcommand\shiftthislayer{2*\shiftlayer}
+            \node (hh1) at (\shiftthislayer, 2*\squaresize+\vshiftforH) {};
+            \node (hh2) at (\shiftthislayer, \squaresize+\vshiftforH) {};
+            \node (hh3) at (\shiftthislayer, +\vshiftforH) {};
+            \node (hh4) at (\shiftthislayer, -\squaresize+\vshiftforH) {};
+            \node (hh5) at (\shiftthislayer, -2*\squaresize+\vshiftforH) {};
+            \node (hh6) at (\shiftthislayer, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhleft1) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhleft2) at (\shiftthislayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhleft3) at (\shiftthislayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hhleft4) at (\shiftthislayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhleft5) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhleft6) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhright1) at (\shiftthislayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhright2) at (\shiftthislayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhright3) at (\shiftthislayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hhright4) at (\shiftthislayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhright5) at (\shiftthislayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhright6) at (\shiftthislayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            %third hidden layer
+ 			\renewcommand\shiftthislayer{3*\shiftlayer}
+            \node (hhh1) at (\shiftthislayer, 2*\squaresize+\vshiftforH) {};
+            \node (hhh2) at (\shiftthislayer, \squaresize+\vshiftforH) {};
+            \node (hhh3) at (\shiftthislayer, +\vshiftforH) {};
+            \node (hhh4) at (\shiftthislayer, -\squaresize+\vshiftforH) {};
+            \node (hhh5) at (\shiftthislayer, -2*\squaresize+\vshiftforH) {};
+            \node (hhh6) at (\shiftthislayer, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhhleft1) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhhleft2) at (\shiftthislayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhhleft3) at (\shiftthislayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hhhleft4) at (\shiftthislayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhhleft5) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhhleft6) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhhright1) at (\shiftthislayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhhright2) at (\shiftthislayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhhright3) at (\shiftthislayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hhhright4) at (\shiftthislayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhhright5) at (\shiftthislayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhhright6) at (\shiftthislayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {};  
+            
+            %output layer
+ 			\renewcommand\shiftthislayer{4*\shiftlayer}
+            \node (f1) at (\shiftthislayer, 3*\squaresize+\vshiftfory) {};
+            \node (f2) at (\shiftthislayer, 2*\squaresize+\vshiftfory) {};
+            \node (f3) at (\shiftthislayer, 1*\squaresize+\vshiftfory) {};
+            \node (f4) at (\shiftthislayer, 0*\squaresize+\vshiftfory) {}; 
+            \node (f5) at (\shiftthislayer, -1*\squaresize+\vshiftfory) {};
+            \node (f6) at (\shiftthislayer, -2*\squaresize+\vshiftfory) {};
+            \node (f7) at (\shiftthislayer, -3*\squaresize+\vshiftfory) {};
+            
+            \node (fleft1) at (\shiftthislayer-0.5*\squaresize, 3*\squaresize+\vshiftfory) {};
+            \node (fleft2) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftfory) {};
+            \node (fleft3) at (\shiftthislayer-0.5*\squaresize, 1*\squaresize+\vshiftfory) {};
+            \node (fleft4) at (\shiftthislayer-0.5*\squaresize, 0*\squaresize+\vshiftfory) {}; 
+            \node (fleft5) at (\shiftthislayer-0.5*\squaresize, -1*\squaresize+\vshiftfory) {};
+            \node (fleft6) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftfory) {};
+            \node (fleft7) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftfory) {};
+            
+            %draw the stuff
+            \draw[mycolor1] (c1) node {$x_1$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c2) node {$x_2$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c3) node {$x_3$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c4) node {$x_4$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c5) node {$x_5$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            
+            \draw (h1) circle(0.5*\squaresize);
+            \draw (h2) circle(0.5*\squaresize);
+            \draw (h3) circle(0.5*\squaresize);
+            \draw (h4) circle(0.5*\squaresize);
+            \draw (h5) circle(0.5*\squaresize);
+            \draw (h6) circle(0.5*\squaresize);
+           
+            \foreach \x in {1, 2, 3, 4, 5}
+    			\foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (c\x) ++(0.5*\squaresize, 0) -- (hleft\y); }
+                     
+             \foreach \x in {1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 4, 6}%{1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (hright\x) -- (hhleft\y); }
+            
+            \draw (hh1) circle(0.5*\squaresize);
+            %\draw (hh3) circle(0.5*\squaresize);
+            \draw (hh4) circle(0.5*\squaresize);
+            %\draw (hh5) circle(0.5*\squaresize);
+            \draw (hh6) circle(0.5*\squaresize);     
+            
+             \foreach \x in {1, 4, 6}%{1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (hhright\x) -- (hhhleft\y); }                     
+
+            \draw (hhh1) circle(0.5*\squaresize);
+            \draw (hhh2) circle(0.5*\squaresize);
+            \draw (hhh3) circle(0.5*\squaresize);
+            \draw (hhh4) circle(0.5*\squaresize);
+            \draw (hhh5) circle(0.5*\squaresize);
+            \draw (hhh6) circle(0.5*\squaresize);     
+            
+            
+            \draw[mycolor2] (f1) node {$\hat{y}_1$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f2) node {$\hat{y}_2$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f3) node {$\hat{y}_3$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f4) node {$\hat{y}_4$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f5) node {$\hat{y}_5$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f6) node {$\hat{y}_6$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f7) node {$\hat{y}_7$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+       
+           \foreach \x in {1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 2, 3, 4, 5, 6, 7} 
+       				 {\draw[lightGray] (hhhright\x) -- (fleft\y); }  
+                     
+                     
+    \draw[color=red] (hh3) circle(0.5*\squaresize) node {{\footnotesize $\tau_1=1$}};
+    %\draw[color=red] (hh3) {}
+    \foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[red] (hhright3) -- (hhhleft\y);
+                      \draw[red] (hright\y) -- (hhleft3);}  
+                      
+    }},
+%
+arch_tau_2/.pic={
+        code={ 
+              %\renewcommand\squaresize{1} %size of the units
+            \newcommand\squaresize{1} 
+            \newcommand\shiftlayer{3}
+            \newcommand\vshiftforH{1/2}  %vertical shift for vertical alignment of hidden layers
+            \newcommand\vshiftfory{0}  %vertical shift for vertical alignment of outputs layers
+            
+            \node (c1) at (0,0) {};
+            \node (c2) at (0, -\squaresize) {};
+            \node (c3) at (0, -2*\squaresize) {};
+            \node (c4) at (0, 2*\squaresize) {}; % = P1
+            \node (c5) at (0, \squaresize) {}; % = P2
+            
+            %first layer
+            \node (h1) at (\shiftlayer, 2*\squaresize+\vshiftforH) {};
+            \node (h2) at (\shiftlayer, \squaresize+\vshiftforH) {};
+            \node (h3) at (\shiftlayer, +\vshiftforH) {};
+            \node (h4) at (\shiftlayer, -\squaresize+\vshiftforH) {};
+            \node (h5) at (\shiftlayer, -2*\squaresize+\vshiftforH) {};
+            \node (h6) at (\shiftlayer, -3*\squaresize+\vshiftforH) {}; 
+           
+            \node (hleft1) at (\shiftlayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hleft2) at (\shiftlayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hleft3) at (\shiftlayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hleft4) at (\shiftlayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hleft5) at (\shiftlayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hleft6) at (\shiftlayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hright1) at (\shiftlayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hright2) at (\shiftlayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hright3) at (\shiftlayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hright4) at (\shiftlayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hright5) at (\shiftlayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hright6) at (\shiftlayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+ 
+ 			% second hidden layer
+ 			\newcommand\shiftthislayer{2*\shiftlayer}
+            \node (hh1) at (\shiftthislayer, 2*\squaresize+\vshiftforH) {};
+            \node (hh2) at (\shiftthislayer, \squaresize+\vshiftforH) {};
+            \node (hh3) at (\shiftthislayer, +\vshiftforH) {};
+            \node (hh4) at (\shiftthislayer, -\squaresize+\vshiftforH) {};
+            \node (hh5) at (\shiftthislayer, -2*\squaresize+\vshiftforH) {};
+            \node (hh6) at (\shiftthislayer, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhleft1) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhleft2) at (\shiftthislayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhleft3) at (\shiftthislayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hhleft4) at (\shiftthislayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhleft5) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhleft6) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhright1) at (\shiftthislayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhright2) at (\shiftthislayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhright3) at (\shiftthislayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hhright4) at (\shiftthislayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhright5) at (\shiftthislayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhright6) at (\shiftthislayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            %third hidden layer
+ 			\renewcommand\shiftthislayer{3*\shiftlayer}
+            \node (hhh1) at (\shiftthislayer, 2*\squaresize+\vshiftforH) {};
+            \node (hhh2) at (\shiftthislayer, \squaresize+\vshiftforH) {};
+            \node (hhh3) at (\shiftthislayer, +\vshiftforH) {};
+            \node (hhh4) at (\shiftthislayer, -\squaresize+\vshiftforH) {};
+            \node (hhh5) at (\shiftthislayer, -2*\squaresize+\vshiftforH) {};
+            \node (hhh6) at (\shiftthislayer, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhhleft1) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhhleft2) at (\shiftthislayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhhleft3) at (\shiftthislayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hhhleft4) at (\shiftthislayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhhleft5) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhhleft6) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhhright1) at (\shiftthislayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhhright2) at (\shiftthislayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhhright3) at (\shiftthislayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hhhright4) at (\shiftthislayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhhright5) at (\shiftthislayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhhright6) at (\shiftthislayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {};  
+            
+            %output layer
+ 			\renewcommand\shiftthislayer{4*\shiftlayer}
+            \node (f1) at (\shiftthislayer, 3*\squaresize+\vshiftfory) {};
+            \node (f2) at (\shiftthislayer, 2*\squaresize+\vshiftfory) {};
+            \node (f3) at (\shiftthislayer, 1*\squaresize+\vshiftfory) {};
+            \node (f4) at (\shiftthislayer, 0*\squaresize+\vshiftfory) {}; 
+            \node (f5) at (\shiftthislayer, -1*\squaresize+\vshiftfory) {};
+            \node (f6) at (\shiftthislayer, -2*\squaresize+\vshiftfory) {};
+            \node (f7) at (\shiftthislayer, -3*\squaresize+\vshiftfory) {};
+            
+            \node (fleft1) at (\shiftthislayer-0.5*\squaresize, 3*\squaresize+\vshiftfory) {};
+            \node (fleft2) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftfory) {};
+            \node (fleft3) at (\shiftthislayer-0.5*\squaresize, 1*\squaresize+\vshiftfory) {};
+            \node (fleft4) at (\shiftthislayer-0.5*\squaresize, 0*\squaresize+\vshiftfory) {}; 
+            \node (fleft5) at (\shiftthislayer-0.5*\squaresize, -1*\squaresize+\vshiftfory) {};
+            \node (fleft6) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftfory) {};
+            \node (fleft7) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftfory) {};
+            
+            %draw the stuff
+            \draw[mycolor1] (c1) node {$x_1$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c2) node {$x_2$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c3) node {$x_3$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c4) node {$x_4$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c5) node {$x_5$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            
+            \draw (h1) circle(0.5*\squaresize);
+            \draw (h2) circle(0.5*\squaresize);
+            \draw (h3) circle(0.5*\squaresize);
+            \draw (h4) circle(0.5*\squaresize);
+            \draw (h5) circle(0.5*\squaresize);
+            \draw (h6) circle(0.5*\squaresize);
+           
+            \foreach \x in {1, 2, 3, 4, 5}
+    			\foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (c\x) ++(0.5*\squaresize, 0) -- (hleft\y); }
+                     
+             \foreach \x in {1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 4, 6}%{1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (hright\x) -- (hhleft\y); }
+            
+            \draw (hh1) circle(0.5*\squaresize);
+            %\draw (hh3) circle(0.5*\squaresize);
+            \draw (hh4) circle(0.5*\squaresize);
+            %\draw (hh5) circle(0.5*\squaresize);
+            \draw (hh6) circle(0.5*\squaresize);     
+            
+             \foreach \x in {1, 4, 6}%{1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (hhright\x) -- (hhhleft\y); }                     
+
+            \draw (hhh1) circle(0.5*\squaresize);
+            \draw (hhh2) circle(0.5*\squaresize);
+            \draw (hhh3) circle(0.5*\squaresize);
+            \draw (hhh4) circle(0.5*\squaresize);
+            \draw (hhh5) circle(0.5*\squaresize);
+            \draw (hhh6) circle(0.5*\squaresize);     
+            
+            
+            \draw[mycolor2] (f1) node {$\hat{y}_1$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f2) node {$\hat{y}_2$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f3) node {$\hat{y}_3$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f4) node {$\hat{y}_4$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f5) node {$\hat{y}_5$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f6) node {$\hat{y}_6$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f7) node {$\hat{y}_7$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+       
+           \foreach \x in {1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 2, 3, 4, 5, 6, 7} 
+       				 {\draw[lightGray] (hhhright\x) -- (fleft\y); }  
+                     
+                     
+    \draw[color=red] (hh2) circle(0.5*\squaresize) node {{\footnotesize $\tau_2=1$}};
+    %\draw[color=red] (hh3) {}
+    \foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[red] (hhright2) -- (hhhleft\y);
+                      \draw[red] (hright\y) -- (hhleft2);}  
+                      
+    }},
+%
+arch_tau_3/.pic={
+        code={ 
+              %\renewcommand\squaresize{1} %size of the units
+            \newcommand\squaresize{1} 
+            \newcommand\shiftlayer{3}
+            \newcommand\vshiftforH{1/2}  %vertical shift for vertical alignment of hidden layers
+            \newcommand\vshiftfory{0}  %vertical shift for vertical alignment of outputs layers
+            
+            \node (c1) at (0,0) {};
+            \node (c2) at (0, -\squaresize) {};
+            \node (c3) at (0, -2*\squaresize) {};
+            \node (c4) at (0, 2*\squaresize) {}; % = P1
+            \node (c5) at (0, \squaresize) {}; % = P2
+            
+            %first layer
+            \node (h1) at (\shiftlayer, 2*\squaresize+\vshiftforH) {};
+            \node (h2) at (\shiftlayer, \squaresize+\vshiftforH) {};
+            \node (h3) at (\shiftlayer, +\vshiftforH) {};
+            \node (h4) at (\shiftlayer, -\squaresize+\vshiftforH) {};
+            \node (h5) at (\shiftlayer, -2*\squaresize+\vshiftforH) {};
+            \node (h6) at (\shiftlayer, -3*\squaresize+\vshiftforH) {}; 
+           
+            \node (hleft1) at (\shiftlayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hleft2) at (\shiftlayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hleft3) at (\shiftlayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hleft4) at (\shiftlayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hleft5) at (\shiftlayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hleft6) at (\shiftlayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hright1) at (\shiftlayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hright2) at (\shiftlayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hright3) at (\shiftlayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hright4) at (\shiftlayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hright5) at (\shiftlayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hright6) at (\shiftlayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+ 
+ 			% second hidden layer
+ 			\newcommand\shiftthislayer{2*\shiftlayer}
+            \node (hh1) at (\shiftthislayer, 2*\squaresize+\vshiftforH) {};
+            \node (hh2) at (\shiftthislayer, \squaresize+\vshiftforH) {};
+            \node (hh3) at (\shiftthislayer, +\vshiftforH) {};
+            \node (hh4) at (\shiftthislayer, -\squaresize+\vshiftforH) {};
+            \node (hh5) at (\shiftthislayer, -2*\squaresize+\vshiftforH) {};
+            \node (hh6) at (\shiftthislayer, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhleft1) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhleft2) at (\shiftthislayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhleft3) at (\shiftthislayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hhleft4) at (\shiftthislayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhleft5) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhleft6) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhright1) at (\shiftthislayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhright2) at (\shiftthislayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhright3) at (\shiftthislayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hhright4) at (\shiftthislayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhright5) at (\shiftthislayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhright6) at (\shiftthislayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            %third hidden layer
+ 			\renewcommand\shiftthislayer{3*\shiftlayer}
+            \node (hhh1) at (\shiftthislayer, 2*\squaresize+\vshiftforH) {};
+            \node (hhh2) at (\shiftthislayer, \squaresize+\vshiftforH) {};
+            \node (hhh3) at (\shiftthislayer, +\vshiftforH) {};
+            \node (hhh4) at (\shiftthislayer, -\squaresize+\vshiftforH) {};
+            \node (hhh5) at (\shiftthislayer, -2*\squaresize+\vshiftforH) {};
+            \node (hhh6) at (\shiftthislayer, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhhleft1) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhhleft2) at (\shiftthislayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhhleft3) at (\shiftthislayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hhhleft4) at (\shiftthislayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhhleft5) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhhleft6) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhhright1) at (\shiftthislayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhhright2) at (\shiftthislayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhhright3) at (\shiftthislayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hhhright4) at (\shiftthislayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhhright5) at (\shiftthislayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhhright6) at (\shiftthislayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {};  
+            
+            %output layer
+ 			\renewcommand\shiftthislayer{4*\shiftlayer}
+            \node (f1) at (\shiftthislayer, 3*\squaresize+\vshiftfory) {};
+            \node (f2) at (\shiftthislayer, 2*\squaresize+\vshiftfory) {};
+            \node (f3) at (\shiftthislayer, 1*\squaresize+\vshiftfory) {};
+            \node (f4) at (\shiftthislayer, 0*\squaresize+\vshiftfory) {}; 
+            \node (f5) at (\shiftthislayer, -1*\squaresize+\vshiftfory) {};
+            \node (f6) at (\shiftthislayer, -2*\squaresize+\vshiftfory) {};
+            \node (f7) at (\shiftthislayer, -3*\squaresize+\vshiftfory) {};
+            
+            \node (fleft1) at (\shiftthislayer-0.5*\squaresize, 3*\squaresize+\vshiftfory) {};
+            \node (fleft2) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftfory) {};
+            \node (fleft3) at (\shiftthislayer-0.5*\squaresize, 1*\squaresize+\vshiftfory) {};
+            \node (fleft4) at (\shiftthislayer-0.5*\squaresize, 0*\squaresize+\vshiftfory) {}; 
+            \node (fleft5) at (\shiftthislayer-0.5*\squaresize, -1*\squaresize+\vshiftfory) {};
+            \node (fleft6) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftfory) {};
+            \node (fleft7) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftfory) {};
+            
+            %draw the stuff
+            \draw[mycolor1] (c1) node {$x_1$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c2) node {$x_2$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c3) node {$x_3$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c4) node {$x_4$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c5) node {$x_5$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            
+            \draw (h1) circle(0.5*\squaresize);
+            \draw (h2) circle(0.5*\squaresize);
+            \draw (h3) circle(0.5*\squaresize);
+            \draw (h4) circle(0.5*\squaresize);
+            \draw (h5) circle(0.5*\squaresize);
+            \draw (h6) circle(0.5*\squaresize);
+           
+            \foreach \x in {1, 2, 3, 4, 5}
+    			\foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (c\x) ++(0.5*\squaresize, 0) -- (hleft\y); }
+                     
+             \foreach \x in {1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 4, 6}%{1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (hright\x) -- (hhleft\y); }
+            
+            \draw (hh1) circle(0.5*\squaresize);
+            %\draw (hh3) circle(0.5*\squaresize);
+            \draw (hh4) circle(0.5*\squaresize);
+            %\draw (hh5) circle(0.5*\squaresize);
+            \draw (hh6) circle(0.5*\squaresize);     
+            
+             \foreach \x in {1, 4, 6}%{1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (hhright\x) -- (hhhleft\y); }                     
+
+            \draw (hhh1) circle(0.5*\squaresize);
+            \draw (hhh2) circle(0.5*\squaresize);
+            \draw (hhh3) circle(0.5*\squaresize);
+            \draw (hhh4) circle(0.5*\squaresize);
+            \draw (hhh5) circle(0.5*\squaresize);
+            \draw (hhh6) circle(0.5*\squaresize);     
+            
+            
+            \draw[mycolor2] (f1) node {$\hat{y}_1$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f2) node {$\hat{y}_2$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f3) node {$\hat{y}_3$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f4) node {$\hat{y}_4$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f5) node {$\hat{y}_5$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f6) node {$\hat{y}_6$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f7) node {$\hat{y}_7$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+       
+           \foreach \x in {1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 2, 3, 4, 5, 6, 7} 
+       				 {\draw[lightGray] (hhhright\x) -- (fleft\y); }  
+                     
+                     
+    \draw[color=red] (hh5) circle(0.5*\squaresize) node {{\footnotesize $\tau_3=1$}};
+    %\draw[color=red] (hh3) {}
+    \foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[red] (hhright5) -- (hhhleft\y);
+                      \draw[red] (hright\y) -- (hhleft5);}  
+                      
+    }},
+%
+arch_tau_13/.pic={
+        code={ 
+              %\renewcommand\squaresize{1} %size of the units
+            \newcommand\squaresize{1} 
+            \newcommand\shiftlayer{3}
+            \newcommand\vshiftforH{1/2}  %vertical shift for vertical alignment of hidden layers
+            \newcommand\vshiftfory{0}  %vertical shift for vertical alignment of outputs layers
+            
+            \node (c1) at (0,0) {};
+            \node (c2) at (0, -\squaresize) {};
+            \node (c3) at (0, -2*\squaresize) {};
+            \node (c4) at (0, 2*\squaresize) {}; % = P1
+            \node (c5) at (0, \squaresize) {}; % = P2
+            
+            %first layer
+            \node (h1) at (\shiftlayer, 2*\squaresize+\vshiftforH) {};
+            \node (h2) at (\shiftlayer, \squaresize+\vshiftforH) {};
+            \node (h3) at (\shiftlayer, +\vshiftforH) {};
+            \node (h4) at (\shiftlayer, -\squaresize+\vshiftforH) {};
+            \node (h5) at (\shiftlayer, -2*\squaresize+\vshiftforH) {};
+            \node (h6) at (\shiftlayer, -3*\squaresize+\vshiftforH) {}; 
+           
+            \node (hleft1) at (\shiftlayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hleft2) at (\shiftlayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hleft3) at (\shiftlayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hleft4) at (\shiftlayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hleft5) at (\shiftlayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hleft6) at (\shiftlayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hright1) at (\shiftlayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hright2) at (\shiftlayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hright3) at (\shiftlayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hright4) at (\shiftlayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hright5) at (\shiftlayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hright6) at (\shiftlayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+ 
+ 			% second hidden layer
+ 			\newcommand\shiftthislayer{2*\shiftlayer}
+            \node (hh1) at (\shiftthislayer, 2*\squaresize+\vshiftforH) {};
+            \node (hh2) at (\shiftthislayer, \squaresize+\vshiftforH) {};
+            \node (hh3) at (\shiftthislayer, +\vshiftforH) {};
+            \node (hh4) at (\shiftthislayer, -\squaresize+\vshiftforH) {};
+            \node (hh5) at (\shiftthislayer, -2*\squaresize+\vshiftforH) {};
+            \node (hh6) at (\shiftthislayer, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhleft1) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhleft2) at (\shiftthislayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhleft3) at (\shiftthislayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hhleft4) at (\shiftthislayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhleft5) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhleft6) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhright1) at (\shiftthislayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhright2) at (\shiftthislayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhright3) at (\shiftthislayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hhright4) at (\shiftthislayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhright5) at (\shiftthislayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhright6) at (\shiftthislayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            %third hidden layer
+ 			\renewcommand\shiftthislayer{3*\shiftlayer}
+            \node (hhh1) at (\shiftthislayer, 2*\squaresize+\vshiftforH) {};
+            \node (hhh2) at (\shiftthislayer, \squaresize+\vshiftforH) {};
+            \node (hhh3) at (\shiftthislayer, +\vshiftforH) {};
+            \node (hhh4) at (\shiftthislayer, -\squaresize+\vshiftforH) {};
+            \node (hhh5) at (\shiftthislayer, -2*\squaresize+\vshiftforH) {};
+            \node (hhh6) at (\shiftthislayer, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhhleft1) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhhleft2) at (\shiftthislayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhhleft3) at (\shiftthislayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hhhleft4) at (\shiftthislayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhhleft5) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhhleft6) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhhright1) at (\shiftthislayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhhright2) at (\shiftthislayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhhright3) at (\shiftthislayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hhhright4) at (\shiftthislayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhhright5) at (\shiftthislayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhhright6) at (\shiftthislayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {};  
+            
+            %output layer
+ 			\renewcommand\shiftthislayer{4*\shiftlayer}
+            \node (f1) at (\shiftthislayer, 3*\squaresize+\vshiftfory) {};
+            \node (f2) at (\shiftthislayer, 2*\squaresize+\vshiftfory) {};
+            \node (f3) at (\shiftthislayer, 1*\squaresize+\vshiftfory) {};
+            \node (f4) at (\shiftthislayer, 0*\squaresize+\vshiftfory) {}; 
+            \node (f5) at (\shiftthislayer, -1*\squaresize+\vshiftfory) {};
+            \node (f6) at (\shiftthislayer, -2*\squaresize+\vshiftfory) {};
+            \node (f7) at (\shiftthislayer, -3*\squaresize+\vshiftfory) {};
+            
+            \node (fleft1) at (\shiftthislayer-0.5*\squaresize, 3*\squaresize+\vshiftfory) {};
+            \node (fleft2) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftfory) {};
+            \node (fleft3) at (\shiftthislayer-0.5*\squaresize, 1*\squaresize+\vshiftfory) {};
+            \node (fleft4) at (\shiftthislayer-0.5*\squaresize, 0*\squaresize+\vshiftfory) {}; 
+            \node (fleft5) at (\shiftthislayer-0.5*\squaresize, -1*\squaresize+\vshiftfory) {};
+            \node (fleft6) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftfory) {};
+            \node (fleft7) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftfory) {};
+            
+            %draw the stuff
+            \draw[mycolor1] (c1) node {$x_1$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c2) node {$x_2$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c3) node {$x_3$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c4) node {$x_4$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c5) node {$x_5$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            
+            \draw (h1) circle(0.5*\squaresize);
+            \draw (h2) circle(0.5*\squaresize);
+            \draw (h3) circle(0.5*\squaresize);
+            \draw (h4) circle(0.5*\squaresize);
+            \draw (h5) circle(0.5*\squaresize);
+            \draw (h6) circle(0.5*\squaresize);
+           
+            \foreach \x in {1, 2, 3, 4, 5}
+    			\foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (c\x) ++(0.5*\squaresize, 0) -- (hleft\y); }
+                     
+             \foreach \x in {1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 4, 6}%{1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (hright\x) -- (hhleft\y); }
+            
+            \draw (hh1) circle(0.5*\squaresize);
+            %\draw (hh3) circle(0.5*\squaresize);
+            \draw (hh4) circle(0.5*\squaresize);
+            %\draw (hh5) circle(0.5*\squaresize);
+            \draw (hh6) circle(0.5*\squaresize);     
+            
+             \foreach \x in {1, 4, 6}%{1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (hhright\x) -- (hhhleft\y); }                     
+
+            \draw (hhh1) circle(0.5*\squaresize);
+            \draw (hhh2) circle(0.5*\squaresize);
+            \draw (hhh3) circle(0.5*\squaresize);
+            \draw (hhh4) circle(0.5*\squaresize);
+            \draw (hhh5) circle(0.5*\squaresize);
+            \draw (hhh6) circle(0.5*\squaresize);     
+            
+            
+            \draw[mycolor2] (f1) node {$\hat{y}_1$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f2) node {$\hat{y}_2$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f3) node {$\hat{y}_3$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f4) node {$\hat{y}_4$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f5) node {$\hat{y}_5$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f6) node {$\hat{y}_6$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f7) node {$\hat{y}_7$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+       
+           \foreach \x in {1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 2, 3, 4, 5, 6, 7} 
+       				 {\draw[lightGray] (hhhright\x) -- (fleft\y); }  
+                     
+                     
+    \draw[color=red] (hh5) circle(0.5*\squaresize) node {{\footnotesize $\tau_3=1$}};
+    %\draw[color=red] (hh3) {}
+    \foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[red] (hhright5) -- (hhhleft\y);
+                      \draw[red] (hright\y) -- (hhleft5);}  
+                      
+   \draw[color=red] (hh3) circle(0.5*\squaresize) node {{\footnotesize $\tau_1=1$}};
+    %\draw[color=red] (hh3) {}
+    \foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[red] (hhright3) -- (hhhleft\y);
+                      \draw[red] (hright\y) -- (hhleft3);} 
+                      
+    }},
+%
+gd_oldarch/.pic={
+        code={ 
+              %\renewcommand\squaresize{1} %size of the units
+            \newcommand\squaresize{1} 
+            \newcommand\shiftlayer{3}
+            \newcommand\vshiftforH{1/2}  %vertical shift for vertical alignment of hidden layers
+            \newcommand\vshiftfory{0}  %vertical shift for vertical alignment of outputs layers
+            
+            \node (E)  at (\shiftlayer*0.5, 3.3*\squaresize+\vshiftforH) [align=center] {Encoder\\  $E$};
+            \node (D)  at (\shiftlayer*3.5, 3.3*\squaresize+\vshiftforH) [align=center]  {Decoder\\  $D$};
+            \node (D)  at (\shiftlayer*2, 3.3*\squaresize+\vshiftforH) [align=center]  {Guided Dropout\\ block };
+            
+            \node (c1) at (0,0) {};
+            \node (c2) at (0, -\squaresize) {};
+            \node (c3) at (0, -2*\squaresize) {};
+            \node (c4) at (0, 2*\squaresize) {}; % = P1
+            \node (c5) at (0, \squaresize) {}; % = P2
+            
+            %first layer
+            \node (h1) at (\shiftlayer, 2*\squaresize+\vshiftforH) {};
+            \node (h2) at (\shiftlayer, \squaresize+\vshiftforH) {};
+            \node (h3) at (\shiftlayer, +\vshiftforH) {};
+            \node (h4) at (\shiftlayer, -\squaresize+\vshiftforH) {};
+            \node (h5) at (\shiftlayer, -2*\squaresize+\vshiftforH) {};
+            \node (h6) at (\shiftlayer, -3*\squaresize+\vshiftforH) {}; 
+           
+            \node (hleft1) at (\shiftlayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hleft2) at (\shiftlayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hleft3) at (\shiftlayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hleft4) at (\shiftlayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hleft5) at (\shiftlayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hleft6) at (\shiftlayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hright1) at (\shiftlayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hright2) at (\shiftlayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hright3) at (\shiftlayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hright4) at (\shiftlayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hright5) at (\shiftlayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hright6) at (\shiftlayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+ 
+ 			% second hidden layer
+ 			\newcommand\shiftthislayer{2*\shiftlayer}
+            \node (hh1) at (\shiftthislayer, 2*\squaresize+\vshiftforH) {};
+            \node (hh2) at (\shiftthislayer, \squaresize+\vshiftforH) {};
+            \node (hh3) at (\shiftthislayer, +\vshiftforH) {};
+            \node (hh4) at (\shiftthislayer, -\squaresize+\vshiftforH) {};
+            \node (hh5) at (\shiftthislayer, -2*\squaresize+\vshiftforH) {};
+            \node (hh6) at (\shiftthislayer, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhleft1) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhleft2) at (\shiftthislayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhleft3) at (\shiftthislayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hhleft4) at (\shiftthislayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhleft5) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhleft6) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhright1) at (\shiftthislayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhright2) at (\shiftthislayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhright3) at (\shiftthislayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hhright4) at (\shiftthislayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhright5) at (\shiftthislayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhright6) at (\shiftthislayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            %third hidden layer
+ 			\renewcommand\shiftthislayer{3*\shiftlayer}
+            \node (hhh1) at (\shiftthislayer, 2*\squaresize+\vshiftforH) {};
+            \node (hhh2) at (\shiftthislayer, \squaresize+\vshiftforH) {};
+            \node (hhh3) at (\shiftthislayer, +\vshiftforH) {};
+            \node (hhh4) at (\shiftthislayer, -\squaresize+\vshiftforH) {};
+            \node (hhh5) at (\shiftthislayer, -2*\squaresize+\vshiftforH) {};
+            \node (hhh6) at (\shiftthislayer, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhhleft1) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhhleft2) at (\shiftthislayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhhleft3) at (\shiftthislayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hhhleft4) at (\shiftthislayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhhleft5) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhhleft6) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhhright1) at (\shiftthislayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhhright2) at (\shiftthislayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhhright3) at (\shiftthislayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hhhright4) at (\shiftthislayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhhright5) at (\shiftthislayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhhright6) at (\shiftthislayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {};  
+            
+            %output layer
+ 			\renewcommand\shiftthislayer{4*\shiftlayer}
+            \node (f1) at (\shiftthislayer, 3*\squaresize+\vshiftfory) {};
+            \node (f2) at (\shiftthislayer, 2*\squaresize+\vshiftfory) {};
+            \node (f3) at (\shiftthislayer, 1*\squaresize+\vshiftfory) {};
+            \node (f4) at (\shiftthislayer, 0*\squaresize+\vshiftfory) {}; 
+            \node (f5) at (\shiftthislayer, -1*\squaresize+\vshiftfory) {};
+            \node (f6) at (\shiftthislayer, -2*\squaresize+\vshiftfory) {};
+            \node (f7) at (\shiftthislayer, -3*\squaresize+\vshiftfory) {};
+            
+            \node (fleft1) at (\shiftthislayer-0.5*\squaresize, 3*\squaresize+\vshiftfory) {};
+            \node (fleft2) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftfory) {};
+            \node (fleft3) at (\shiftthislayer-0.5*\squaresize, 1*\squaresize+\vshiftfory) {};
+            \node (fleft4) at (\shiftthislayer-0.5*\squaresize, 0*\squaresize+\vshiftfory) {}; 
+            \node (fleft5) at (\shiftthislayer-0.5*\squaresize, -1*\squaresize+\vshiftfory) {};
+            \node (fleft6) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftfory) {};
+            \node (fleft7) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftfory) {};
+            
+            %draw the stuff
+            \draw[mycolor1] (c1) node {$x_1$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c2) node {$x_2$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c3) node {$x_3$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c4) node {$x_4$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c5) node {$x_5$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            
+            \draw (h1) circle(0.5*\squaresize);
+            \draw (h2) circle(0.5*\squaresize);
+            \draw (h3) circle(0.5*\squaresize);
+            \draw (h4) circle(0.5*\squaresize);
+            \draw (h5) circle(0.5*\squaresize);
+            \draw (h6) circle(0.5*\squaresize);
+           
+            \foreach \x in {1, 2, 3, 4, 5}
+    			\foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (c\x) ++(0.5*\squaresize, 0) -- (hleft\y); }
+                     
+             \foreach \x in {1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 4, 6} %{1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (hright\x) -- (hhleft\y); }
+            
+            \draw (hh1) circle(0.5*\squaresize);
+            \draw (hh4) circle(0.5*\squaresize);
+            \draw (hh6) circle(0.5*\squaresize);  
+            
+            \draw[dashed, red] (hh2) circle(0.5*\squaresize);
+            \draw[dashed, red] (hh3) circle(0.5*\squaresize);
+            \draw[dashed, red] (hh5) circle(0.5*\squaresize);
+            
+             \foreach \x in {1, 4, 6}%
+    			\foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (hhright\x) -- (hhhleft\y); }                     
+
+            \draw (hhh1) circle(0.5*\squaresize);
+            \draw (hhh2) circle(0.5*\squaresize);
+            \draw (hhh3) circle(0.5*\squaresize);
+            \draw (hhh4) circle(0.5*\squaresize);
+            \draw (hhh5) circle(0.5*\squaresize);
+            \draw (hhh6) circle(0.5*\squaresize);     
+            
+            
+            \draw[mycolor2] (f1) node {$\hat{y}_1$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f2) node {$\hat{y}_2$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f3) node {$\hat{y}_3$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f4) node {$\hat{y}_4$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f5) node {$\hat{y}_5$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f6) node {$\hat{y}_6$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f7) node {$\hat{y}_7$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+       
+           \foreach \x in {1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 2, 3, 4, 5, 6, 7} 
+       				 {\draw[lightGray] (hhhright\x) -- (fleft\y); }  
+                     
+       
+         \foreach \x in {1, 2, 3, 4, 5, 6}
+           \foreach \y in {2, 3, 5} %{1, 2, 3, 4, 5, 6} 
+       		{\draw[dashed, red]  (hright\x) -- (hhleft\y);
+            \draw[dashed, red] (hhright\y) -- (hhhleft\x);
+            }
+            
+            \draw[dashed, red] (hh2) circle(0.5*\squaresize);
+            \draw[dashed, red] (hh3) circle(0.5*\squaresize);
+            \draw[dashed, red] (hh5) circle(0.5*\squaresize);
+            
+    %\draw[color=red] (hh5) circle(0.5*\squaresize) node {{\footnotesize $\tau_3=1$}};
+    %\draw[color=red] (hh3) {}
+    %\foreach \y in {1, 2, 3, 4, 5, 6} 
+    %   				 {\draw[red] (hhright5) -- (hhhleft\y);
+    %                  \draw[red] (hright\y) -- (hhleft5);}  
+                      
+   %\draw[color=red] (hh3) circle(0.5*\squaresize) node {{\footnotesize $\tau_1=1$}};
+    %\draw[color=red] (hh3) {}
+    %\foreach \y in {1, 2, 3, 4, 5, 6} 
+    %   				 {\draw[red] (hhright3) -- (hhhleft\y);
+    %                  \draw[red] (hright\y) -- (hhleft3);} 
+                      
+    }},
+%
+gd_newarch/.pic={
+        code={ 
+              %\renewcommand\squaresize{1} %size of the units
+            \newcommand\squaresize{1} 
+            \newcommand\shiftlayer{3}
+            \newcommand\vshiftforH{1/2}  %vertical shift for vertical alignment of hidden layers
+            \newcommand\vshiftfory{0}  %vertical shift for vertical alignment of outputs layers
+            
+            \node (c1) at (0,0) {};
+            \node (c2) at (0, -\squaresize) {};
+            \node (c3) at (0, -2*\squaresize) {};
+            \node (c4) at (0, 2*\squaresize) {}; % = P1
+            \node (c5) at (0, \squaresize) {}; % = P2
+            
+            %encoder decoder etc.
+            \node (E)  at (\shiftlayer*0.5, 3.3*\squaresize+\vshiftforH) [align=center] {Encoder\\  $E$};
+            \node (D)  at (\shiftlayer*3.5, 3.3*\squaresize+\vshiftforH) [align=center]  {Decoder\\  $D$};
+            \node (D)  at (\shiftlayer*2, 3.3*\squaresize+\vshiftforH) [align=center]  {Guided Dropout\\ block };
+            
+            %first layer
+            \node (h1) at (\shiftlayer, 2*\squaresize+\vshiftforH) {};
+            \node (h2) at (\shiftlayer, \squaresize+\vshiftforH) {};
+            \node (h3) at (\shiftlayer, +\vshiftforH) {};
+            \node (h4) at (\shiftlayer, -\squaresize+\vshiftforH) {};
+            \node (h5) at (\shiftlayer, -2*\squaresize+\vshiftforH) {};
+            \node (h6) at (\shiftlayer, -3*\squaresize+\vshiftforH) {}; 
+           
+            \node (hleft1) at (\shiftlayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hleft2) at (\shiftlayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hleft3) at (\shiftlayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hleft4) at (\shiftlayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hleft5) at (\shiftlayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hleft6) at (\shiftlayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hright1) at (\shiftlayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hright2) at (\shiftlayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hright3) at (\shiftlayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hright4) at (\shiftlayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hright5) at (\shiftlayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hright6) at (\shiftlayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+ 
+ 			% second hidden layer
+ 			\newcommand\shiftthislayer{2*\shiftlayer}
+            \node (hh1) at (\shiftthislayer, 2*\squaresize+\vshiftforH) {};
+            \node (hh2) at (\shiftthislayer, \squaresize+\vshiftforH) {};
+            \node (hh3) at (\shiftthislayer, +\vshiftforH) {};
+            \node (hh4) at (\shiftthislayer, -\squaresize+\vshiftforH) {};
+            \node (hh5) at (\shiftthislayer, -2*\squaresize+\vshiftforH) {};
+            \node (hh6) at (\shiftthislayer, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhleft1) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhleft2) at (\shiftthislayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhleft3) at (\shiftthislayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hhleft4) at (\shiftthislayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhleft5) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhleft6) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhright1) at (\shiftthislayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhright2) at (\shiftthislayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhright3) at (\shiftthislayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hhright4) at (\shiftthislayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhright5) at (\shiftthislayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhright6) at (\shiftthislayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            %third hidden layer
+ 			\renewcommand\shiftthislayer{3*\shiftlayer}
+            \node (hhh1) at (\shiftthislayer, 2*\squaresize+\vshiftforH) {};
+            \node (hhh2) at (\shiftthislayer, \squaresize+\vshiftforH) {};
+            \node (hhh3) at (\shiftthislayer, +\vshiftforH) {};
+            \node (hhh4) at (\shiftthislayer, -\squaresize+\vshiftforH) {};
+            \node (hhh5) at (\shiftthislayer, -2*\squaresize+\vshiftforH) {};
+            \node (hhh6) at (\shiftthislayer, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhhleft1) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhhleft2) at (\shiftthislayer-0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhhleft3) at (\shiftthislayer-0.5*\squaresize, +\vshiftforH) {};
+            \node (hhhleft4) at (\shiftthislayer-0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhhleft5) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhhleft6) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftforH) {}; 
+            
+            \node (hhhright1) at (\shiftthislayer+0.5*\squaresize, 2*\squaresize+\vshiftforH) {};
+            \node (hhhright2) at (\shiftthislayer+0.5*\squaresize, \squaresize+\vshiftforH) {};
+            \node (hhhright3) at (\shiftthislayer+0.5*\squaresize, +\vshiftforH) {};
+            \node (hhhright4) at (\shiftthislayer+0.5*\squaresize, -\squaresize+\vshiftforH) {};
+            \node (hhhright5) at (\shiftthislayer+0.5*\squaresize, -2*\squaresize+\vshiftforH) {};
+            \node (hhhright6) at (\shiftthislayer+0.5*\squaresize, -3*\squaresize+\vshiftforH) {};  
+            
+            %output layer
+ 			\renewcommand\shiftthislayer{4*\shiftlayer}
+            \node (f1) at (\shiftthislayer, 3*\squaresize+\vshiftfory) {};
+            \node (f2) at (\shiftthislayer, 2*\squaresize+\vshiftfory) {};
+            \node (f3) at (\shiftthislayer, 1*\squaresize+\vshiftfory) {};
+            \node (f4) at (\shiftthislayer, 0*\squaresize+\vshiftfory) {}; 
+            \node (f5) at (\shiftthislayer, -1*\squaresize+\vshiftfory) {};
+            \node (f6) at (\shiftthislayer, -2*\squaresize+\vshiftfory) {};
+            \node (f7) at (\shiftthislayer, -3*\squaresize+\vshiftfory) {};
+            
+            \node (fleft1) at (\shiftthislayer-0.5*\squaresize, 3*\squaresize+\vshiftfory) {};
+            \node (fleft2) at (\shiftthislayer-0.5*\squaresize, 2*\squaresize+\vshiftfory) {};
+            \node (fleft3) at (\shiftthislayer-0.5*\squaresize, 1*\squaresize+\vshiftfory) {};
+            \node (fleft4) at (\shiftthislayer-0.5*\squaresize, 0*\squaresize+\vshiftfory) {}; 
+            \node (fleft5) at (\shiftthislayer-0.5*\squaresize, -1*\squaresize+\vshiftfory) {};
+            \node (fleft6) at (\shiftthislayer-0.5*\squaresize, -2*\squaresize+\vshiftfory) {};
+            \node (fleft7) at (\shiftthislayer-0.5*\squaresize, -3*\squaresize+\vshiftfory) {};
+            
+            %draw the stuff
+            \draw[mycolor1] (c1) node {$x_1$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c2) node {$x_2$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c3) node {$x_3$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c4) node {$x_4$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor1]  (c5) node {$x_5$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            
+            \draw (h1) circle(0.5*\squaresize);
+            \draw (h2) circle(0.5*\squaresize);
+            \draw (h3) circle(0.5*\squaresize);
+            \draw (h4) circle(0.5*\squaresize);
+            \draw (h5) circle(0.5*\squaresize);
+            \draw (h6) circle(0.5*\squaresize);
+           
+            \foreach \x in {1, 2, 3, 4, 5}
+    			\foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[lightGray] (c\x) ++(0.5*\squaresize, 0) -- (hleft\y); }
+                     
+             \foreach \x in {1, 2, 3, 4, 5, 6}
+    			\foreach \y in {3, 4, 5} 
+       				 {\draw[dashed, red] (hright\x) -- (hhleft\y); }
+            
+            % \draw[dashed, red] (hh1) circle(0.5*\squaresize);
+            %\draw[dashed, red] (hh2) circle(0.5*\squaresize);
+            \draw[dashed, red] (hh3) circle(0.5*\squaresize);
+            \draw[dashed, red] (hh4) circle(0.5*\squaresize);
+            \draw[dashed, red] (hh5) circle(0.5*\squaresize);
+            % \draw[dashed, red] (hh6) circle(0.5*\squaresize);     
+            
+             \foreach \x in {3, 4, 5} %{1, 4, 6}%
+    			\foreach \y in {1, 2, 3, 4, 5, 6} 
+       				 {\draw[dashed, red] (hhright\x) -- (hhhleft\y); }                     
+
+            \draw (hhh1) circle(0.5*\squaresize);
+            \draw (hhh2) circle(0.5*\squaresize);
+            \draw (hhh3) circle(0.5*\squaresize);
+            \draw (hhh4) circle(0.5*\squaresize);
+            \draw (hhh5) circle(0.5*\squaresize);
+            \draw (hhh6) circle(0.5*\squaresize);     
+            
+            
+            \draw[mycolor2] (f1) node {$\hat{y}_1$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f2) node {$\hat{y}_2$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f3) node {$\hat{y}_3$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f4) node {$\hat{y}_4$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f5) node {$\hat{y}_5$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f6) node {$\hat{y}_6$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+            \draw[mycolor2] (f7) node {$\hat{y}_7$} ++(-0.5*\squaresize,-0.5*\squaresize) --++(\squaresize,0) --++ (0,\squaresize) --++(-\squaresize,0) --++(0,-\squaresize);
+       
+           \foreach \x in {1, 2, 3, 4, 5, 6}
+    			\foreach \y in {1, 2, 3, 4, 5, 6, 7} 
+       				 {\draw[lightGray] (hhhright\x) -- (fleft\y); }  
+                     
+          
+          \foreach \x in {1, 2, 3, 4, 5, 6}
+       				 {\draw[->, gray] (hright\x) edge[bend left] (hhhleft\x) node[midway] {$=$}; } 
+    %\draw[color=red] (hh5) circle(0.5*\squaresize) node {{\footnotesize $\tau_3=1$}};
+    %\draw[color=red] (hh3) {}
+    %\foreach \y in {1, 2, 3, 4, 5, 6} 
+    %   				 {\draw[red] (hhright5) -- (hhhleft\y);
+    %                  \draw[red] (hright\y) -- (hhleft5);}  
+                      
+   %\draw[color=red] (hh3) circle(0.5*\squaresize) node {{\footnotesize $\tau_1=1$}};
+    %\draw[color=red] (hh3) {}
+    %\foreach \y in {1, 2, 3, 4, 5, 6} 
+    %   				 {\draw[red] (hhright3) -- (hhhleft\y);
+    %                  \draw[red] (hright\y) -- (hhleft3);} 
+                      
+    }}
+    
+    
+
+   
+}

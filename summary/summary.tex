@@ -1,0 +1,91 @@
+%!TEX root = ../thesis.tex
+%*******************************************************************************
+%****************************** Third Chapter **********************************
+%*******************************************************************************
+\thispagestyle{empty}
+\newgeometry{
+left=12mm,
+top=30mm,
+right=12mm,
+bottom=30mm
+}
+
+\begin{textblock*}{61mm}(16mm,3mm)
+	\noindent\includegraphics[height=24mm]{ed_doc/\logoEd.jpeg}
+\end{textblock*}
+
+%\begin{changemargin}{-3cm}{-3cm}
+
+\begin{footnotesize}
+%%%Titre de la thèse en français / Thesis title in french
+\begin{center}
+\fcolorbox{bordeau}{white}{\parbox{0.95\textwidth}{
+{\bf Titre:} \PhDTitleFR 
+%\medskip
+
+%%%Mots clés en français, séprarés par des ; / Keywords in french, separated by ;
+{\bf Mots clés:} \keywordsFR 
+\vspace*{-4mm}
+
+%%% Résumé en français / abstract in french
+\begin{multicols}{2}
+{\bf Résumé:} 
+\abstractFR 
+\end{multicols}
+}}
+\end{center}
+
+\vspace*{0mm}
+
+%%%Titre de la thèse en anglais / Thesis title in english
+\begin{center}
+\fcolorbox{bordeau}{white}{\parbox{0.95\textwidth}{
+{\bf Title:} \PhDTitleEN 
+%\medskip
+
+%%%Mots clés en anglais, séprarés par des ; / Keywords in english, separated by ;
+{\bf Keywords:}  \keywordsEN %%3 à 6 mots clés%%
+\vspace*{-4mm}
+\begin{multicols}{2}
+	
+%%% Résumé en anglais / abstract in english
+{\bf Abstract:} 
+\begin{footnotesize}
+\abstractEN
+\end{footnotesize}
+\end{multicols}
+}}
+\end{center}
+\end{footnotesize}
+
+\begin{textblock*}{161mm}(10mm,270mm)
+\color{bordeau}
+{\bf\noindent Université Paris-Saclay	         }
+
+\noindent Espace Technologique / Immeuble Discovery 
+
+\noindent Route de l’Orme aux Merisiers RD 128 / 91190 Saint-Aubin, France 
+\end{textblock*}
+
+\begin{textblock*}{20mm}(182mm,255mm)
+\includegraphics[width=20mm]{ed_doc/UPSACLAY-petit}
+\end{textblock*}
+
+
+
+\restoregeometry 
+
+% \begin{small}
+% \vspace*{-3.5cm}
+% \section*{Summary}
+% This thesis addresses problems of security in the French grid operated by RTE, the French ``Transmission System Operator'' (TSO). Progress in sustainable energy, electricity market efficiency, or novel consumption patterns push TSO's to operate the grid closer to its security limits. To this end, it is essential to make the grid ``smarter''. To tackle this issue, this work explores the benefits of artificial neural networks. \\
+% We propose novel deep learning algorithms and architectures to assist the decisions of human operators (TSO dispatchers) that we called “guided dropout”. This allows the predictions on power flows following of a grid willful or accidental modification. This is tackled by separating the different inputs: continuous data (productions and consumptions) are introduced in a standard way, via a neural network input layer while discrete data (grid topologies) are encoded directly in the neural network architecture. This architecture is dynamically modified based on the power grid topology by switching on or off hidden units activation's.  \\
+% The main advantage of this technique lies in its ability to predict the flows even for previously unseen grid topologies. The "guided dropout" achieves a high accuracy (up to 99\% of precision for flow predictions) with a 300 times speedup compared to physical grid simulators based on Kirchoff's laws even for unseen contingencies, without detailed knowledge of the grid structure. We also showed that guided dropout can be used to rank contingencies that might occur in the order of severity. In this application, we demonstrated that our algorithm obtains the same risk as currently implemented policies while requiring only 2\% of today's computational budget. The ranking remains relevant even handling grid cases never seen before, and can be used to have an overall estimation of the global security of the power grid.
+% \vspace*{-0.5cm}
+% \section*{Résumé}
+% Cette thèse porte sur les problèmes de sécurité sur le réseau électrique français exploité par RTE, le Gestionnaire de Réseau de Transport (GRT). Les progrès en matière d'énergie durable, d'efficacité du marché de l'électricité ou de nouveaux modes de consommation poussent les GRT à exploiter le réseau plus près de ses limites de sécurité. Pour ce faire, il est essentiel de rendre le réseau plus "intelligent". Pour s'attaquer à ce problème, ce travail explore les avantages des réseaux neuronaux artificiels. \\
+% Nous proposons de nouveaux algorithmes et architectures d'apprentissage profond pour aider les opérateurs humains (dispatcheurs) à prendre des décisions que nous appelons " guided dropout ". Ceci permet de prévoir les flux électriques consécutifs à une modification volontaire ou accidentelle du réseau. Pour se faire, les données continues (productions et consommations) sont introduites de manière standard, via une couche d'entrée au réseau neuronal, tandis que les données discrètes (topologies du réseau électrique) sont encodées directement dans l'architecture réseau neuronal. L’architecture est modifiée dynamiquement en fonction de la topologie du réseau électrique en activant ou désactivant des unités cachées. \\
+% Le principal avantage de cette technique réside dans sa capacité à prédire les flux même pour des topologies de réseau inédites. Le "guided dropout" atteint une précision élevée (jusqu'à 99\% de précision pour les prévisions de débit) tout en allant 300 fois plus vite que des simulateurs de grille physiques basés sur les lois de Kirchoff, même pour des topologies jamais vues, sans connaissance détaillée de la structure de la grille. Nous avons également montré que le "guided dropout" peut être utilisé pour classer par ordre de gravité des évènements pouvant survenir. Dans cette application, nous avons démontré que notre algorithme permet d'obtenir le même risque que les politiques actuellement mises en œuvre tout en n'exigeant que 2\% du budget informatique. Le classement reste pertinent, même pour des cas de réseau jamais vus auparavant, et peut être utilisé pour avoir une estimation globale de la sécurité globale du réseau électrique.
+
+% \end{small}
+%\end{changemargin}
