@@ -185,19 +185,17 @@
 % \ifsetDraft
 	%\usepackage[dvipsnames]{xcolor}
 	\definecolor{amethyst}{rgb}{0.6, 0.4, 0.8}
+	\definecolor{celadon}{rgb}{0.67, 0.88, 0.69}
+	\definecolor{almond}{rgb}{0.94, 0.87, 0.8}
+	\definecolor{atomictangerine}{rgb}{1.0, 0.6, 0.4}
 	% http://latexcolor.com/ for other color and code to define them
 	\usepackage[colorinlistoftodos]{todonotes}
-	\newcommand{\benjamin}[1]{\todo[size=\small,inline,color=green!40]{#1  \-- Benjamin}}
+	\newcommand{\victor}[1]{\todo[size=\small,inline,color=almond]{#1  \-- Victor}}
 	\newcommand{\isabelle}[1]{\todo[size=\small,inline,color=red!50]{#1  \-- Isabelle}}
-	\newcommand{\balthazar}[1]{\todo[size=\small,inline,color=orange]{#1 \-- Balthazar}}
-	\newcommand{\antoine}[1]{\todo[size=\small,inline,color=amethyst]{#1 \-- Antoine}}
-	\newcommand{\marc}[1]{\todo[size=\small,inline,color=orange]{#1 \-- Marc}}
-	\newcommand{\patrick}[1]{\todo[size=\small,inline,color=amethyst]{#1 \-- Patrick}}
-	\newcommand{\remy}[1]{\todo[size=\small,inline,color=amethyst]{#1 \-- Remy}}
-	\newcommand{\nicolas}[1]{\todo[size=\small,inline,color=red!50]{#1  \-- Nicolas}}
-    
-	\newcommand{\louis}[1]{\todo[size=\small,inline,color=amethyst]{#1 \-- Louis Wehenkel}}
-	\newcommand{\liva}[1]{\todo[size=\small,inline,color=orange]{#1  \-- Liva Ralaivola}}
+	\newcommand{\cecile}[1]{\todo[size=\small,inline,color=atomictangerine]{#1 \-- Cecile}}
+	\newcommand{\david}[1]{\todo[size=\small,inline,color=amethyst]{#1 \-- David}}
+
+	\newcommand{\topic}[1]{\todo[size=\small,inline,color=celadon]{Topic : #1}}
 %\else
 % \newcommand{\mynote}[1]{}
 %	\newcommand{\listoftodos}{}
@@ -236,7 +234,6 @@
 \newcommand*{\taub}{{\bm{\tau}}}
 \newcommand*{\y}{{\bm{y}}}
 \newcommand*{\h}{{\bm{h}}}
-\newcommand*{\argmin}{{\text{argmin}}}
 \newcommand*{\ttrain}{\ensuremath{\mathcal{T}^{\text{train}}}}
 \newcommand*{\ttest}{\ensuremath{\mathcal{T}^{\text{test}}}}
 
@@ -254,6 +251,9 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem*{remark}{Remark}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
 
 %%%%%%%%%%% packages
 \usepackage{bm} % bold math
