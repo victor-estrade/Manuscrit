@@ -12,12 +12,262 @@
     \graphicspath{{Chapter5/Figs/Vector/}{Chapter5/Figs/}}
 \fi
 
-\section{A}
-\subsection{A.1} 
-\subsection{A.2} 
-\section{B}
-\subsection{B.1} 
-\subsection{B.2} 
-\section{C}
-\subsection{C.1} 
-\subsection{C.2} 
+\topic{Density networks is a powerful way to solve the inverse problem while taking into account the uncertainties and nuisance parameters.}
+
+\cecile{This is a example of comment}
+
+\victor{This is a example of comment}
+
+\section{Introduction}
+
+\topic{Solving the inverse problem is hard. Taking into account the uncertainties is crucial.}
+
+Data science is now a standard in the toolbox of experimental scientists.
+Especially machine learning that is often used to reduce dimensionality while keeping relevant information.
+Among the challenges that receive special attention lies the \emph{inverse problem}.
+
+This challenge occurs notably in simulation based experimental science which includes for example nuclear physics, evolutionary biology and sociology.
+Most of the time simulations are only working in \emph{forward mode}.
+\victor{Next sentence is too long and overly complex}
+Meaning that it is only possible to go from the causal parameters to the effect and the measurement of the studied process but not the other way around.
+This is often the result of an intractable likelihood due to high dimensional integrals.
+The \emph{inverse problem} gather all the methods to extract the unobserved causal parameters from the measured data.
+
+In addition scientists often have to cope with biases and uncertainties.
+The results of an analysis are typically presented as : $\text{parameter} = \text{value} \pm \text{uncertainty}$.
+A method that allow to trace back the causal parameters from observations must come with its prescription to compute the uncertainties of the predictions.
+
+In some cases not all of the causal parameters are interesting for the study.
+Parameters are split into two categories : the \emph{parameters of interest} which are the objective of the study and the \emph{nuisance parameters} which often came from apparatus response and/or uncontrolled environment.
+
+In this work is proposed a method to tackle the inverse problem when simulation is available while computing the uncertainty on the inferred causal parameters and taking into account nuisance parameters.
+
+
+\section{Related work}
+
+\topic{This method is inspired from mixture density networks, inferno and neural statistician. It is also related to ABC, VI and probabilistic programming.}
+\victor{Add citations}
+
+\victor{Développer plus ? Décrire rejection algo et les idées principales d'amélioration. }
+
+One solution to do inference with an intractable likelihood is the Approximate Bayesian Computation (ABC).
+The most traditional ABC algorithm is the rejection algorithm which is computationally expensive.
+Although significant improvement can be achieved with advanced Monte Carlo methods this is still known to take a long time to converge.
+
+\victor{Développer plus ? VI avec des NN. Stochastic VI.}
+On the other hand Variational Inference (VI) is extremely fast but can lead to biased estimation which is a severe drawback when it leads to underestimating the uncertainty.
+
+In high Energy Physics (HEP), which motivated this work, the use of machine learning produced summary statistics combined with domain knowledge allow to conduct exact inference in the absence of nuisance parameters.
+\victor{"Extact" inference me semble maladroit}
+
+\victor{Another improvement is Mining gold. Or Also Bayesian networks ...}
+
+Causal parameters are often related to properties of the distribution of the data in statistical simulations.
+The architecture should reflect this link in order for a neural network to capture the relevant information.
+This work is using Mixture density network \cite{Bishop94mixturedensity} combined with neural network architectures that allow to take a set of real valued vectors as input.
+
+\victor{"This" refers to what ? Imprécis = à améliorer}
+This is studied in Neural statistician, in the context of transfer learning and one shot learning, where the neural network is producing summary statistics to embed the link between similar datasets.
+Inferno is the closest work of this study that optimize a neural network to produce of summary statistics that reduces the uncertainty on the parameters of interest.
+
+
+\section{Direct regression}
+
+\subsection{Setting}
+
+A generative model $G(\theta)$ is available to simulate the studied process and retrieve the observations $x$ from given parameters $\theta$.
+The objective is to reverse the generator $G^{-1}(x)$ to access the quantities of interest ruling the process.
+
+Since the process is stochastic the generator can produce different observations from the same parameters.
+The probability of observing $x$ if the generator is fed with $\theta$ is $p(x | \theta)$.
+Therefore reversing the generator means finding $p(\theta | x)$.
+From Bayes theorem we get :
+
+\begin{equation}
+    p(\theta | x) = \frac{p(x | \theta) p(\theta) }{p(x)}
+\end{equation}
+Unfortunately the likelihood $p(x | \theta)$ is often intractable because of high dimensional integrals.
+To avoid this pitfall the posterior $p(\theta | x)$ is approximated by a tractable distribution $q_\phi(\theta | x)$.
+
+
+\subsection{Density network}
+
+\topic{Mixture density networks are a tractable but powerful tool to approximate a conditional probability density.}
+
+A way of approximating the posterior $p(\theta | x)$ is to define a tractable but flexible enough family of distribution $q_\phi(\theta | x)$ parametrized by $\phi$.
+
+Initially introduced in \cite{Bishop94mixturedensity} as a generalization of least square methods to train neural network, the mixture density networks (MDN) can be made as powerful as one require while staying tractable and allowing to estimate the uncertainties of the predictions.
+
+The objective density is approximated by a linear combination of kernels $k$ :
+
+\begin{equation}
+    q_\phi(\theta | x) = \sum_{i=0}^K m_i(x ; \phi) k_i(\theta | x ; \phi)
+\end{equation}
+where $m_i(x ; \phi)$ are the mixture coefficient
+and the kernels $k_i(\theta | x ; \phi)$ usually taken as Gaussian :
+\begin{equation}
+    k_i(\theta | x ; \phi) = \frac{1}{\sigma_i(x ; \phi) \sqrt{2 \pi}} e^{- \frac{1}{2} \left ( \frac{\theta-y_i(x ; \phi)}{\sigma_i(x ; \phi)} \right )^2} 
+\end{equation}
+
+$m_i(x ; \phi)$, $\sigma_i(x ; \phi)$ and $y_i(x ; \phi)$ are the outputs of a neural network, whose parameters are gathered in $\phi$, and taking the data as input.
+Finally, the mixture coefficient have to sum up to 1.
+\begin{equation}
+    \sum_{i=0}^K m_i(x ; \phi) =  1
+\end{equation}
+
+The motivation for this approximation is twofold.
+First, given enough well chosen parameters a Gaussian mixture model can approximate any density.
+Second, a neural network with enough hidden unit is able to approximate any continuous function with arbitrarily precision.
+Combining these two properties leads to an arbitrarily powerful approximation of any conditional density $p(\theta|x)$ given enough resources.
+
+The neural network parameters $\phi$ can then be obtained by maximizing the likelihood that the model produced the given data.
+
+\begin{equation}
+    \phi^\star = \argmax_\phi \mathcal L (\phi)
+\end{equation}
+\begin{equation}
+    \mathcal L (\phi) = \sum_{i=0}^K m_i(x ; \phi) k_i(\theta | x ; \phi)
+\end{equation}
+
+Similarly to training a regular neural network regressor with least square, MDN's training is supervised therefore requires data for which the ground truth is available which is verified in our case.
+
+Finally the likelihood, with Gaussian kernels, is fully differentiable making possible the use of stochastic gradient descent methods to obtain the neural network parameters $\phi$.
+
+\subsection{Training}
+
+\topic{MDN are trained like classical regressor and allow to compute the uncertainty of the predictions.}
+
+The parameters $\phi$ are obtained by maximizing the likelihood :
+\begin{equation}
+    \phi^\star = \argmax_\phi \mathcal L (\phi)
+\end{equation}
+For convenience the optimization is usually turned into a minimization of the negative log likelihood :
+\begin{equation}
+    \phi^\star = \argmin_\phi - \log \mathcal L (\phi)
+\end{equation}
+
+In the simple case of one component ($K=1$) we get :
+\begin{equation}
+    \phi^\star = \argmin_\phi \left\{ \log(\sigma(x;\phi)) + \frac{1}{2}\log(2\pi) + \frac{(\theta - y(x;\phi))^2}{2\sigma(x;\phi)^2} \right\}
+\end{equation}
+
+The learning procedure is supervised since we need both observed data $x$ and the associated value for  $\theta$.
+
+Since the likelihood is fully differentiable in $\phi$, the optimization can be solved using stochastic gradient descent methods.
+
+\begin{algorithm}[H]
+ \For{$i \in [0, N]$}{
+  $\theta_i$    $\gets$ sample from $p(\theta)$ \;
+  $x_i$      $\gets$ $G(\theta_i)$ \;
+  $m_i, y_i, \sigma_i$ $\gets$ $f(x_i; \phi_i)$ \;
+  $loss_i$   $\gets$ $-\log \mathcal L(\phi_i; m_i, y_i, \sigma_i)$ \;
+  $grads_i$  $\gets$ backward($loss_i$) \;
+  $\phi_{i+1}$ $\gets$ Optimizer($\phi_i$, $grads_i$) \;
+ }
+ \caption{Training procedure}
+\end{algorithm}
+
+As long as a flexible and powerful enough parametric differentiable function is mapping the data $x$ to the parameter $\theta$ it is possible to approximate the conditional density.
+\victor{C'est des détails technique ça. à mettre ailleurs !}
+In particular if $x$ is not a real valued vector ($x \in \mathbb R$) but a set of data points ($x = \{v_i \in \mathbb R\}_{i=0}^N$) the only change is in the architecture of the neural network to allow the mapping between the two spaces.
+
+Once trained the inference is straightforward.
+From the experimental data $x^\star$ the mean and variance can be easily extracted:
+
+\begin{align}
+    \bar \theta & = \mathbb E_{p(\theta | x^\star)}[\theta] \\
+    & \approx \mathbb E_{q_\phi(\theta | x^\star)}[\theta] \\
+    & = \sum_{i=0}^K m_i(x^\star ; \phi) \int d\theta ~ \theta ~ k_i(\theta | x^\star ; \phi) \\
+    & = \sum_{i=0}^K m_i(x^\star ; \phi) y_i(x^\star ; \phi)
+\end{align}
+
+\begin{align}
+    \Delta\theta^2 & = \mathbb V_{p(\theta | x^\star)}[\theta] \\
+    & \approx \mathbb V_{q_\phi(\theta | x^\star)}[\theta] \\
+    & = \sum_{i=0}^K m_i(x^\star ; \phi) \int d\theta ~ \theta^2 ~ k_i(\theta | x^\star ; \phi) - \bar \theta^2 \\
+    & = \sum_{i=0}^K m_i(x^\star ; \phi) \left [ \sigma_i(x^\star ; \phi)^2 + y_i(x^\star ; \phi)^2 - \bar \theta^2 \right ]
+\end{align}
+
+\subsection{Neural network architecture}
+\topic{Neural network architecture for MDN and importance weighted dataset input}
+
+In order to accurately capture the complex mapping between the data and the parameters the architecture of the neural network should embody the constraints of the chosen family distribution.
+
+The requirement that the mixture coefficients $m_i$ sum up to 1 is enforced using softmax operator on the $K$ output neurons representing the $m_i$.
+Similarly the standard deviation of Gaussians should always be strictly positive which is fulfilled by interpreting the neuron output as $\log(\sigma_i)$.
+No particular operation are necessary on the mean $y_i$ of the Gaussians since it can take whatever real value.
+
+When the input of the neural network is not a vector but a set of vector the neural network architecture includes some reduction function.
+Such function are usually averages, minima, maxima, products, sums, geometric means or others that reduces the dimension and remain invariant to the input order of the vectors.
+In practice the average is enough.
+
+When the studied process includes some very rare events the simulation output includes importance weights to allow many rare events to be produced while keeping the distribution of events similar to reality.
+The neural network reduction function have to take the importance weights into account.
+
+\victor{This issue is not closed yet. Preliminary experiments show that if this is not done carefully the network cannot generalize to other weight distribution. I'm looking for an architecture that correctly takes this into account.}
+
+
+\subsection{Nuisance parameters}
+\topic{Nuisance parameters are marginalized using Monte Carlo integral approximation.}
+
+The objective is to infer the parameter $\mu$ of a model that describes a stochastic system from experimental data $D$.
+However $\mu$ alone is not enough to describe the experimental data.
+More parameters, noted $\alpha$, are required.
+Since the parameters $\alpha$ are not the object of study they are tagged as \emph{nuisance} parameters in opposition to the parameter \emph{of interest} $\mu$.
+
+The nuisance parameters have to be marginalized.
+\begin{equation}
+    p(\mu | x) = \int d\alpha ~ p(\alpha | x) ~ p(\mu | x, \alpha)
+\end{equation}
+
+This integral can be approximated with Monte Carlo.
+
+\begin{equation}
+	\int d\alpha ~ p(\alpha) ~ f(\alpha)
+	\approx \sum_i w_i ~ f(\alpha_i)
+\end{equation}
+
+The approximation of $p(\mu | x, \alpha)$ is done using a MDN as seen previously.
+The network takes $x$ and $\alpha$ as input and produces the mixture parameters $m_i, y_i, \sigma_i$
+
+\begin{algorithm}[H]
+ \For{$i \in [0, N]$}{
+  $\alpha_i, w_i$ $\gets$ MC sample from $p(\alpha)$ \;
+  $\bar\mu = \sum_{j=0}^K m_j(x^\star ; \phi) y_j(x^\star ; \phi) $ \;
+  $\Delta\mu = \sum_{j=0}^K m_j(x^\star ; \phi) \left [ \sigma_j(x^\star ; \phi)^2 + y_j(x^\star ; \phi)^2 - \bar \mu^2 \right ]$ \;
+  $\hat\mu$  $\gets$ $\hat\mu + w_i \times \bar\mu$ \;
+  $\hat\sigma$  $\gets$ $\hat\sigma + w_i \times (\bar\mu^2 + \Delta\mu^2)$ \;
+ }
+$\hat\sigma$  $\gets$ $\hat\sigma - \hat\mu^2$ \;
+\caption{Marginalizing the nuisance parameters $\alpha$ using MC to compute the integral.}
+\end{algorithm}
+
+
+
+\subsection{Discussing the related work} 
+
+\begin{itemize}
+    \item related to Amortized VI ? Related to simple Gaussian fit ?
+\end{itemize}
+
+
+\section{Experiments}
+
+Note : we do not need a mixture of Gaussian ($K=1$).
+
+
+\subsection{The example} 
+\subsubsection{General case} 
+
+About the separation between nuisance parameters and parameters of interest
+
+\subsubsection{A case study in Physics} 
+
+About higgs, Poisson, etc.
+
+
+\subsection{Synthetic data}
+
+\subsection{Real data}
+
+
