@@ -3,8 +3,8 @@
 %****************************** Third Chapter **********************************
 %*******************************************************************************
 
-\chapter{Applications to HEP}
-\label{chap:applications}
+\chapter{Direct regression}
+\label{chap:direct_regression}
 % **************************** Define Graphics Path **************************
 \ifpdf
     \graphicspath{{Chapter5/Figs/Raster/}{Chapter5/Figs/PDF/}{Chapter5/Figs/}}
@@ -37,7 +37,7 @@ The final result of analysis is typically presented as : $\text{parameter} = \te
 A method that allow to trace back the causal parameters from observations must come with its prescription to compute the uncertainties of the predictions.
 
 In some cases not all of the causal parameters are interesting for the study.
-Causal parameters are split into two categories : the \emph{parameters of interest} which are the objective of the study and the \emph{nuisance parameters} which often came from apparatus response and/or uncontrolled environment.
+Causal parameters are split into two categories : the \emph{parameters of interest} which are the objective of the study and the \emph{nuisance parameters} which often come from apparatus response and/or uncontrolled environment.
 
 In this work is proposed a method to tackle the inverse problem when simulation is available while computing the uncertainty on the inferred causal parameters and taking into account nuisance parameters.
 
@@ -47,27 +47,28 @@ In this work is proposed a method to tackle the inverse problem when simulation 
 \topic{This method is inspired from mixture density networks, inferno and neural statistician. 
 Other solutions to the inverse problem includes ABC, VI and probabilistic programming.}
 
-\victor{Add citations}
+\victor{TODO : Add citations}
 
-\victor{Cette section contient un peu de fourre tout pour me souvenir des sujets à aborder dans la partie sur l'état de l'art}
+\victor{Cette section contient un peu de fourre tout pour me souvenir des sujets à éventuellement aborder dans la partie sur l'état de l'art}
 
-\victor{Développer plus ? Décrire rejection algo et les idées principales d'amélioration. }
+\victor{TODO : Décrire succintement rejection algo et les idées principales d'amélioration. }
 
 One solution to do inference with an intractable likelihood is the Approximate Bayesian Computation (ABC).
 The most traditional ABC algorithm is the rejection algorithm which is computationally expensive.
 Although significant improvement can be achieved with advanced Monte Carlo methods this is still known to take a long time to converge.
 
-\victor{Développer plus ? VI avec des NN. Stochastic VI.}
+\victor{TODO : VI avec des NN. Stochastic VI.}
 On the other hand Variational Inference (VI) is extremely fast but can lead to biased estimation which is a severe drawback when it leads to underestimating the uncertainty.
 
 In high Energy Physics (HEP), which motivated this work, the use of machine learning produced summary statistics combined with domain knowledge allow to conduct exact inference in the absence of nuisance parameters.
 \victor{"Extact" inference me semble maladroit}
 
-\victor{Another improvement is Mining gold. Or Also Bayesian networks ...}
+\victor{TODO : Another improvement is Mining gold.}
+\victor{TODO : Bayesian networks}
 
 Causal parameters are often related to properties of the distribution of the data in statistical simulations.
 The architecture should reflect this link in order for a neural network to capture the relevant information.
-This work is using Mixture density network \cite{Bishop94mixturedensity} combined with neural network architectures that allow to take a set of real valued vectors as input.
+This work is using Mixture density network \cite{Bishop94mixturedensity} combined with neural network architectures design to learn summary statistics on datasets.
 Such architecture is shown in \cite{Edwards17neuralstatistician}, in the context of transfer learning and one shot learning, where the neural network is producing summary statistics to embed the link between similar datasets.
 \cite{DECASTRO2019170inferno} is the closest work of this study in which the authors optimize a neural network to produce of summary statistics that reduces the uncertainty on the parameters of interest estimation.
 
@@ -77,7 +78,7 @@ Such architecture is shown in \cite{Edwards17neuralstatistician}, in the context
 \topic{A simple but efficient solution is to map the input data to the target with a neural network whose architecture and training procedure are carefully chosen.}
 
 \subsection{Setting}
-\topic{Although the generator is available Bayesian inference is difficult because of the intractable likelihood.}
+\topic{Although the generator is available classical Bayesian inference is difficult because of the intractable likelihood.}
 
 A generative model $G(\theta)$ is available to simulate the studied process and retrieve the observations $x$ from given parameters $\theta$.
 The objective is to reverse the generator $G^{-1}(x)$ to access the quantities of interest ruling the process.
@@ -100,9 +101,9 @@ To avoid this pitfall the posterior $p(\theta | x)$ is approximated by a tractab
 
 A way of approximating the posterior $p(\theta | x)$ is to define a tractable but flexible enough family of distribution $q_\phi(\theta | x)$ parametrized by $\phi$.
 
-Initially introduced in \cite{Bishop94mixturedensity} as a generalization of least square methods to train neural network, the mixture density networks (MDN) can be made as powerful as one require while staying tractable and allowing to estimate the uncertainties of the predictions.
+Initially introduced in \cite{Bishop94mixturedensity} as a generalization of least square methods to train neural network, mixture density networks (MDN) can be made as powerful as one require while staying tractable and allowing to estimate the uncertainties of the predictions.
 
-The objective density is approximated by a linear combination of kernels $k$ :
+The target density is approximated by a linear combination of kernels $k$ :
 
 \begin{equation}
     q_\phi(\theta | x) = \sum_{i=0}^K m_i(x ; \phi) k_i(\theta | x ; \phi)
@@ -133,7 +134,8 @@ The neural network parameters $\phi$ can then be obtained by maximizing the like
     \mathcal L (\phi) = \sum_{i=0}^K m_i(x ; \phi) k_i(\theta | x ; \phi)
 \end{equation}
 
-Similarly to training a regular neural network regressor with least square, MDN's training is supervised therefore requires data for which the ground truth is available which is verified in our case.
+Similarly to training a regular neural network regressor with least square, MDN's training is supervised.
+Therefore requires data for which the ground truth is available which is verified in our case.
 
 Finally the likelihood, with Gaussian kernels, is fully differentiable making possible the use of stochastic gradient descent methods to obtain the neural network parameters $\phi$.
 
@@ -200,16 +202,16 @@ No particular operation are necessary on the mean $y_i$ of the Gaussians since i
 
 If the studied process is stochastic the observations are usually composed of repeated independent measurements of an event.
 Then the observable is not a real valued vector $x \in \RR$ but a set of data points $D = \{v_i \in \RR \}_{i=0}^N$.
-The output is still a real valued vector meaning that the neural network architecture should include some reduction function.
-Such function are usually averages, minima, maxima, products, sums, geometric means or others that reduces the dimension and remain invariant to the input order of the vectors.
-In practice the average is chosen.
+The output is still a real valued vector meaning that the neural network architecture should include some reduction function to map the set of vector to a single vector.
+Usual candidates are averages, minima, maxima, products, sums, geometric means or others that reduce the dimension and remain invariant to the input order of the input vectors.
+In practice the average is the favorite one.
 
 When the studied process includes some very rare events the simulation uses importance sampling. 
 The simulation output includes importance weights to allow many rare events to be produced while keeping the distribution of events similar to reality.
-The neural network must to take into account the importance weights to accurately regress the parameters.
-Which leads to use weighted average instead of simple average.
+The neural network must take into account the importance weights to accurately regress the parameters.
+Which leads to use weighted average instead of simple average for example.
 
-More precisely, for 2 datasets $D$ and $D^\prime$ if the associated empirical distribution are equal then the neural network output should be also equal.
+More precisely, for 2 datasets $D$ and $D^\prime$ if the associated empirical distribution are equal then the neural network output should also be equal.
 
 \begin{equation}
     \forall x, p_D(x) = p_{D^\prime}(x) \implies f(D; \phi) = f(D^\prime; \phi)
@@ -221,6 +223,7 @@ with,
 \end{equation}
 and $\delta$ is the Dirac distribution function.
 
+\victor{Oui mais Quid du fait que l'incertitude dépend du nombre d'évènement ? $\sigma$ doit changer si j'ai 10 fois moins d'évènements, non ? Oui mais d'un autre coté le réseaux est conçu pour pouvoir extraire la variance des observables d'entrée donc il peut gérer ça tout seul... Aussi si on a 10 fois moins d'évènement la distribution empirique n'est pas du tout la même donc c'est pas pertinent !}
 
 \subsection{Nuisance parameters}
 \topic{Nuisance parameters are marginalized using Monte Carlo integral approximation.}
@@ -238,8 +241,8 @@ The nuisance parameters have to be marginalized.
 This integral can be approximated with Monte Carlo.
 
 \begin{equation}
-	\int d\alpha ~ p(\alpha) ~ f(\alpha)
-	\approx \sum_i w_i ~ f(\alpha_i)
+  \int d\alpha ~ p(\alpha) ~ f(\alpha)
+  \approx \sum_i w_i ~ f(\alpha_i)
 \end{equation}
 
 Where $p(\mu | x, \alpha)$ is approximated using a trained MDN as seen previously.
@@ -248,7 +251,7 @@ The neural network $f$ produces the mixture parameters $m_i, y_i, \sigma_i$ from
 \begin{algorithm}[H]
  \For{$i \in [0, N]$}{
   $\alpha_i, w_i$ $\gets$ MC sample from $p(\alpha)$ \;
-  $m_j, y_j, \sigma_j = f(x^\star, \alpha; \phi)$
+  $m_j, y_j, \sigma_j = f(x^\star, \alpha; \phi^\star)$ \;
   $\bar\mu = \sum_{j=0}^K m_j y_j $ \;
   $\Delta\mu = \sum_{j=0}^K m_j \left [ \sigma_j^2 + y_j^2 - \bar \mu^2 \right ]$ \;
   $\hat\mu$  $\gets$ $\hat\mu + w_i \times \bar\mu$ \;
@@ -261,9 +264,17 @@ $\hat\sigma$  $\gets$ $\hat\sigma - \hat\mu^2$ \;
 
 \subsection{Discussing the related work} 
 
-\begin{itemize}
-    \item related to Amortized VI ? Related to simple Gaussian fit ?
-\end{itemize}
+Using a neural network to directly map the dataset to the estimated parameter distribution can be viewed as an extension of the work done in INFERNO \cite{DECASTRO2019170inferno}. 
+Indeed the current state of the art is using a classifier score histogram to produce summary static while INFERNO includes the summary statistic production in the neural network.
+In this work the next step, maximum likelihood fit to retrieve the parameter of interest, is also left to the neural network.
+
+Neural Statistician \cite{Edwards17neuralstatistician} is also relying on a similar neural network architecture to compute summary statistics.
+The idea in Neural Statistician is that similar datasets can be gathered as originating from the same generative model including a global parameter to control the shift between domains.
+In this work the architecture is slightly improved to take into account importance weights.
+Moreover the objective is completely different since we consider supervised regression.
+
+
+\victor{TODO : related to Amortized VI ? Related to simple Gaussian fit ?}
 
 
 \section{Experiments}
@@ -272,6 +283,27 @@ Note : we do not need a mixture of Gaussian ($K=1$).
 
 
 \subsection{The example} 
+
+\subsubsection{Toy}
+
+Let's start with a toy problem and make it gradually more complex.
+The study is about finding the proportion $\mu$ of apples and pears in a bag.
+The only information available is the total number of fruits in the bag and the weight of each individual fruit.
+Apples and pears weights are normally distributed and slightly different.
+The dataset is a set of real values $D = \{ x_i \in \RR \} $
+
+From the average weight of the fruits in the bag a linear regression is enough to find the link between $D$ and the parameter of interest $\mu$.
+The model can be trained if enough bags in which the proportion is known is available for training.
+This simplicity is wanted to test the method.
+
+Since the weight of a fruit is stochastic, two bags of fruits with the same number of apples and pears may have a different average weight.
+Leading to some uncertainty in the predicted proportion that must be reported.
+
+
+
+\victor{TODO : nuisance parameters}
+\victor{TODO : importance weight}
+
 \subsubsection{General case} 
 
 About the separation between nuisance parameters and parameters of interest
@@ -286,73 +318,23 @@ About higgs, Poisson, etc.
 \subsection{Real data}
 
 
+\section{The architecture details}
+
+\topic{Neural network using reduction function, such as the average, can extract complex link between the parameters of a generative distribution and a dataset which is a realisation of this distribution.}
+
+Section 7 of \cite{lucas:hal-01791126} gives a proof that the given \emph{"permutation invariant neural networks"} architecture is a universal approximator.
 
 
+\victor{L'idée que c'est un graphical model mais les z sont dans le simulateur}
+\victor{L'idée que si c'est sans params de nuisance alors c'est trop facile. On aurait que l'erreur statistique. On ne peut l'améliorer qu'en améliorant le classifieur. D'où vient la variance alors ?}
+\victor{Sur les vrais données on doit utiliser une méthode numérique}
+\victor{Quel est le budget accessible ? Combien coute la méthode normale en théorie et dans la vrai vie ? On refait vraiment tourner la simulation à chaque fois ? Combien coute ma méthode ?}
+\victor{Faire un plan détaillé de tout ça.}
+\victor{La simulation est trop précise. cf resultat sur l'impossibilité de séparer les domaines créé}
+\victor{Neural network as Estimator \& estimate its variance}
 
-%============================================================================================================
-% SOTA REVIEW
-%============================================================================================================
+ \section{ Performance measuring }
 
-
-\chapter{Review of the state of the art}
-
-Found this paper \url{https://arxiv.org/pdf/1903.10563.pdf} which review ML + Physics.
-
-So let's dive into the state of the art of inference in Physics using ML.
-Especially in the inverse problem setting.
-
-\section{Table of content}
-
-To help surfing in this document let's start with summarizing the approaches and give pointers to the relevant sections.
-
-
-\subsection{ ABC }
-
-Approximate Bayesian Computation is ...
-
-
-\subsection{ Domain adaptation }
-
-Pivot and other possibilities...
-
-
-\subsection{ Mining gold }
-
-Augment the simulated data with the likelihood ratio ...
-
-
-\subsection{ TODO Papers }
-
-\begin{itemize}
-    \item \url{https://arxiv.org/abs/1903.01473} : Nuisance hardened data compression for fast likelihood-free inference
-    \item \url{https://arxiv.org/abs/1707.07113} : Adversarial Variational Optimization of Non-Differentiable Simulators
-    \item \url{https://arxiv.org/abs/1806.11484} : Deep Learning and its Application to LHC Physics
-    \item \url{https://arxiv.org/abs/1611.01046} : Learning to Pivot with Adversarial Networks
-    \item \url{https://arxiv.org/abs/1706.04008} : Recurrent Inference Machines for Solving Inverse Problems
-    \item \url{https://arxiv.org/abs/1506.02169} : Approximating Likelihood Ratios with Calibrated Discriminative Classifiers
-    \item \url{https://arxiv.org/abs/1007.1727} : Asymptotic formulae for likelihood-based tests of new physics
-    \item \url{https://arxiv.org/abs/1805.07226} : Sequential Neural Likelihood: Fast Likelihood-free Inference with Autoregressive Flows
-    \item \url{https://arxiv.org/abs/1805.00020} : A Guide to Constraining Effective Field Theories with Machine Learning
-    \item \url{https://arxiv.org/abs/1805.00013} : Constraining Effective Field Theories with Machine Learning
-    \item \url{https://arxiv.org/abs/1805.12244} : Mining gold from implicit models to improve likelihood-free inference
-    \item \url{https://arxiv.org/abs/1610.08328} : Event generator tuning using Bayesian optimization
-    \item \url{https://arxiv.org/abs/1801.01497} : Massive optimal data compression and density estimation for scalable, likelihood-free inference in cosmology
-    \item \url{https://arxiv.org/abs/1802.03537} : Automatic physical inference with information maximising neural networks
-    \item \url{https://www.pp.rhul.ac.uk/~cowan/stat/aachen/cowan_aachen14_1.pdf} : Cours de Glen 2012 part 1
-    \item \url{https://www.pp.rhul.ac.uk/~cowan/stat/aachen/cowan_aachen14_2.pdf} : Cours de Glen 2012 part 2
-    \item \url{https://www.pp.rhul.ac.uk/~cowan/stat/aachen/cowan_aachen14_3.pdf} : Cours de Glen 2012 part 3
-    \item \url{https://www.pp.rhul.ac.uk/~cowan/stat/aachen/cowan_aachen14_4.pdf} : Cours de Glen 2012 part 4
-    \item \url{https://www.pp.rhul.ac.uk/~cowan/stat/aachen/cowan_aachen14_5.pdf} : Cours de Glen 2012 part 5
-    \item \url{} : 
-    \item \url{https://cds.cern.ch/record/1099977/files/p111.pdf} : Computing Likelihood Functions for High-Energy Physics Experiments when Distributions are Defined by Simulators with Nuisance Parameters
-    \item \url{} : 
-    \item \url{} : 
-    \item \url{} : 
-    \item \url{} : 
-    \item \url{} : 
-\end{itemize}
-
-
-
+Suppose that a method give us an estimate of $\mu$ and its variance $\sigma_\mu$
 
 
