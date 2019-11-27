@@ -1,7 +1,8 @@
 % ******************************* PhD Thesis Template **************************
 % Please have a look at the README.md file for info on how to use the template
 
-\documentclass[a4paper,12pt,times,numbered,print, custommargin]{Classes/PhDThesisPSnPDF}
+% \documentclass[a4paper,12pt,times,numbered,print,custommargin,chapter]{Classes/PhDThesisPSnPDF}
+\documentclass[a4paper,12pt,times,numbered,print,custommargin]{Classes/PhDThesisPSnPDF}
 
 \title{PhD_thesis} % not the right title, just here for the name of overleaf project
 
@@ -105,7 +106,7 @@
 % To use choose `chapter' option in the document class
 
 \ifdefineChapter
- \includeonly{Chapter3/chapter3}
+ \includeonly{Chapter5/chapter5}
 \fi
 
 \input{Glossary/glossary.tex}
@@ -142,13 +143,13 @@
 % ******************************** Main Matter *********************************
 \mainmatter
 
-\include{Chapter1/chapter1} %intro
-\include{Chapter2/chapter2} %power system
-\include{Chapter3/chapter3} %donnees
-\include{Chapter4/chapter4} %ML
-\include{Chapter5/chapter5} %methode
+\include{Chapter1/chapter1} %intro Physics for ML
+\include{Chapter2/chapter2} %intro ML For Physisist
+\include{Chapter3/chapter3} %Domain adaptation
+\include{Chapter4/chapter4} %New methods : INFERNO, Mining gold, etc
+\include{Chapter5/chapter5} %Direct regression
 % \include{Chapter6/chapter6} %resultats
-\include{Chapter8/chapter8} %ccl and further work
+\include{Chapter8/chapter8} %conclusion and further work
 
 
 
