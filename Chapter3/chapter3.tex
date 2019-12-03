@@ -317,6 +317,12 @@ The idea in Neural Statistician is that similar datasets can be gathered as orig
 In this work the architecture is slightly improved to take into account importance weights.
 Moreover the objective is completely different since we consider supervised regression.
 
+Causal parameters are often related to properties of the distribution of the data in statistical simulations.
+The architecture should reflect this link in order for a neural network to capture the relevant information.
+This work is using Mixture density network \cite{Bishop94mixturedensity} combined with neural network architectures design to learn summary statistics on datasets.
+Such architecture is shown in \cite{Edwards17neuralstatistician}, in the context of transfer learning and one shot learning, where the neural network is producing summary statistics to embed the link between similar datasets.
+\cite{DECASTRO2019170inferno} is the closest work of this study in which the authors optimize a neural network to produce of summary statistics that reduces the uncertainty on the parameters of interest estimation.
+
 
 \victor{TODO : related to Amortized VI ? Related to simple Gaussian fit ?}
 

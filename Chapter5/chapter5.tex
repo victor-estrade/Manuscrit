@@ -14,32 +14,10 @@
 
 
 
-\section{OLD} % (fold)
-
-
-\section{Introduction}
-
-
-\section{Related work}
-
-
-
-
-Causal parameters are often related to properties of the distribution of the data in statistical simulations.
-The architecture should reflect this link in order for a neural network to capture the relevant information.
-This work is using Mixture density network \cite{Bishop94mixturedensity} combined with neural network architectures design to learn summary statistics on datasets.
-Such architecture is shown in \cite{Edwards17neuralstatistician}, in the context of transfer learning and one shot learning, where the neural network is producing summary statistics to embed the link between similar datasets.
-\cite{DECASTRO2019170inferno} is the closest work of this study in which the authors optimize a neural network to produce of summary statistics that reduces the uncertainty on the parameters of interest estimation.
-
-
-
-
 \victor{L'idée que c'est un graphical model mais les z sont dans le simulateur}
 \victor{L'idée que si c'est sans params de nuisance alors c'est trop facile. On aurait que l'erreur statistique. On ne peut l'améliorer qu'en améliorant le classifieur. D'où vient la variance alors ?}
 \victor{Sur les vrais données on doit utiliser une méthode numérique}
 \victor{Quel est le budget accessible ? Combien coute la méthode normale en théorie et dans la vrai vie ? On refait vraiment tourner la simulation à chaque fois ? Combien coute ma méthode ?}
-\victor{Faire un plan détaillé de tout ça.}
-\victor{La simulation est trop précise. cf resultat sur l'impossibilité de séparer les domaines créé}
 \victor{Neural network as Estimator \& estimate its variance}
 
 
