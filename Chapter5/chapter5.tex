@@ -32,56 +32,6 @@ Such architecture is shown in \cite{Edwards17neuralstatistician}, in the context
 \cite{DECASTRO2019170inferno} is the closest work of this study in which the authors optimize a neural network to produce of summary statistics that reduces the uncertainty on the parameters of interest estimation.
 
 
-\section{Direct regression}
-
-
-
-\section{Experiments}
-
-Note : we do not need a mixture of Gaussian ($K=1$).
-
-
-\subsection{The example} 
-
-\subsubsection{Toy}
-
-Let's start with a toy problem and make it gradually more complex.
-The study is about finding the proportion $\mu$ of apples and pears in a bag.
-The only information available is the total number of fruits in the bag and the weight of each individual fruit.
-Apples and pears weights are normally distributed and slightly different.
-The dataset is a set of real values $D = \{ x_i \in \RR \} $
-
-From the average weight of the fruits in the bag a linear regression is enough to find the link between $D$ and the parameter of interest $\mu$.
-The model can be trained if enough bags in which the proportion is known is available for training.
-This simplicity is wanted to test the method.
-
-Since the weight of a fruit is stochastic, two bags of fruits with the same number of apples and pears may have a different average weight.
-Leading to some uncertainty in the predicted proportion that must be reported.
-
-
-
-\victor{TODO : nuisance parameters}
-\victor{TODO : importance weight}
-
-\subsubsection{General case} 
-
-About the separation between nuisance parameters and parameters of interest
-
-\subsubsection{A case study in Physics} 
-
-About higgs, Poisson, etc.
-
-
-\subsection{Synthetic data}
-
-\subsection{Real data}
-
-
-\section{The architecture details}
-
-\topic{Neural network using reduction function, such as the average, can extract complex link between the parameters of a generative distribution and a dataset which is a realisation of this distribution.}
-
-Section 7 of \cite{lucas:hal-01791126} gives a proof that the given \emph{"permutation invariant neural networks"} architecture is a universal approximator.
 
 
 \victor{L'idée que c'est un graphical model mais les z sont dans le simulateur}

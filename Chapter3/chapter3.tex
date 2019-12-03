@@ -19,6 +19,11 @@
 
 \victor{simulateur rapide}
 
+
+\victor{TODO : nuisance parameters}
+\victor{TODO : importance weight}
+
+
 \section{Evaluation metric} % (fold)
 \label{sec:evaluation_metric}
 
@@ -257,6 +262,13 @@ and $\delta$ is the Dirac distribution function.
 
 \victor{Oui mais Quid du fait que l'incertitude dépend du nombre d'évènement ? $\sigma$ doit changer si j'ai 10 fois moins d'évènements, non ? Oui mais d'un autre coté le réseaux est conçu pour pouvoir extraire la variance des observables d'entrée donc il peut gérer ça tout seul... Aussi si on a 10 fois moins d'évènement la distribution empirique n'est pas du tout la même donc c'est pas pertinent !}
 
+
+\topic{Neural network using reduction function, such as the average, can extract complex link between the parameters of a generative distribution and a dataset which is a realisation of this distribution.}
+
+Section 7 of \cite{lucas:hal-01791126} gives a proof that the given \emph{"permutation invariant neural networks"} architecture is a universal approximator.
+
+
+
 \subsubsection{Nuisance parameters}
 \topic{Nuisance parameters are marginalized using Monte Carlo integral approximation.}
 
@@ -309,7 +321,26 @@ Moreover the objective is completely different since we consider supervised regr
 \victor{TODO : related to Amortized VI ? Related to simple Gaussian fit ?}
 
 
+\subsection{Toys} % (fold)
+\label{sub:toys}
+
 \victor{Montrer sur des toys}
+
+\subsubsection{Apple and pears}
+
+Let's start with a toy problem and make it gradually more complex.
+The study is about finding the proportion $\mu$ of apples and pears in a bag.
+The only information available is the total number of fruits in the bag and the weight of each individual fruit.
+Apples and pears weights are normally distributed and slightly different.
+The dataset is a set of real values $D = \{ x_i \in \RR \} $
+
+From the average weight of the fruits in the bag a linear regression is enough to find the link between $D$ and the parameter of interest $\mu$.
+The model can be trained if enough bags in which the proportion is known is available for training.
+This simplicity is wanted to test the method.
+
+Since the weight of a fruit is stochastic, two bags of fruits with the same number of apples and pears may have a different average weight.
+Leading to some uncertainty in the predicted proportion that must be reported.
+
 
 \victor{VAE}
 
