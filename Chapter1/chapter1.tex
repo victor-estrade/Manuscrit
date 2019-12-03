@@ -11,7 +11,12 @@
     \graphicspath{{Chapter1/Figs/Vector/}{Chapter1/Figs/}}
 \fi
 
-Contexte et position du problème du point de vue de la physique.
+\cecile{This is a example of comment}
+
+\victor{This is a example of comment}
+
+\isabelle{This is a example of comment}
+
 
 \section{Background}
 
@@ -46,106 +51,3 @@ Levée de confusion entre mesure et découverte.
 Évaluation quantitative empirique des résultats => test statistique "non parametrique"
 
 + justifications théorique
-
-
-\section{OLD} % (fold)
-
-
-
-\section{Before Machine learning}
-
-How it was done before machine learning
-
-\section{With machine learning}
-
-How it is done with machine learning
-
-
-\section{Estimating a cross section} % (fold)
-\label{sec:estimating_a_cross_section}
-
-We are studying a stochatic phenomenon which generative process is described as :
-
-\begin{equation}
-	\label{eq:mixture_model}
-	p(x|m) = m p(x|s) + (1-m) p(x|b)
-\end{equation}
-where $x$ is the set of observable features of the studied event gathered in a vector.
-Events are split into 2 classes : the signals $S$ and the backgrounds $B$.
-$m$ is the mixture coefficient between suignals and backgrounds.
-
-$m$ can be seen as the probability for an event to be a signal $p(s)$. 
-It naturally follows that $1-m$ is the probability for an event to be a background $p(b)=1-p(s)$.
-\autoref{eq:mixture_model} can be written as
-\begin{equation}
-	p(x) = p(s)p(x|s) + p(b)p(x|b)
-\end{equation}
-
-In many interesting cases the nature of the event (signal/background) are not among the possible measurement that can be made.
-Moreover the likelihoods $p(x|s)$ and $p(x|b)$ are intractable because of high dimension integrals or simply because computable formulas do not exist.
-However building a simulator working only in forward mode allowing to sample from $p(x|m)$ is possible.
-This problem is known as the inverse problem. 
-The objective is to infer causal parameters from observations hence reversing the forward process which goes from causal parameters to observations.
-
-
-The example that motivates this work is comming from High Energy Physics (HEP) where events are collisions in a particle accelerator.
-Signals are events giving birth to a Higgs boson and backgrounds gather all the other collisions.
-$m$ is therefore connected to branch factor (cross section ?) of the Higgs boson which is the parameter we want to measure.
-
-\victor{Link between cross-section, branch factor, luminosity ?}
-
-Measurements are made from a large bunch of independant and identically distributed events $D=\{x_i\}_{i=1}^N$.
-
-\begin{align*}
-	p(D|m) =& \prod_{i=1}^N m p(x|s) + (1-m) p(x|b) \\
-	       =& \prod_{i=1}^N p(x|b) \left [(1-m) + m \frac{p(x|s)}{p(x|b)} \right ]\\
-	       =& \underbrace{\left[ \prod_{i=1}^N p(x|b) \right ]}_{h(x)} \times 
-	       \underbrace{\left [\prod_{i=1}^N (1-m) + m \frac{p(x|s)}{p(x|b)} \right ]}_{g_m(T(x))}
-\end{align*}
-with $T(x) = \frac{p(x|s)}{p(x|b)} $
-
-Fisher-Neyman factorization theorem states that $T(x)$ is a sufficient summary statistic to obtain $m$
-
-The maximum likelihood estimator, noted $\hat m$ is commonly used to estimate the parameter of interest.
-Recall that maximum likelihood estimator are strictly equivalent to a maximum a posteriori estimator using a uniform prior.
-This is a reasonable choice when we do not have prior knowledge as in this example.
-
-\begin{equation}
-	\hat m = \argmax_m p(m | D)
-\end{equation}
-
-It is more convenient to express the result as a deviation from the prediction of the Standard Model.
-The deviation is defined as :
-
-\begin{equation}
-	\mu = \frac{p(s)}{p_{SM}(s)} = \frac{m}{p_{SM}(s)}
-\end{equation}
-$p_{SM}(s)$ is the expected probability to get a signal following the Standard Model.
-Recovering $m$ from $\mu$ is trivially done with $m = \mu p_{SM}(s)$.
-
-The estimator is now :
-\begin{align}
-	\hmu =& \argmax_\mu p(\mu | D) \\
-	     =& \argmax_\mu \frac{p(\mu)}{p(D)} p(D | \mu) \\
-	     =& \argmax_\mu p(\mu) p(D | \mu) \\
-	     =& \argmax_\mu  p(D | \mu) \\
-	     =& \argmax_\mu  \prod_{i=1}^N g_\mu(T(x)) \\
-\end{align}
-
-
-$T(x)$ can be obtained using a classifier $c$ trained to separate signals and backgrounds.
-A Bayes optimal classifier output gives :
-\begin{equation}
-	c(x) = \frac{s p(x|s)}{(1-s) p(x|b) + s p(x|s)}
-\end{equation}
-where $s$ is the fraction of signals used in the training dataset.
-
-\begin{equation}
-	T(x) = \frac{c(x)}{(1-c(x))} \frac{(1-s)}{s} 
-\end{equation}
-
-
-Note : $c$ is also a sufficient summary statistic
-\begin{equation}
-	g_\mu(T(x)) = 1 - \mu p_{SM}(s) + \mu p_{SM}(s) \times \frac{c(x)}{(1-c(x))} \frac{(1-s)}{s} = f_\mu(c(x))
-\end{equation}
