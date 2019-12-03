@@ -138,7 +138,24 @@ Note : $c$ is also a sufficient summary statistic
 \label{sub:state_of_the_art_on_this_problem}
 
 
-state of the art on how physics solve the problem
+
+\victor{state of the art on how (physicist ?) to solve the problem}
+
+\victor{TODO : Décrire succintement rejection algo et les idées principales d'amélioration. }
+
+One solution to do inference with an intractable likelihood is the Approximate Bayesian Computation (ABC).
+The most traditional ABC algorithm is the rejection algorithm which is computationally expensive.
+Although significant improvement can be achieved with advanced Monte Carlo methods this is still known to take a long time to converge.
+
+\victor{TODO : VI avec des NN. Stochastic VI.}
+On the other hand Variational Inference (VI) is extremely fast but can lead to biased estimation which is a severe drawback when it leads to underestimating the uncertainty.
+
+In high Energy Physics (HEP), which motivated this work, the use of machine learning produced summary statistics combined with domain knowledge allow to conduct exact inference in the absence of nuisance parameters.
+\victor{"Extact" inference me semble maladroit}
+
+\victor{TODO : Another improvement is Mining gold.}
+\victor{TODO : Bayesian networks}
+
 
 
 \emph{Before Machine learning}
