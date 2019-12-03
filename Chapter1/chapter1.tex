@@ -13,7 +13,43 @@
 
 Contexte et position du problème du point de vue de la physique.
 
-\section{Intro}
+\section{Background}
+
+
+\subsection{High energy physics} % (fold)
+\label{sub:high_energy_physics}
+
+\subsection{CERN} % (fold)
+\label{sub:cern}
+
+
+\subsection{Systematics} % (fold)
+\label{sub:systematics}
+
+\section{Motivation} % (fold)
+\label{sec:motivation}
+
+Limitations des méthodes actuelles
+
+\subsection{Accuracy} % (fold)
+\label{sub:accuracy}
+
+
+\subsection{computation} % (fold)
+\label{sub:computation}
+
+\subsection{Understanding and methodology} % (fold)
+\label{sub:understanding_and_methodology}
+
+Levée de confusion entre mesure et découverte.
+
+Évaluation quantitative empirique des résultats => test statistique "non parametrique"
+
++ justifications théorique
+
+
+\section{OLD} % (fold)
+
 
 
 \section{Before Machine learning}
@@ -42,11 +78,11 @@ $m$ can be seen as the probability for an event to be a signal $p(s)$.
 It naturally follows that $1-m$ is the probability for an event to be a background $p(b)=1-p(s)$.
 \autoref{eq:mixture_model} can be written as
 \begin{equation}
-	p(x|m) = p(s)p(x|s) + p(b)p(x|b)
+	p(x) = p(s)p(x|s) + p(b)p(x|b)
 \end{equation}
 
 In many interesting cases the nature of the event (signal/background) are not among the possible measurement that can be made.
-Moreover the likelihoods $p(x|s)$ and $p(x|b)$ cannot be computed because they include high dimension integrals or simply because computable formulas do not exist.
+Moreover the likelihoods $p(x|s)$ and $p(x|b)$ are intractable because of high dimension integrals or simply because computable formulas do not exist.
 However building a simulator working only in forward mode allowing to sample from $p(x|m)$ is possible.
 This problem is known as the inverse problem. 
 The objective is to infer causal parameters from observations hence reversing the forward process which goes from causal parameters to observations.
