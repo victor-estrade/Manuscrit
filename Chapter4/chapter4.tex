@@ -30,3 +30,150 @@
 
 \victor{Grad boost is robust because trees disagrees between themselves}
 
+
+
+\section{Explore the theoretical limits}
+
+On va construire un petit jouet 1D qui sur lequel on peut calculer la vraissemblance d'un event $x$.
+
+On va calculer les valeurs théoriques de variance d'autre grandeur et voir ce que ça donne.
+
+L'idée est de pouvoir comparer avec un classifieur, inferno ou la régression directe pour mesurer leur marge de progression possible.
+
+\emph{Hypothèse 1} : on ne peut pas réduire l'erreur systématique complètement
+
+Nos observations $x$ dépendent du paramètre d'intérêt $y$ et des param de nuisance $\alpha$ de façon non triviale.
+Il parait raisonnable de penser qu'il n'est pas possible de complètement réduire la dépendance entre $y|x$ et $\alpha$.
+
+\emph{Hypothèse 2} : même avec un classifieur simple (sans adaptation de domaine ou autre) on atteint l'erreur systématique minimum (ou presque)
+
+\emph{Hypothèse 3} : Si H1 et H2 sont vrai alors le mieux à faire pour réduire l'erreur systématique est d'avoir une meilleure connaissance sur les paramètres de nuisance ie améliorer la calibration.
+
+\subsection{Theory} % (fold)
+\label{sub:theory}
+
+
+Définition de la variance :
+
+$Var(X) = \mathbb E[(Y - \mathbb E[Y])^2] = \mathbb E(Y^2) - [\mathbb E(Y)]^2$
+
+Théorème de la variance totale :
+
+\begin{eqnarray}
+    Var[Y] =& \mathbb E_X \left (Var[Y|X] \right ) &+ Var_X \left (\mathbb E[Y|X]\right ) \\
+    Var[Y] =& \mathbb E_X \left (Var[Y|X] \right ) &+ \mathbb E_X \left (\mathbb E [Y|X]^2  - \mathbb E[Y]\right )
+\end{eqnarray}
+
+
+En remplaçant la v.a. $Y$ par $y|x$ et $X$ par $\alpha$ on obtient :
+
+$$
+Var[y|x] = \mathbb E_{\alpha \sim p(\alpha|x)} \left (Var[y|x, \alpha] \right ) + \mathbb E_{\alpha \sim p(\alpha|x)} \left (\mathbb E [y|x, \alpha]^2  - \mathbb E[y|x]\right )
+$$
+
+
+On dirait presque que : 
+$$\mathbb E_{\alpha \sim p(\alpha|x)} \left (\mathbb E [y|x, \alpha]^2  - \mathbb E[y|x]\right )$$
+représente l'erreur systématique. 
+Car c'est l'écart de notre estimation de $y$ sachant $x$ et $\alpha$ par rapport à la moyenne.
+Surtout, si $\alpha|x$ est parfaitement connu (ie c'est un dirac) alors ce terme s'annule !
+
+Mais je ne suis pas sûr que l'on puisse dire que
+$$\mathbb E_{\alpha \sim p(\alpha|x)} \left (Var[y|x, \alpha] \right )$$
+représente l'erreur statistique.
+
+Mais si ça marche on aurrait une définition claire et précise de ce qu'est l'erreur statistique et l'erreur systématique.
+
+
+\subsection{Motivation} % (fold)
+\label{sub:motivation}
+
+Le régresseur est par construction très sensible à la valeur de $\alpha$ donné ce qui rend le 2 ème terme prépondérant dans le calcul de l'incertitude.
+
+$$\mathbb E_{\alpha \sim p(\alpha|x)} \left (\mathbb E [y|x, \alpha]^2  - \mathbb E[y|x]\right )$$
+
+Je veux mesurer la valeur minimale possible de ce terme pour savoir s'il reste de la marge de progression.
+
+\subsection{Method} % (fold)
+\label{sub:method}
+
+
+
+On suppose que l'on peut calculer la vraissemblance $p(x|y_i, \alpha_j)$.
+
+On construit une grille, suffisement fine, parcourant les valeurs possibles $y_i, \alpha_j$.
+
+Th. de Bayes : 
+$$
+    p(y_i, \alpha_j | x) = \frac{p(x|y_i, \alpha_j) p(y_i, \alpha_j)}{p(x)}
+$$
+
+On a donc à partir des 2 tenseurs : 
+\begin{itemize}
+	\item likelihood : $L_{ij} = p(x|y_i, \alpha_j)$
+	\item prior : $K_{ij} = p(y_i, \alpha_j)$ 
+\end{itemize}
+
+le tenseur $ R_{ij} = p(x|y_i, \alpha_j) p(y_i, \alpha_j) $ 
+qui après renormalisation donne le tenseur posterior $ T_{ij} = p(y_i, \alpha_j | x)$.
+
+À partir de $T_{ij}$ on va calculer les proba marginales :
+\begin{itemize}
+	\item $p(y_i | x) = \sum_j T_{ij} = Y_j$
+	\item $p(\alpha_j | x) = \sum_i T_{ij} = A_i$
+\end{itemize}
+
+et ce que doit apprendre notre réseau de neuronne : $p(y_i | x, \alpha_j) = \frac{p(y_i, \alpha_j)}{p(\alpha_j)} = \frac{T_{ij}}{A_j} = N_{ij}$
+
+On obtient alors les grandeurs qui nous intéressent
+\begin{itemize}
+	\item $ Var(y|x) = Var(y_i, Y_i) $
+	\item $ \mathbb E_{\alpha \sim p(\alpha|x)}[ Var(y|x, \alpha) ] = \sum_j Var(y|x, \alpha_j) p(\alpha_j | x) = \sum_j Var_i(y_i, T_{ij}) A_j$
+	\item $\mathbb E_{\alpha \sim p(\alpha|x)} \left (\mathbb E [y|x, \alpha]^2  - \mathbb E[y|x]\right ) = Var(y|x) - \mathbb E_{\alpha \sim p(\alpha|x)}[ Var(y|x, \alpha) ] = Var(y_i, Y_i) - \sum_j Var_i(y_i, T_{ij}) A_j$
+\end{itemize}
+
+
+\subsection{Remarks} % (fold)
+\label{sub:remarks}
+
+\subsubsection{Remarque 1}
+
+Pour les calculs il faut se souvenir que les tenseurs contiennent des proba !
+
+Donc $<y|x>= \mathbb E[y|x] = \sum_i y_i Y_i$ car $Y_i$ ne contient la densité de proba mais pas les valeurs de $y$ !
+
+De même $Var(y|x) = \sum_i y_i^2 Y_i - <y|x>^2 = Var(y_i, Y_i)$
+
+\subsubsection{Remarque 2}
+
+Pour la stabilité numérique il convient de travailler en logproba.
+
+En effet $x$ représente un jeu de donnée donc $p(x | y_i, \alpha_j) = \prod_k^N p(x_k | y_i, \alpha_j)$ pour N assez grand.
+Ceci va produire des nombre très petit très vite !
+
+On calculera plutôt : $\log p(x | y_i, \alpha_j) = \sum_k^N log p(x_k | y_i, \alpha_j) = \ell(x | y_i, \alpha_j)$
+
+La renormalisation se fera facilement avec un softmax : 
+$$ 
+    T_{ij} = p(y_i, \alpha_j | x) = \frac{e^{\ell(y_i, \alpha_j| x)} }{\sum_{n,m} e^{\ell(y_n, \alpha_m| x)} }
+$$
+
+
+\subsection{Toy setup} % (fold)
+\label{sub:toy_setup}
+
+Le toy qui va nous interesser ici est un mélange de 2 distributions, une gamma et une gaussienne, avec une observable 1D $x$.
+
+Le paramètre d'intérêt est le coef de mélange des 2 distributions $y$.
+Le paramètre de nuisance $\alpha$ est un rescaling de l'observable $x$.
+
+Sans $\alpha$ :
+$$
+    p(x | y) = y N(x|a, b) + (1-y) Gamma(x|s, \theta)
+$$
+
+Avec $\alpha$ :
+$$
+    p(x | y, \alpha) = y \mathcal N(x|\alpha a, \alpha b) + (1-y) Gamma(x|\alpha s, \theta)
+$$
+
