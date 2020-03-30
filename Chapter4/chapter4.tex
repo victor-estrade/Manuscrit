@@ -55,7 +55,7 @@ Il parait raisonnable de penser qu'il n'est pas possible de complètement rédui
 
 Définition de la variance :
 
-$Var(X) = \mathbb E[(Y - \mathbb E[Y])^2] = \mathbb E(Y^2) - [\mathbb E(Y)]^2$
+$Var(Y) = \mathbb E[(Y - \mathbb E[Y])^2] = \mathbb E(Y^2) - [\mathbb E(Y)]^2$
 
 Théorème de la variance totale :
 
@@ -119,16 +119,16 @@ qui après renormalisation donne le tenseur posterior $ T_{ij} = p(y_i, \alpha_j
 
 À partir de $T_{ij}$ on va calculer les proba marginales :
 \begin{itemize}
-	\item $p(y_i | x) = \sum_j T_{ij} = Y_j$
-	\item $p(\alpha_j | x) = \sum_i T_{ij} = A_i$
+	\item $p(y_i | x) = \sum_j T_{ij} = Y_i$
+	\item $p(\alpha_j | x) = \sum_i T_{ij} = A_j$
 \end{itemize}
 
-et ce que doit apprendre notre réseau de neuronne : $p(y_i | x, \alpha_j) = \frac{p(y_i, \alpha_j)}{p(\alpha_j)} = \frac{T_{ij}}{A_j} = N_{ij}$
+et ce que doit apprendre notre réseau de neuronne : $p(y_i | x, \alpha_j) = \frac{p(y_i, \alpha_j | x)}{p(\alpha_j | x)} = \frac{T_{ij}}{A_j} = N_{ij}$
 
 On obtient alors les grandeurs qui nous intéressent
 \begin{itemize}
 	\item $ Var(y|x) = Var(y_i, Y_i) $
-	\item $ \mathbb E_{\alpha \sim p(\alpha|x)}[ Var(y|x, \alpha) ] = \sum_j Var(y|x, \alpha_j) p(\alpha_j | x) = \sum_j Var_i(y_i, T_{ij}) A_j$
+	\item $ \mathbb E_{\alpha \sim p(\alpha|x)}[ Var(y|x, \alpha) ] = \sum_j Var(y|x, \alpha_j) p(\alpha_j | x) = \sum_j Var_i(y_i, N_{ij}) A_j$
 	\item $\mathbb E_{\alpha \sim p(\alpha|x)} \left (\mathbb E [y|x, \alpha]^2  - \mathbb E[y|x]\right ) = Var(y|x) - \mathbb E_{\alpha \sim p(\alpha|x)}[ Var(y|x, \alpha) ] = Var(y_i, Y_i) - \sum_j Var_i(y_i, T_{ij}) A_j$
 \end{itemize}
 
@@ -169,7 +169,7 @@ Le paramètre de nuisance $\alpha$ est un rescaling de l'observable $x$.
 
 Sans $\alpha$ :
 $$
-    p(x | y) = y N(x|a, b) + (1-y) Gamma(x|s, \theta)
+    p(x | y) = y \mathcal N(x|a, b) + (1-y) Gamma(x|s, \theta)
 $$
 
 Avec $\alpha$ :
