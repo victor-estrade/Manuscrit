@@ -4,52 +4,246 @@
 %*******************************************************************************
 
 \chapter{Data-driven science}  %Title of the First Chapter
-\label{chap:intro_phy}
+\label{chap:intro_stat}
 \ifpdf
     \graphicspath{{Chapter1/Figs/Raster/}{Chapter1/Figs/PDF/}{Chapter1/Figs/}}
 \else
     \graphicspath{{Chapter1/Figs/Vector/}{Chapter1/Figs/}}
 \fi
 
-\cecile{This is a example of comment}
-
 \victor{This is a example of comment}
+
+\cecile{This is a example of comment}
 
 \isabelle{This is a example of comment}
 
+\david{This is a example of comment}
 
-\section{Background}
-
-
-\subsection{High energy physics} % (fold)
-\label{sub:high_energy_physics}
-
-\subsection{CERN} % (fold)
-\label{sub:cern}
+\topic{This is a example of topic}
+\content{This is a example of content}
 
 
-\subsection{Systematics} % (fold)
-\label{sub:systematics}
+\topic{Simulations combined with machine learning make possible to extract knowledge even in highly complex and stochastic process like High Energy Physics}
+
+\section{Inference through simulation} % (fold)
+\label{sec:inference_through_simulation}
+
+\victor{Or "Inference with/using simulations" ?}
+
+\topic{Simulations/models are useful to explain data (therefore understand the undelying process that generated the data)}
+
+\content{Dans un monde simple tout est "facile"}
+\content{Introduire le problème d'extraction d'un coefficient de mélange(lié à cross-section)}
+
+\subsection{Bayesian inference} % (fold)
+\label{sub:bayesian_inference}
+
+\topic{Bayesian inference gives access to the full posterior}
+
+\content{Introduce the basic statistics tools that we will use}
+\content{Brute force method to do bayesian inference}
+\content{Other (better) methods like variational inference}
+
+\subsection{Maximum likelihood} % (fold)
+\label{sub:maximum_likelihood}
+
+\topic{Maximum likelihood is more focused on what we are looking for (parameter estimation)}
+
+\content{Maximum likelihood link to bayesian inference}
+\content{Maximum likelihood gradient descent methods}
+\content{Maximum likelihood variance estimation}
+
+\subsection{Toy problem} % (fold)
+\label{sub:toy_problem}
+
+\topic{On a 1D/1-params (no nuisance) toy example things goes smoothly}
+
+\content{Introduce 1D toy as example}
+\content{Introduce cross section estimations / mixture coefficient inference}
+
+
+\subsection{Combinatorial explosion} % (fold)
+\label{sub:combinatorial_explosion}
+
+\topic{These methods don't scale to high dimensions}
+
+\content{Computation complexity makes it intractable}
+\content{Numerical stability high dimensional integral ?}
+\content{Maybe a "simple" example that shows how often in real life this setting may happen}
+
+\subsection{Intractable models} % (fold)
+\label{sub:intractable_models}
+
+\topic{(another issue) Sometimes approximation needs to be made in order to build a simulation}
+
+\content{Approximation requiered to build some part of LHC simulation as an example}
+\victor{Very short subsection ?}
 
 
 
-\section{Motivation} % (fold)
-\label{sec:motivation}
+\section{Dimension reduction} % (fold)
+\label{sec:dimension_reduction}
 
-Limitations des méthodes actuelles
+\topic{Recucing the dimension without losing the relevant information is necessary but also possible (optimal)}
+\topic{Classifiers to the rescue ! With some domain knowledge it is possible to avoid using the original likelihood.}
 
-\subsection{Accuracy} % (fold)
-\label{sub:accuracy}
+\subsection{Hand crafted} % (fold)
+\label{sub:hand_crafted}
+
+\topic{Ask a theorist to build a low dimensional feature}
+
+\content{How it was done before machine learning}
 
 
-\subsection{computation} % (fold)
-\label{sub:computation}
+\subsection{Select features} % (fold)
+\label{sub:select_features}
 
-\subsection{Understanding and methodology} % (fold)
-\label{sub:understanding_and_methodology}
+\topic{Too many dimension ? Discard the less relevants ones}
 
-Levée de confusion entre mesure et découverte.
+\victor{Pas sûr que ça soit vraiment utilisé. Demander à David.}
 
-Évaluation quantitative empirique des résultats => test statistique "non parametrique"
 
-+ justifications théorique
+\subsection{Machine learning} % (fold)
+\label{sub:machine_learning}
+
+\topic{Classifiers can achieve optimal inference}
+
+\content{Proof of best estimator with bayesian classifier}
+\content{Intuition of classifer as separator of population in order to compute a ratio}
+
+\victor{Cette section reprend le papier de Neal \cite{Neal:2007zz}}
+
+We are studying a stochatic phenomenon which generative process is described as :
+
+\begin{equation}
+	\label{eq:mixture_model}
+	p(x|m) = m p(x|s) + (1-m) p(x|b)
+\end{equation}
+where $x$ is the set of observable features of the studied event gathered in a vector.
+Events are split into 2 classes : the signals $S$ and the backgrounds $B$.
+$m$ is the mixture coefficient between suignals and backgrounds.
+
+$m$ can be seen as the probability for an event to be a signal $p(s)$. 
+It naturally follows that $1-m$ is the probability for an event to be a background $p(b)=1-p(s)$.
+\autoref{eq:mixture_model} can be written as
+\begin{equation}
+	p(x) = p(s)p(x|s) + p(b)p(x|b)
+\end{equation}
+
+In many interesting cases the nature of the event (signal/background) are not among the possible measurement that can be made.
+Moreover the likelihoods $p(x|s)$ and $p(x|b)$ are intractable because of high dimension integrals or simply because computable formulas do not exist.
+However building a simulator working only in forward mode allowing to sample from $p(x|m)$ is possible.
+This problem is known as the inverse problem. 
+The objective is to infer causal parameters from observations hence reversing the forward process which goes from causal parameters to observations.
+
+
+The example that motivates this work is comming from High Energy Physics (HEP) where events are collisions in a particle accelerator.
+Signals are events giving birth to a Higgs boson and backgrounds gather all the other collisions.
+$m$ is therefore connected to branch factor (cross section ?) of the Higgs boson which is the parameter we want to measure.
+
+\victor{Link between cross-section, branch factor, luminosity ?}
+
+Measurements are made from a large bunch of independant and identically distributed events $D=\{x_i\}_{i=1}^N$.
+
+\begin{align*}
+	p(D|m) =& \prod_{i=1}^N m p(x|s) + (1-m) p(x|b) \\
+	       =& \prod_{i=1}^N p(x|b) \left [(1-m) + m \frac{p(x|s)}{p(x|b)} \right ]\\
+	       =& \underbrace{\left[ \prod_{i=1}^N p(x|b) \right ]}_{h(x)} \times 
+	       \underbrace{\left [\prod_{i=1}^N (1-m) + m \frac{p(x|s)}{p(x|b)} \right ]}_{g_m(T(x))}
+\end{align*}
+with $T(x) = \frac{p(x|s)}{p(x|b)} $
+
+Fisher-Neyman factorization theorem states that $T(x)$ is a sufficient summary statistic to obtain $m$
+
+The maximum likelihood estimator, noted $\hat m$ is commonly used to estimate the parameter of interest.
+Recall that maximum likelihood estimator are strictly equivalent to a maximum a posteriori estimator using a uniform prior.
+This is a reasonable choice when we do not have prior knowledge as in this example.
+
+\begin{equation}
+	\hat m = \argmax_m p(m | D)
+\end{equation}
+
+It is more convenient (numerical stability) to express the result as a deviation from the prediction of the Standard Model.
+The deviation is defined as :
+
+\begin{equation}
+	\mu = \frac{p(s)}{p_{SM}(s)} = \frac{m}{p_{SM}(s)}
+\end{equation}
+$p_{SM}(s)$ is the expected probability to get a signal following the Standard Model.
+Recovering $m$ from $\mu$ is trivially done with $m = \mu p_{SM}(s)$.
+
+The estimator is now :
+\begin{align}
+	\hmu =& \argmax_\mu p(\mu | D) \\
+	     =& \argmax_\mu \frac{p(\mu)}{p(D)} p(D | \mu) \\
+	     =& \argmax_\mu p(\mu) p(D | \mu) \\
+	     =& \argmax_\mu  p(D | \mu) \\
+	     =& \argmax_\mu  \prod_{i=1}^N g_\mu(T(x)) \\
+\end{align}
+
+
+$T(x)$ can be obtained using a classifier $c$ trained to separate signals and backgrounds.
+A Bayes optimal classifier output gives :
+\begin{equation}
+	c(x) = \frac{s p(x|s)}{(1-s) p(x|b) + s p(x|s)}
+\end{equation}
+where $s$ is the fraction of signals used in the training dataset.
+
+\begin{equation}
+	T(x) = \frac{c(x)}{(1-c(x))} \frac{(1-s)}{s} 
+\end{equation}
+
+
+Note : $c$ is also a sufficient summary statistic
+\begin{equation}
+	g_\mu(T(x)) = 1 - \mu p_{SM}(s) + \mu p_{SM}(s) \times \frac{c(x)}{(1-c(x))} \frac{(1-s)}{s} = f_\mu(c(x))
+\end{equation}
+
+
+
+\subsection{Combinaison} % (fold)
+\label{sub:combinaison}
+
+
+\topic{In real life we do both}
+
+\victor{Meaning : computing hand crafted features to reduce from $\RR^{100 000}$ to $\RR^{40}$ then using machine learning to reduce to $\RR$}
+
+
+\section{Systematic effects} % (fold)
+\label{sec:systematic_effects}
+
+\topic{Systematic effects make inference more complex by introducing nuisance parameters}
+
+\subsection{Classifier optimality} % (fold)
+\label{sub:classifier_optimality}
+
+\topic{Systematic effect breaks the optimality of the classifier}
+
+\content{Why the proof does not work anymore}
+
+\subsection{Variance estimations} % (fold)
+\label{sub:variance_estimations}
+
+\topic{We can measure the effect of systematics on the final variance (inference is still possible)}
+
+\content{It does not "breaks" it but increase the variance/uncertainty}
+\content{Introduce systematic vs statistical uncertainty as the 2 component of the variance}
+
+\subsection{Profiled likelohood} % (fold)
+\label{sub:profiled_likelohood}
+
+\topic{The current way of measuring the variance of our estimation to include systematics is "profiled likelihood"}
+
+\content{Explain how profiled likelihood works and why is works}
+\content{Introduce Fisher information matrix and Cramer Rao bound (since we will use it later for INFERNO)}
+
+
+\subsection{Looking for better} % (fold)
+\label{sub:looking_for_better}
+
+\topic{This document is about going further than the "simple" classifier method}
+
+\content{Annonce de la suite}
+
+

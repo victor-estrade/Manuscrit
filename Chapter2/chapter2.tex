@@ -3,150 +3,37 @@
 %********************************** Second Chapter *****************************
 %*******************************************************************************
 
-\chapter{Context}  %Title of the First Chapter
-\label{chap:context}
+\chapter{SOTA}  %Title of the First Chapter
+\label{chap:sota}
+
 \ifpdf
     \graphicspath{{Chapter2/Figs/Raster/}{Chapter2/Figs/PDF/}{Chapter2/Figs/}}
 \else
     \graphicspath{{Chapter2/Figs/Vector/}{Chapter2/Figs/}}
 \fi
 
-\section{Physics} % (fold)
-\label{sec:physics}
+\section{Unsuitable methods} % (fold)
+\label{sec:unsuitable_methods}
 
+\topic{Variational inference requires likelihood and ABC do not scale.}
+\content{What we are not going to devellop. But justifying why !}
 
-\subsection{Notions de particle physics} % (fold)
-\label{sec:notions_de_particle_physics}
+\subsection{ABC methods} % (fold)
+\label{sub:abc_methods}
 
-\subsection{Notion d'ingenierie des détecteurs} % (fold)
-\label{sec:notion_d_ingenierie_des_détecteurs}
-
-
-\subsection{Pipeline de traitement} % (fold)
-\label{sec:pipeline_de_traitement}
-
-+ flow chart
-
-\subsection{Définition du probleme} % (fold)
-\label{sec:définition_du_probleme}
-
-\victor{On ne connait pas les paramètres de nuisance précisément mais on a un interval/distribution}
-
-\victor{PAR : Estimating a cross section}
-
-We are studying a stochatic phenomenon which generative process is described as :
-
-\begin{equation}
-	\label{eq:mixture_model}
-	p(x|m) = m p(x|s) + (1-m) p(x|b)
-\end{equation}
-where $x$ is the set of observable features of the studied event gathered in a vector.
-Events are split into 2 classes : the signals $S$ and the backgrounds $B$.
-$m$ is the mixture coefficient between suignals and backgrounds.
-
-$m$ can be seen as the probability for an event to be a signal $p(s)$. 
-It naturally follows that $1-m$ is the probability for an event to be a background $p(b)=1-p(s)$.
-\autoref{eq:mixture_model} can be written as
-\begin{equation}
-	p(x) = p(s)p(x|s) + p(b)p(x|b)
-\end{equation}
-
-In many interesting cases the nature of the event (signal/background) are not among the possible measurement that can be made.
-Moreover the likelihoods $p(x|s)$ and $p(x|b)$ are intractable because of high dimension integrals or simply because computable formulas do not exist.
-However building a simulator working only in forward mode allowing to sample from $p(x|m)$ is possible.
-This problem is known as the inverse problem. 
-The objective is to infer causal parameters from observations hence reversing the forward process which goes from causal parameters to observations.
-
-
-The example that motivates this work is comming from High Energy Physics (HEP) where events are collisions in a particle accelerator.
-Signals are events giving birth to a Higgs boson and backgrounds gather all the other collisions.
-$m$ is therefore connected to branch factor (cross section ?) of the Higgs boson which is the parameter we want to measure.
-
-\victor{Link between cross-section, branch factor, luminosity ?}
-
-Measurements are made from a large bunch of independant and identically distributed events $D=\{x_i\}_{i=1}^N$.
-
-\begin{align*}
-	p(D|m) =& \prod_{i=1}^N m p(x|s) + (1-m) p(x|b) \\
-	       =& \prod_{i=1}^N p(x|b) \left [(1-m) + m \frac{p(x|s)}{p(x|b)} \right ]\\
-	       =& \underbrace{\left[ \prod_{i=1}^N p(x|b) \right ]}_{h(x)} \times 
-	       \underbrace{\left [\prod_{i=1}^N (1-m) + m \frac{p(x|s)}{p(x|b)} \right ]}_{g_m(T(x))}
-\end{align*}
-with $T(x) = \frac{p(x|s)}{p(x|b)} $
-
-Fisher-Neyman factorization theorem states that $T(x)$ is a sufficient summary statistic to obtain $m$
-
-The maximum likelihood estimator, noted $\hat m$ is commonly used to estimate the parameter of interest.
-Recall that maximum likelihood estimator are strictly equivalent to a maximum a posteriori estimator using a uniform prior.
-This is a reasonable choice when we do not have prior knowledge as in this example.
-
-\begin{equation}
-	\hat m = \argmax_m p(m | D)
-\end{equation}
-
-It is more convenient to express the result as a deviation from the prediction of the Standard Model.
-The deviation is defined as :
-
-\begin{equation}
-	\mu = \frac{p(s)}{p_{SM}(s)} = \frac{m}{p_{SM}(s)}
-\end{equation}
-$p_{SM}(s)$ is the expected probability to get a signal following the Standard Model.
-Recovering $m$ from $\mu$ is trivially done with $m = \mu p_{SM}(s)$.
-
-The estimator is now :
-\begin{align}
-	\hmu =& \argmax_\mu p(\mu | D) \\
-	     =& \argmax_\mu \frac{p(\mu)}{p(D)} p(D | \mu) \\
-	     =& \argmax_\mu p(\mu) p(D | \mu) \\
-	     =& \argmax_\mu  p(D | \mu) \\
-	     =& \argmax_\mu  \prod_{i=1}^N g_\mu(T(x)) \\
-\end{align}
-
-
-$T(x)$ can be obtained using a classifier $c$ trained to separate signals and backgrounds.
-A Bayes optimal classifier output gives :
-\begin{equation}
-	c(x) = \frac{s p(x|s)}{(1-s) p(x|b) + s p(x|s)}
-\end{equation}
-where $s$ is the fraction of signals used in the training dataset.
-
-\begin{equation}
-	T(x) = \frac{c(x)}{(1-c(x))} \frac{(1-s)}{s} 
-\end{equation}
-
-
-Note : $c$ is also a sufficient summary statistic
-\begin{equation}
-	g_\mu(T(x)) = 1 - \mu p_{SM}(s) + \mu p_{SM}(s) \times \frac{c(x)}{(1-c(x))} \frac{(1-s)}{s} = f_\mu(c(x))
-\end{equation}
-
-
-\subsection{Machine learning} % (fold)
-\label{sec:machine_learning}
-
-\subsubsection{Notations} % (fold)
-\label{sub:notations}
-
-\subsubsection{Vocabulaire} % (fold)
-\label{sub:vocabulaire}
-
-\subsubsection{Tools to solve this problem} % (fold)
-\label{sub:tools_to_solve_this_problem}
-
-\victor{About higgs, Poisson, etc.}
-
-\subsubsection{State of the art on this problem} % (fold)
-\label{sub:state_of_the_art_on_this_problem}
-
-
-
-\victor{state of the art on how (physicist ?) to solve the problem}
+\content{short review of ABC methods and why we cannot rely on it for this problem.}
 
 \victor{TODO : Décrire succintement rejection algo et les idées principales d'amélioration. }
 
 One solution to do inference with an intractable likelihood is the Approximate Bayesian Computation (ABC).
 The most traditional ABC algorithm is the rejection algorithm which is computationally expensive.
-Although significant improvement can be achieved with advanced Monte Carlo methods this is still known to take a long time to converge.
+Although significant improvement can be achieved with advanced Monte Carlo methods this is still known to take a long time to converge \needcite.
+
+
+\subsection{Variational inference} % (fold)
+\label{sub:variational_inference}
+
+\topic{Variational inference requires likelihood}
 
 \victor{TODO : VI avec des NN. Stochastic VI.}
 On the other hand Variational Inference (VI) is extremely fast but can lead to biased estimation which is a severe drawback when it leads to underestimating the uncertainty.
@@ -154,18 +41,78 @@ On the other hand Variational Inference (VI) is extremely fast but can lead to b
 In high Energy Physics (HEP), which motivated this work, the use of machine learning produced summary statistics combined with domain knowledge allow to conduct exact inference in the absence of nuisance parameters.
 \victor{"Extact" inference me semble maladroit}
 
-\victor{TODO : Another improvement is Mining gold.}
-\victor{TODO : Bayesian networks}
+
+\subsection{Bayesian networks} % (fold)
+\label{sub:bayesian_networks}
+
+\topic{Could be a solution. But no time to explore everything}
+\content{En vrai les Bayesian networks }
+\victor{Other physicists have tried and got prelimnary results. Need to see if they made progress !}
 
 
+\section{Domain adaptation} % (fold)
+\label{sec:domain_adaptation}
 
-\emph{Before Machine learning}
+\topic{If the classifier output is independant of the nuisance parameters then we win !}
 
-How it was done before machine learning
+\subsection{Continuous domain adaptation} % (fold)
+\label{sub:continuous_domain_adaptation}
 
-\emph{With machine learning}
+\topic{This is a very peculiar case of domain adaptation}
+\content{We have a continuous domain shift. Not a discreat number of domains. + we are supervised}
 
-How it is done with machine learning
+\subsection{Data augmentation} % (fold)
+\label{sub:data_augmentation}
 
+\topic{The easiest (and naive) way of being good across domain}
+
+\subsection{Adversarial training} % (fold)
+\label{sub:adversarial_training}
+
+\content{DANN and Pivot}
+\content{Make clear that Pivot is better founded (theory) than DANN, the bottleneck at the end is a good idea (says Maths)}
+
+
+\subsection{Cross-entropy} % (fold)
+\label{sub:cross_entropy}
+
+\topic{Is the cross-entropy the right objective function ?}
+Recall that the optimality of the Bayesian classifier is no more.
+Let's not stay stuck on this.
+
+
+\section{Soft histograms} % (fold)
+\label{sec:soft_histograms}
+
+\topic{Only histograms prevent the entire pipeline to be differentiable. Fix it and you win !}
+
+\content{INFERNO and other soft histograms + Inferted Fisher info matrix as objective function}
+
+
+\subsection{Differentiable histograms} % (fold)
+\label{sub:differentiable_histograms}
+
+\topic{Using softmax or gaussian gradients the histograms becomes differentiable}
+
+\subsection{Differentiable simulator} % (fold)
+\label{sub:differentiable_simulator}
+
+\topic{It is possible to make the simulator sufficiently differentiable according to the nuisance parameters}
+
+\content{Fast simulation through recomputing only the skewed features according to nuisance parameter}
+
+\subsection{Limitations} % (fold)
+\label{sub:limitations}
+
+% subsection limitations (end)
+\topic{INFERNO is a good way of takling systematics (if you can make siluation differentiable enough and invert the fisher info matrix)}
+
+
+\section{Mining gold} % (fold)
+\label{sec:mining_gold}
+
+\topic{Improve the simulator to give more informations about the intractable likelihood !}
+
+\content{Je sais pas trop encore quoi mettre là dedans....}
 
 

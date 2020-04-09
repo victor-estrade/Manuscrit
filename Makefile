@@ -1,5 +1,6 @@
 
 THESIS = thesis
+CHAP4 = chap4
 
 default:
 	@echo "Compiling PhD Thesis ...please wait...!"
@@ -11,6 +12,20 @@ default:
 	-pdflatex -interaction=nonstopmode $(THESIS).tex
 	-makeindex $(THESIS).nlo -s nomencl.ist -o $(THESIS).nls
 	-pdflatex -interaction=nonstopmode $(THESIS).tex
+	@echo "======================================================="
+	@echo "Success!"
+	@echo "======================================================="
+
+chap4:
+	@echo "Compiling PhD Thesis ...please wait...!"
+	-pdflatex -interaction=nonstopmode $(CHAP4).tex
+	-bibtex $(CHAP4).aux
+	-makeindex $(CHAP4).aux
+	-makeindex $(CHAP4).idx
+	-makeindex $(CHAP4).nlo -s nomencl.ist -o $(CHAP4).nls
+	-pdflatex -interaction=nonstopmode $(CHAP4).tex
+	-makeindex $(CHAP4).nlo -s nomencl.ist -o $(CHAP4).nls
+	-pdflatex -interaction=nonstopmode $(CHAP4).tex
 	@echo "======================================================="
 	@echo "Success!"
 	@echo "======================================================="
@@ -39,11 +54,8 @@ clean:
 	@rm -f *.nlo
 	@rm -f *.nls
 	@rm -f *.glo
-	@rm -f $(THESIS).pdf
-	@rm -f $(THESIS).ps
-	@rm -f $(THESIS).dvi
 	@rm -f *#* 
 	@echo "Cleaning complete!"
 
-# mrproper: clean
-# 	@rm *.pdf *.vrb *.snm *.nav
+mrproper: clean
+	@rm *.pdf *.vrb *.snm *.nav

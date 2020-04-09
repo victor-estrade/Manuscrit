@@ -1,12 +1,52 @@
 %!TEX root = ../thesis.tex
 % ******************************* Thesis Appendix B ********************************
 
-\chapter{Installing the CUED class file}
+\ifpdf
+    \graphicspath{{Appendix2/Figs/Raster/}{Appendix2/Figs/PDF/}{Appendix2/Figs/}}
+\else
+    \graphicspath{{Appendix2/Figs/Vector/}{Appendix2/Figs/}}
+\fi
 
-\LaTeX.cls files can be accessed system-wide when they are placed in the
-<texmf>/tex/latex directory, where <texmf> is the root directory of the user’s \TeX installation. On systems that have a local texmf tree (<texmflocal>), which
-may be named ``texmf-local'' or ``localtexmf'', it may be advisable to install packages in <texmflocal>, rather than <texmf> as the contents of the former, unlike that of the latter, are preserved after the \LaTeX system is reinstalled and/or upgraded.
+\chapter{Lost and found}
 
-It is recommended that the user create a subdirectory <texmf>/tex/latex/CUED for all CUED related \LaTeX class and package files. On some \LaTeX systems, the directory look-up tables will need to be refreshed after making additions or deletions to the system files. For \TeX Live systems this is accomplished via executing ``texhash'' as root. MIK\TeX users can run ``initexmf -u'' to accomplish the same thing.
+\content{Details, sections and parts that do not fit the current plan}
 
-Users not willing or able to install the files system-wide can install them in their personal directories, but will then have to provide the path (full or relative) in addition to the filename when referring to them in \LaTeX.
+
+
+\section{Chap1-old Background}
+
+
+\subsection{High energy physics} % (fold)
+\label{sub:high_energy_physics}
+
+\subsection{CERN} % (fold)
+\label{sub:cern}
+
+
+\subsection{Systematics} % (fold)
+\label{sub:systematics}
+
+
+
+\section{Chap1-old Motivation} % (fold)
+\label{sec:motivation}
+
+Limitations des méthodes actuelles
+
+\subsection{Accuracy} % (fold)
+\label{sub:accuracy}
+
+
+\subsection{computation} % (fold)
+\label{sub:computation}
+
+\subsection{Understanding and methodology} % (fold)
+\label{sub:understanding_and_methodology}
+
+Levée de confusion entre mesure et découverte.
+
+Évaluation quantitative empirique des résultats => test statistique "non parametrique"
+
++ justifications théorique
+
+

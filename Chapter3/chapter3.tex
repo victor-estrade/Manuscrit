@@ -129,7 +129,7 @@ From Bayes theorem we get :
     p(\theta | x) = \frac{p(x | \theta) p(\theta) }{p(x)}
 \end{equation}
 Unfortunately the likelihood $p(x | \theta)$ is often intractable because of high dimensional integrals.
-To avoid this pitfall the posterior $p(\theta | x)$ is approximated by a tractable distribution $q_\phi(\theta | x)$.
+Instead of replacing the likelihood or trying to regress it we propose to directly approximate the posterior $p(\theta | x)$ with a sufficiently powerfull and tractable distribution $q_\phi(\theta | x)$.
 
 
 \subsubsection{Density network}

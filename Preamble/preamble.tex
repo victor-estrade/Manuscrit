@@ -185,17 +185,26 @@
 % \ifsetDraft
   %\usepackage[dvipsnames]{xcolor}
   \definecolor{amethyst}{rgb}{0.6, 0.4, 0.8}
+  \definecolor{brickred}{rgb}{0.8, 0.25, 0.33}
+  \definecolor{brightube}{rgb}{0.82, 0.62, 0.91}
+  \definecolor{brightpink}{rgb}{1.0, 0.0, 0.5}
   \definecolor{celadon}{rgb}{0.67, 0.88, 0.69}
+  \definecolor{cottoncandy}{rgb}{1.0, 0.74, 0.85}
+  \definecolor{champagne}{rgb}{0.97, 0.91, 0.81}
   \definecolor{almond}{rgb}{0.94, 0.87, 0.8}
   \definecolor{atomictangerine}{rgb}{1.0, 0.6, 0.4}
+  \definecolor{apricot}{rgb}{0.98, 0.81, 0.69}
+  \definecolor{iceberg}{rgb}{0.44, 0.65, 0.82}
+  \definecolor{lightcornflowerblue}{rgb}{0.6, 0.81, 0.93}
   % http://latexcolor.com/ for other color and code to define them
   \usepackage[colorinlistoftodos]{todonotes}
   \newcommand{\victor}[1]{\todo[size=\small,inline,color=almond]{#1  \-- Victor}}
-  \newcommand{\isabelle}[1]{\todo[size=\small,inline,color=red!50]{#1  \-- Isabelle}}
+  \newcommand{\isabelle}[1]{\todo[size=\small,inline,color=cottoncandy]{#1  \-- Isabelle}}
   \newcommand{\cecile}[1]{\todo[size=\small,inline,color=atomictangerine]{#1 \-- Cecile}}
-  \newcommand{\david}[1]{\todo[size=\small,inline,color=amethyst]{#1 \-- David}}
+  \newcommand{\david}[1]{\todo[size=\small,inline,color=brightube]{#1 \-- David}}
 
   \newcommand{\topic}[1]{\todo[size=\small,inline,color=celadon]{Topic : #1}}
+  \newcommand{\content}[1]{\todo[size=\small,inline,color=lightcornflowerblue]{Content : #1}}
 %\else
 % \newcommand{\mynote}[1]{}
 % \newcommand{\listoftodos}{}
@@ -209,6 +218,10 @@
 % Example todo: \mynote{Hey! I have a note}
 \usepackage[normalem]{ulem}
 %\usepackage[shortlabels]{enumerate}
+
+% Other
+\newcommand*{\needcite}{{\textcolor{brickred}{[Citation required]}}}
+
 
 % Custom stuff
 \newcommand*{\ie}{{\em i.e.~}}
@@ -237,6 +250,7 @@
 \newcommand*{\ttrain}{\ensuremath{\mathcal{T}^{\text{train}}}}
 \newcommand*{\ttest}{\ensuremath{\mathcal{T}^{\text{test}}}}
 \newcommand*{\EE}{\mathbb{E}}
+\newcommand*{\VV}{\mathbb{V}}
 
 
 

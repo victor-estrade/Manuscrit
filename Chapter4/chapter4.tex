@@ -55,31 +55,31 @@ Il parait raisonnable de penser qu'il n'est pas possible de complètement rédui
 
 Définition de la variance :
 
-$Var(Y) = \mathbb E[(Y - \mathbb E[Y])^2] = \mathbb E(Y^2) - [\mathbb E(Y)]^2$
+$\VV(Y) = \EE[(Y - \EE[Y])^2] = \EE(Y^2) - [\EE(Y)]^2$
 
-Théorème de la variance totale :
+Théorème de la variance totale \needcite :
 
 \begin{eqnarray}
-    Var[Y] =& \mathbb E_X \left (Var[Y|X] \right ) &+ Var_X \left (\mathbb E[Y|X]\right ) \\
-    Var[Y] =& \mathbb E_X \left (Var[Y|X] \right ) &+ \mathbb E_X \left (\mathbb E [Y|X]^2  - \mathbb E[Y]\right )
+    \VV[Y] =& \EE_X \left (\VV[Y|X] \right ) &+ \VV_X \left (\EE[Y|X]\right ) \\
+    \VV[Y] =& \EE_X \left (\VV[Y|X] \right ) &+ \EE_X \left ( (\EE [Y|X]  - \EE[Y])^2\right )
 \end{eqnarray}
 
 
 En remplaçant la v.a. $Y$ par $y|x$ et $X$ par $\alpha$ on obtient :
 
 $$
-Var[y|x] = \mathbb E_{\alpha \sim p(\alpha|x)} \left (Var[y|x, \alpha] \right ) + \mathbb E_{\alpha \sim p(\alpha|x)} \left (\mathbb E [y|x, \alpha]^2  - \mathbb E[y|x]\right )
+\VV[y|x] = \EE_{\alpha \sim p(\alpha|x)} \left (\VV[y|x, \alpha] \right ) + \EE_{\alpha \sim p(\alpha|x)} \left ( (\EE [y|x, \alpha]  - \EE[y|x])^2\right )
 $$
 
 
 On dirait presque que : 
-$$\mathbb E_{\alpha \sim p(\alpha|x)} \left (\mathbb E [y|x, \alpha]^2  - \mathbb E[y|x]\right )$$
+$$\EE_{\alpha \sim p(\alpha|x)} \left ((\EE [y|x, \alpha]  - \EE[y|x])^2\right )$$
 représente l'erreur systématique. 
 Car c'est l'écart de notre estimation de $y$ sachant $x$ et $\alpha$ par rapport à la moyenne.
 Surtout, si $\alpha|x$ est parfaitement connu (ie c'est un dirac) alors ce terme s'annule !
 
 Mais je ne suis pas sûr que l'on puisse dire que
-$$\mathbb E_{\alpha \sim p(\alpha|x)} \left (Var[y|x, \alpha] \right )$$
+$$\EE_{\alpha \sim p(\alpha|x)} \left (\VV[y|x, \alpha] \right )$$
 représente l'erreur statistique.
 
 Mais si ça marche on aurrait une définition claire et précise de ce qu'est l'erreur statistique et l'erreur systématique.
@@ -90,7 +90,7 @@ Mais si ça marche on aurrait une définition claire et précise de ce qu'est l'
 
 Le régresseur est par construction très sensible à la valeur de $\alpha$ donné ce qui rend le 2 ème terme prépondérant dans le calcul de l'incertitude.
 
-$$\mathbb E_{\alpha \sim p(\alpha|x)} \left (\mathbb E [y|x, \alpha]^2  - \mathbb E[y|x]\right )$$
+$$\EE_{\alpha \sim p(\alpha|x)} \left ((\EE [y|x, \alpha]  - \EE[y|x])^2\right )$$
 
 Je veux mesurer la valeur minimale possible de ce terme pour savoir s'il reste de la marge de progression.
 
@@ -127,9 +127,9 @@ et ce que doit apprendre notre réseau de neuronne : $p(y_i | x, \alpha_j) = \fr
 
 On obtient alors les grandeurs qui nous intéressent
 \begin{itemize}
-	\item $ Var(y|x) = Var(y_i, Y_i) $
-	\item $ \mathbb E_{\alpha \sim p(\alpha|x)}[ Var(y|x, \alpha) ] = \sum_j Var(y|x, \alpha_j) p(\alpha_j | x) = \sum_j Var_i(y_i, N_{ij}) A_j$
-	\item $\mathbb E_{\alpha \sim p(\alpha|x)} \left (\mathbb E [y|x, \alpha]^2  - \mathbb E[y|x]\right ) = Var(y|x) - \mathbb E_{\alpha \sim p(\alpha|x)}[ Var(y|x, \alpha) ] = Var(y_i, Y_i) - \sum_j Var_i(y_i, T_{ij}) A_j$
+	\item $ \VV(y|x) = \VV(y_i, Y_i) $
+	\item $ \EE_{\alpha \sim p(\alpha|x)}[ \VV(y|x, \alpha) ] = \sum_j \VV(y|x, \alpha_j) p(\alpha_j | x) = \sum_j \VV_i(y_i, N_{ij}) A_j$
+	\item $\EE_{\alpha \sim p(\alpha|x)} \left ((\EE [y|x, \alpha]  - \EE[y|x])^2\right ) = \VV(y|x) - \EE_{\alpha \sim p(\alpha|x)}[ \VV(y|x, \alpha) ] = \VV(y_i, Y_i) - \sum_j \VV_i(y_i, T_{ij}) A_j$
 \end{itemize}
 
 
@@ -140,9 +140,9 @@ On obtient alors les grandeurs qui nous intéressent
 
 Pour les calculs il faut se souvenir que les tenseurs contiennent des proba !
 
-Donc $<y|x>= \mathbb E[y|x] = \sum_i y_i Y_i$ car $Y_i$ ne contient la densité de proba mais pas les valeurs de $y$ !
+Donc $<y|x>= \EE[y|x] = \sum_i y_i Y_i$ car $Y_i$ ne contient la densité de proba mais pas les valeurs de $y$ !
 
-De même $Var(y|x) = \sum_i y_i^2 Y_i - <y|x>^2 = Var(y_i, Y_i)$
+De même $\VV(y|x) = \sum_i y_i^2 Y_i - <y|x>^2 = \VV(y_i, Y_i)$
 
 \subsubsection{Remarque 2}
 
@@ -159,10 +159,11 @@ $$
 $$
 
 
-\subsection{Toy setup} % (fold)
-\label{sub:toy_setup}
+\subsection{1D toy} % (fold)
+\label{sub:1d_toy}
 
 Le toy qui va nous interesser ici est un mélange de 2 distributions, une gamma et une gaussienne, avec une observable 1D $x$.
+\autoref{fig:minitoy_distrib} présente la distribution des données pour un tirage de 10000 instances.
 
 Le paramètre d'intérêt est le coef de mélange des 2 distributions $y$.
 Le paramètre de nuisance $\alpha$ est un rescaling de l'observable $x$.
@@ -176,4 +177,101 @@ Avec $\alpha$ :
 $$
     p(x | y, \alpha) = y \mathcal N(x|\alpha a, \alpha b) + (1-y) Gamma(x|\alpha s, \theta)
 $$
+
+\begin{figure}[htb]
+    \includegraphics[width=\linewidth]{Chapter4/Figs/Raster/minitoy/distrib.png}
+    \caption{Data distribution of the 1D toy}
+    \label{fig:minitoy_distrib}
+\end{figure}
+
+
+
+\begin{figure}[htb]
+  \centering
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{Chapter4/Figs/Raster/minitoy/marginal_y.png}
+    \caption{$p(y|x)$}
+    \label{fig:marginal_y}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{Chapter4/Figs/Raster/minitoy/marginal_alpha.png}
+    \caption{$p(\alpha|x)$}
+    \label{fig:marginal_alpha}
+  \end{subfigure}
+  \caption{Posterior probabilities for $y$ (left) and $\alpha$ (right)}
+  \label{fig:marginals}
+\end{figure}
+
+
+Petit soucis ... L'erreur statistique et l'erruer systématique diminuent ensemble avec l'augmentation du nombre de donnée.
+Plus on a de donnée meilleur est l'inférence sur $\alpha$.
+Donc c'est normal !
+
+Du coup j'ai vraiment du mal avec le concepte de l'erreur systématique qui ne diminue que doucement avec l'augmentation des données.
+
+Si l'effet est invisible sur les données alors on a pas de problème.
+Si l'effet est visible alors on peut contraindre + les paramètres de nuisance puisqu'on peut le mesurer !
+
+
+\subsection{3D toy} % (fold)
+\label{sub:3d_toy}
+
+L'exemple jouet introduit dans \cite{DECASTRO2019170inferno} est un mélange de 2 processus (background \& signal)
+
+
+Pour les backgrounds :
+$$
+f_b (x|r, \lambda) = \mathcal N \left ( (x_0, x_1) | (2+r, 0) 
+\begin{bmatrix} 5 & 0 \\ 0 & 9 \end{bmatrix} \right ) Exp((x_2| \lambda)
+$$
+
+
+Pour les signaux :
+$$
+f_s (x|r, \lambda) = \mathcal N \left ( (x_0, x_1) | (1, 1) 
+\begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \right ) Exp((x_2| 2)
+$$
+
+Ce qui donne la vraissemblance :
+$$
+p(x | r, \lambda, \mu ) = (1-\mu) f_b(x|r, \lambda) + \mu f_s(x|r, \lambda)
+$$
+
+Ce toy a l'avantage d'être multidimensionnel et plus complexe que le précédent.
+
+
+\begin{figure}[htb]
+    \includegraphics[width=\linewidth]{s3d2/pairgrid}
+    \caption{Data distribution of the 3D toy}
+    \label{fig:s3d2_pairgrid}
+\end{figure}
+
+
+Ici c'est le pompom l'erreur stat est minime et l'erreur systématique représente quasiment la totalité de l'erreur globale.
+
+
+\begin{figure}[htb]
+  \centering
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{s3d2/marginal_r.png}
+    \caption{$p(r|x)$}
+    \label{fig:marginal_r}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{s3d2/marginal_lam.png}
+    \caption{$p(\lambda|x)$}
+    \label{fig:marginal_lambda}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{s3d2/marginal_mu.png}
+    \caption{$p(\mu|x)$}
+    \label{fig:marginal_mu}
+  \end{subfigure}
+  \caption{Posterior probabilities for $y$ (left) and $\alpha$ (right)}
+  \label{fig:marginals}
+\end{figure}
+
 
