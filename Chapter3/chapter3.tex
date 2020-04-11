@@ -3,8 +3,9 @@
 %****************************** Third Chapter **********************************
 %*******************************************************************************
 
-\chapter{Matherial and methods}
-\label{chap:matherial_methods}
+\chapter{A more direct approach}
+\label{chap:direct_approach}
+
 \ifpdf
     \graphicspath{{Chapter3/Figs/Raster/}{Chapter3/Figs/PDF/}{Chapter3/Figs/}}
 \else
@@ -12,109 +13,13 @@
 \fi
 
 
-\section{Constitution du benchmark} % (fold)
-\label{sec:constitution_du_benchmark}
-
-\victor{données specifiquement utilisées}
-
-\victor{simulateur rapide}
-
-
-\victor{TODO : nuisance parameters}
-\victor{TODO : importance weight}
-
-
-\section{Evaluation metric} % (fold)
-\label{sec:evaluation_metric}
-
-Many methods to estimate the parameter of interest and its variance are available.
-If changing the set of hyper parameter for the learning procedure is considered as changing the method then countless methods are to be evaluated.
-Automating the measure of the performances of a proposed method is crucial to select the best method.
-In this section is described a simple but general procedure to measure the performances of a given method.
-
-The usual criterions to evaluate an estimator $\htheta$ are the bias, the variance and the mean squared error defined as follow :
-\begin{equation}
-  Bias(\htheta) = \EE[\htheta] - \thetas
-\end{equation}
-\begin{equation}
-  Var(\htheta) = \EE[ (\htheta - \EE[\htheta])^2 ] = \EE[\htheta^2] - (\EE[\htheta])^2
-\end{equation}
-\begin{equation}
-  MSE(\htheta) = \EE[(\htheta - \thetas)^2] = Var(\htheta) + [Bias(\htheta)]^2
-\end{equation}
-
-To evaluate these criterion we need to repeat the experiement $N$ times leading to many estimation of the parameters $\hmu^{(k)}$ and $\hshmu^{(k)}$.
-Repeating the experiment can be done through cross-validation methods.
-
-
-\subsection{Evaluation of the parameter of interest estimator} % (fold)
-\label{sub:evaluation_of_the_parameter_of_interest_estimator}
-
-First, let's focus on evaluating the estimator of the parameter of insterest $\hmu$.
-The true value of $\mu$, noted $\mus$, is available during tests since it is an input of the simulator.
-
-From the estimation of its expected value
-\begin{equation}
-  \EE[\hmu] \approx <\hmu^{(k)}>_k = \frac{1}{N} \sum_{k} \hmu^{(k)}
-\end{equation}
-it is possible to estimated the criterions
-
-\begin{equation}
-  Bias(\hmu) \approx <\hmu^{(k)}>_k - \mus
-\end{equation}
-\begin{equation}
-  \label{eq:var_hmu}
-  Var(\hmu) \approx <\hmu^{(k)} \times \hmu^{(k)}>_k - (<\hmu^{(k)}>_k)^2
-\end{equation}
-\begin{equation}
-  MSE(\hmu) = Var(\hmu) + [Bias(\hmu)]^2
-\end{equation}
-
-\subsection{Evaluation of the variance estimator} % (fold)
-\label{sub:evaluation_of_the_variance_estimator}
-
-The evaluation of the variance estimator $\hshmu$ could be done in the same way if the true variance $Var(\hmu)$ can be computed.
-If this is not the case an approximation is available using \autoref{eq:var_hmu}.
-
-\begin{equation}
-  Bias(\hshmu) \approx <\hshmu^{(k)}>_k - Var(\hmu)
-\end{equation}
-\begin{equation}
-  Var(\hshmu) \approx <\hshmu^{(k)} \times \hshmu^{(k)}>_k - (<\hshmu^{(k)}>_k)^2
-\end{equation}
-\begin{equation}
-  MSE(\hshmu) = Var(\hshmu) + [Bias(\hshmu)]^2
-\end{equation}
-
-
-
-\section{"Domain adaptation"} % (fold)
-\label{sec:domain_adaptation}
-
-\victor{Tangent prop}
-
-Tangent Propagation is learning to become robust to a known geometrical/differentiable transformation of the input features.
-
-\victor{how Pivot is "domain adaptation"}
-
-Pivot network are trained to become robust to the variation of a known feature (which may not be an input feature).
-
-
-\section{More direct approach} % (fold)
-\label{sec:more_direct_approach}
-
-\victor{INFERNO}
-
-
-\topic{This method is inspired from mixture density networks, inferno and neural statistician. 
-Other solutions to the inverse problem includes ABC, VI and probabilistic programming.}
-
-
-\subsection{Regression} % (fold)
-\label{sub:regression}
-
 \topic{A simple but efficient solution is to map the input data to the target with a neural network whose architecture and training procedure are carefully chosen.}
-\subsubsection{Setting}
+\content{We can get rid of the domain knowledge requierment and simply let a big neural network do all the work for us.}
+\content{This method is inspired from mixture density networks, inferno and neural statistician.}
+
+\section{Setting} % (fold)
+\label{sec:setting}
+
 \topic{Although the generator is available classical Bayesian inference is difficult because of the intractable likelihood.}
 
 A generative model $G(\theta)$ is available to simulate the studied process and retrieve the observations $x$ from given parameters $\theta$.
@@ -132,7 +37,9 @@ Unfortunately the likelihood $p(x | \theta)$ is often intractable because of hig
 Instead of replacing the likelihood or trying to regress it we propose to directly approximate the posterior $p(\theta | x)$ with a sufficiently powerfull and tractable distribution $q_\phi(\theta | x)$.
 
 
-\subsubsection{Density network}
+\section{Density networks} % (fold)
+\label{sec:density_networks}
+
 
 \topic{Mixture density networks are a tractable but powerful tool to approximate a conditional probability density.}
 
@@ -176,7 +83,8 @@ Therefore requires data for which the ground truth is available which is verifie
 
 Finally the likelihood, with Gaussian kernels, is fully differentiable making possible the use of stochastic gradient descent methods to obtain the neural network parameters $\phi$.
 
-\subsubsection{Training}
+\subsection{Training} % (fold)
+\label{sub:training}
 
 \topic{MDN are trained like classical regressor and allow to compute the uncertainty of the predictions.}
 
@@ -228,8 +136,17 @@ From the experimental data $x^\star$ the mean and variance can be easily extract
     & = \sum_{i=0}^K m_i(x^\star ; \phi) \left [ \sigma_i(x^\star ; \phi)^2 + y_i(x^\star ; \phi)^2 - \bar \theta^2 \right ]
 \end{align}
 
-\subsubsection{Neural network architecture}
-\topic{Details about the neural network architecture for MDN with importance weighted dataset as input}
+\section{Special architecture} % (fold)
+\label{sec:special_architecture}
+
+
+\topic{Neural network using reduction function, such as the average, can extract complex link between the parameters of a generative distribution and a dataset which is a realisation of this distribution.}
+
+\content{Details about the neural network architecture for MDN with importance weighted dataset as input}
+
+\subsection{Datasetwise input} % (fold)
+\label{sub:datasetwise_input}
+
 
 In order to accurately capture the complex mapping between the data and the parameters the architecture of the neural network should embody the constraints of the chosen family distribution.
 
@@ -263,13 +180,18 @@ and $\delta$ is the Dirac distribution function.
 \victor{Oui mais Quid du fait que l'incertitude dépend du nombre d'évènement ? $\sigma$ doit changer si j'ai 10 fois moins d'évènements, non ? Oui mais d'un autre coté le réseaux est conçu pour pouvoir extraire la variance des observables d'entrée donc il peut gérer ça tout seul... Aussi si on a 10 fois moins d'évènement la distribution empirique n'est pas du tout la même donc c'est pas pertinent !}
 
 
-\topic{Neural network using reduction function, such as the average, can extract complex link between the parameters of a generative distribution and a dataset which is a realisation of this distribution.}
 
 Section 7 of \cite{lucas:hal-01791126} gives a proof that the given \emph{"permutation invariant neural networks"} architecture is a universal approximator.
 
+\subsection{Training details} % (fold)
+\label{sub:training_details}
+
+\content{Tips and tricks to train these networks}
+
+\section{Nuisance parameters} % (fold)
+\label{sec:nuisance_parameters}
 
 
-\subsubsection{Nuisance parameters}
 \topic{Nuisance parameters are marginalized using Monte Carlo integral approximation.}
 
 The objective is to infer the parameter $\mu$ of a model that describes a stochastic system from experimental data $D$.
@@ -305,12 +227,21 @@ $\hat\sigma$  $\gets$ $\hat\sigma - \hat\mu^2$ \;
 \caption{Marginalizing the nuisance parameters $\alpha$ using MC to compute the integral.}
 \end{algorithm}
 
+\section{Discussing the related work} % (fold)
+\label{sec:discussing_the_related_work}
 
-\subsubsection{Discussing the related work} 
+\subsection{INFERNO} % (fold)
+\label{sub:inferno}
 
 Using a neural network to directly map the dataset to the estimated parameter distribution can be viewed as an extension of the work done in INFERNO \cite{DECASTRO2019170inferno}. 
 Indeed the current state of the art is using a classifier score histogram to produce summary static while INFERNO includes the summary statistic production in the neural network.
 In this work the next step, maximum likelihood fit to retrieve the parameter of interest, is also left to the neural network.
+
+
+\cite{DECASTRO2019170inferno} is the closest work of this study in which the authors optimize a neural network to produce of summary statistics that reduces the uncertainty on the parameters of interest estimation.
+
+\subsection{Neural statistician} % (fold)
+\label{sub:neural_statistician}
 
 Neural Statistician \cite{Edwards17neuralstatistician} is also relying on a similar neural network architecture to compute summary statistics.
 The idea in Neural Statistician is that similar datasets can be gathered as originating from the same generative model including a global parameter to control the shift between domains.
@@ -321,51 +252,12 @@ Causal parameters are often related to properties of the distribution of the dat
 The architecture should reflect this link in order for a neural network to capture the relevant information.
 This work is using Mixture density network \cite{Bishop94mixturedensity} combined with neural network architectures design to learn summary statistics on datasets.
 Such architecture is shown in \cite{Edwards17neuralstatistician}, in the context of transfer learning and one shot learning, where the neural network is producing summary statistics to embed the link between similar datasets.
-\cite{DECASTRO2019170inferno} is the closest work of this study in which the authors optimize a neural network to produce of summary statistics that reduces the uncertainty on the parameters of interest estimation.
-
-
-\victor{TODO : related to Amortized VI ? Related to simple Gaussian fit ?}
-
-
-\subsection{Toys} % (fold)
-\label{sub:toys}
-
-\victor{Montrer sur des toys}
-
-\subsubsection{Apple and pears}
-
-Let's start with a toy problem and make it gradually more complex.
-The study is about finding the proportion $\mu$ of apples and pears in a bag.
-The only information available is the total number of fruits in the bag and the weight of each individual fruit.
-Apples and pears weights are normally distributed and slightly different.
-The dataset is a set of real values $D = \{ x_i \in \RR \} $
-
-From the average weight of the fruits in the bag a linear regression is enough to find the link between $D$ and the parameter of interest $\mu$.
-The model can be trained if enough bags in which the proportion is known is available for training.
-This simplicity is wanted to test the method.
-
-Since the weight of a fruit is stochastic, two bags of fruits with the same number of apples and pears may have a different average weight.
-Leading to some uncertainty in the predicted proportion that must be reported.
-
-
-\victor{VAE}
 
 
 
+\subsection{Others} % (fold)
+\label{sub:others}
 
-\begin{figure}[htb]
-  \centering
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{minion}
-    \caption{Minions}
-    \label{fig:minion}
-  \end{subfigure}%
-  \hfill
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{WallE}
-    \caption{"Eve"}
-    \label{fig:walle}
-  \end{subfigure}
-  \caption{Comparison Minions (left) and WallE (right)}
-  \label{fig:comparision}
-\end{figure}
+\victor{Related to Amortized VI ?}
+\victor{Related to simple Gaussian fit ?}
+

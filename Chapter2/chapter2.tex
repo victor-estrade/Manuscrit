@@ -15,7 +15,7 @@
 \section{Unsuitable methods} % (fold)
 \label{sec:unsuitable_methods}
 
-\topic{Variational inference requires likelihood and ABC do not scale.}
+\topic{Variational inference requires likelihood and ABC does not scale.}
 \content{What we are not going to devellop. But justifying why !}
 
 \subsection{ABC methods} % (fold)
@@ -46,7 +46,7 @@ In high Energy Physics (HEP), which motivated this work, the use of machine lear
 \label{sub:bayesian_networks}
 
 \topic{Could be a solution. But no time to explore everything}
-\content{En vrai les Bayesian networks }
+\content{Personne n'aime les Bayesian networks. Il faudrait exprimer pourquoi.}
 \victor{Other physicists have tried and got prelimnary results. Need to see if they made progress !}
 
 
@@ -66,6 +66,13 @@ In high Energy Physics (HEP), which motivated this work, the use of machine lear
 
 \topic{The easiest (and naive) way of being good across domain}
 
+\subsection{Regularization} % (fold)
+\label{sub:regularization}
+
+\topic{Regularizing the network to become less sensitive to nuisance.}
+\content{Tangent Prop}
+
+
 \subsection{Adversarial training} % (fold)
 \label{sub:adversarial_training}
 
@@ -78,7 +85,7 @@ In high Energy Physics (HEP), which motivated this work, the use of machine lear
 
 \topic{Is the cross-entropy the right objective function ?}
 Recall that the optimality of the Bayesian classifier is no more.
-Let's not stay stuck on this.
+Let's not stay stuck with classification then.
 
 
 \section{Soft histograms} % (fold)
@@ -92,20 +99,19 @@ Let's not stay stuck on this.
 \subsection{Differentiable histograms} % (fold)
 \label{sub:differentiable_histograms}
 
-\topic{Using softmax or gaussian gradients the histograms becomes differentiable}
+\topic{Using softmax or approximating gradients makes the histograms differentiable}
 
 \subsection{Differentiable simulator} % (fold)
 \label{sub:differentiable_simulator}
 
-\topic{It is possible to make the simulator sufficiently differentiable according to the nuisance parameters}
+\topic{It is possible to make the simulator differentiable according to the nuisance parameters}
 
 \content{Fast simulation through recomputing only the skewed features according to nuisance parameter}
 
 \subsection{Limitations} % (fold)
 \label{sub:limitations}
 
-% subsection limitations (end)
-\topic{INFERNO is a good way of takling systematics (if you can make siluation differentiable enough and invert the fisher info matrix)}
+\topic{if you can make siluation differentiable enough and invert the fisher info matrix)}
 
 
 \section{Mining gold} % (fold)

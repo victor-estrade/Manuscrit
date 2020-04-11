@@ -206,14 +206,23 @@ Note : $c$ is also a sufficient summary statistic
 
 
 \topic{In real life we do both}
-
 \victor{Meaning : computing hand crafted features to reduce from $\RR^{100 000}$ to $\RR^{40}$ then using machine learning to reduce to $\RR$}
+
+\content{We don't need ML when we know how to write the code to compute features}
+\content{We use ML when we don't know how to write the code}
+\content{Clin d'oeil au tracking. On a le code mais le faire passer à l'échelle reste très difficile.}
 
 
 \section{Systematic effects} % (fold)
 \label{sec:systematic_effects}
 
 \topic{Systematic effects make inference more complex by introducing nuisance parameters}
+
+\subsection{Definition} % (fold)
+\label{sub:definition}
+
+\content{Definition and example of systematic effects (not only in HEP !)}
+\victor{Laisser le lecteur penser de lui même à l'adaptation de domaine.}
 
 \subsection{Classifier optimality} % (fold)
 \label{sub:classifier_optimality}
@@ -230,8 +239,8 @@ Note : $c$ is also a sufficient summary statistic
 \content{It does not "breaks" it but increase the variance/uncertainty}
 \content{Introduce systematic vs statistical uncertainty as the 2 component of the variance}
 
-\subsection{Profiled likelohood} % (fold)
-\label{sub:profiled_likelohood}
+\subsection{Profiled likelihood} % (fold)
+\label{sub:profiled_likelihood}
 
 \topic{The current way of measuring the variance of our estimation to include systematics is "profiled likelihood"}
 
