@@ -21,6 +21,8 @@
 \label{sec:setting}
 
 \topic{Although the generator is available classical Bayesian inference is difficult because of the intractable likelihood.}
+\content{Blabla de rappel pour ceux qui ont esquivé les autres chapitres}
+\victor{Est-ce qu'il y a besoin d'une section pour ça ?}
 
 A generative model $G(\theta)$ is available to simulate the studied process and retrieve the observations $x$ from given parameters $\theta$.
 The objective is to reverse the generator $G^{-1}(x)$ to access the quantities of interest ruling the process.
@@ -42,6 +44,11 @@ Instead of replacing the likelihood or trying to regress it we propose to direct
 
 
 \topic{Mixture density networks are a tractable but powerful tool to approximate a conditional probability density.}
+
+\subsection{Core idea} % (fold)
+\label{sub:core_idea}
+
+\topic{Approximate the posterior with a very powerfull and flexible model}
 
 A way of approximating the posterior $p(\theta | x)$ is to define a tractable but flexible enough family of distribution $q_\phi(\theta | x)$ parametrized by $\phi$.
 
@@ -83,8 +90,8 @@ Therefore requires data for which the ground truth is available which is verifie
 
 Finally the likelihood, with Gaussian kernels, is fully differentiable making possible the use of stochastic gradient descent methods to obtain the neural network parameters $\phi$.
 
-\subsection{Training} % (fold)
-\label{sub:training}
+\subsection{Training principle} % (fold)
+\label{sub:training_principle}
 
 \topic{MDN are trained like classical regressor and allow to compute the uncertainty of the predictions.}
 
@@ -118,6 +125,21 @@ Since the likelihood is fully differentiable in $\phi$, the optimization can be 
  \caption{Training procedure}
 \end{algorithm}
 
+\subsection{Training details} % (fold)
+\label{sub:training_details}
+
+\topic{These network requires special care when trained.}
+\content{Basically explain why this method is not so popular. This loss is more difficult to train that a mean squared error.}
+\content{Tips and tricks to train these networks}
+\content{Reduce Adam inertia to avoid bouncing loss (Gradients of mean and variance don't converge at the same rate !
+)}
+\content{Maybe worse with mixture ? I did not try any....}
+
+\subsection{Extract parameters} % (fold)
+\label{sub:extract_parameters}
+
+\topic{We have access to the full posterior (formulas included). So parameter estimation is now easy}
+
 As long as a flexible and powerful enough parametric differentiable function is mapping the data $x$ to the parameter $\theta$ it is possible to approximate the conditional density.
 Once trained the inference is straightforward.
 From the experimental data $x^\star$ the mean and variance can be easily extracted:
@@ -136,6 +158,9 @@ From the experimental data $x^\star$ the mean and variance can be easily extract
     & = \sum_{i=0}^K m_i(x^\star ; \phi) \left [ \sigma_i(x^\star ; \phi)^2 + y_i(x^\star ; \phi)^2 - \bar \theta^2 \right ]
 \end{align}
 
+\content{If multimodal model then it is more complicated. But still possible to simply sample many instances from this mixture and do a fine histogram... We are back to a problem where we have the exact formulas ! So we can compute likelihood etc.}
+
+
 \section{Special architecture} % (fold)
 \label{sec:special_architecture}
 
@@ -144,21 +169,37 @@ From the experimental data $x^\star$ the mean and variance can be easily extract
 
 \content{Details about the neural network architecture for MDN with importance weighted dataset as input}
 
-\subsection{Datasetwise input} % (fold)
-\label{sub:datasetwise_input}
+\subsection{Mixture models} % (fold)
+\label{sub:mixture_models}
 
-
-In order to accurately capture the complex mapping between the data and the parameters the architecture of the neural network should embody the constraints of the chosen family distribution.
+\content{Softmax for mixture coefficient.}
+\victor{Pas utilisé car pas besoin de mélange de distrib. À supprimer ?}
 
 The requirement that the mixture coefficients $m_i$ sum up to 1 is enforced using softmax operator on the $K$ output neurons representing the $m_i$.
 Similarly the standard deviation of Gaussians should always be strictly positive which is fulfilled by interpreting the neuron output as $\log(\sigma_i)$.
 No particular operation are necessary on the mean $y_i$ of the Gaussians since it can take whatever real value.
+
+\subsection{Datasetwise input} % (fold)
+\label{sub:datasetwise_input}
+
+\topic{Independent measurement requires permutation invariant functions}
+
+In order to accurately capture the complex mapping between the data and the parameters the architecture of the neural network should embody the constraints of the chosen family distribution.
 
 If the studied process is stochastic the observations are usually composed of repeated independent measurements of an event.
 Then the observable is not a real valued vector $x \in \RR$ but a set of data points $D = \{v_i \in \RR \}_{i=0}^N$.
 The output is still a real valued vector meaning that the neural network architecture should include some reduction function to map the set of vector to a single vector.
 Usual candidates are averages, minima, maxima, products, sums, geometric means or others that reduce the dimension and remain invariant to the input order of the input vectors.
 In practice the average is the favorite one.
+
+Section 7 of \cite{lucas:hal-01791126} gives a proof that the given \emph{"permutation invariant neural networks"} architecture is a universal approximator.
+
+\content{Drawing of the architecture}
+
+\subsection{Weighted instances} % (fold)
+\label{sub:weighted_instances}
+
+\topic{Weighted instances requires weighted reduction functions}
 
 When the studied process includes some very rare events the simulation uses importance sampling. 
 The simulation output includes importance weights to allow many rare events to be produced while keeping the distribution of events similar to reality.
@@ -179,18 +220,21 @@ and $\delta$ is the Dirac distribution function.
 
 \victor{Oui mais Quid du fait que l'incertitude dépend du nombre d'évènement ? $\sigma$ doit changer si j'ai 10 fois moins d'évènements, non ? Oui mais d'un autre coté le réseaux est conçu pour pouvoir extraire la variance des observables d'entrée donc il peut gérer ça tout seul... Aussi si on a 10 fois moins d'évènement la distribution empirique n'est pas du tout la même donc c'est pas pertinent !}
 
+\content{Drawing of the architecture with weights}
 
-
-Section 7 of \cite{lucas:hal-01791126} gives a proof that the given \emph{"permutation invariant neural networks"} architecture is a universal approximator.
-
-\subsection{Training details} % (fold)
-\label{sub:training_details}
-
-\content{Tips and tricks to train these networks}
 
 \section{Nuisance parameters} % (fold)
 \label{sec:nuisance_parameters}
 
+\subsection{Ignore them} % (fold)
+\label{sub:ignore_them}
+
+\topic{The model can simply learn the marginal posteriors "like a boss"}
+
+
+
+\subsection{Marginalization} % (fold)
+\label{sub:marginalization}
 
 \topic{Nuisance parameters are marginalized using Monte Carlo integral approximation.}
 

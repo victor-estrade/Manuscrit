@@ -44,6 +44,61 @@
 \content{Brute force method to do bayesian inference}
 \content{Other (better) methods like variational inference}
 
+On construit une grille, suffisement fine, parcourant les valeurs possibles $y_i, \alpha_j$.
+
+Th. de Bayes : 
+$$
+    p(y_i, \alpha_j | x) = \frac{p(x|y_i, \alpha_j) p(y_i, \alpha_j)}{p(x)}
+$$
+
+On a donc à partir des 2 tenseurs : 
+\begin{itemize}
+	\item likelihood : $L_{ij} = p(x|y_i, \alpha_j)$
+	\item prior : $K_{ij} = p(y_i, \alpha_j)$ 
+\end{itemize}
+
+le tenseur $ R_{ij} = p(x|y_i, \alpha_j) p(y_i, \alpha_j) $ 
+qui après renormalisation donne le tenseur posterior $ T_{ij} = p(y_i, \alpha_j | x)$.
+
+À partir de $T_{ij}$ on va calculer les proba marginales :
+\begin{itemize}
+	\item $p(y_i | x) = \sum_j T_{ij} = Y_i$
+	\item $p(\alpha_j | x) = \sum_i T_{ij} = A_j$
+\end{itemize}
+
+et ce que doit apprendre notre réseau de neuronne : $p(y_i | x, \alpha_j) = \frac{p(y_i, \alpha_j | x)}{p(\alpha_j | x)} = \frac{T_{ij}}{A_j} = N_{ij}$
+
+On obtient alors les grandeurs qui nous intéressent
+\begin{itemize}
+	\item $ \VV(y|x) = \VV(y_i, Y_i) $
+	\item $ \EE_{\alpha \sim p(\alpha|x)}[ \VV(y|x, \alpha) ] = \sum_j \VV(y|x, \alpha_j) p(\alpha_j | x) = \sum_j \VV_i(y_i, N_{ij}) A_j$
+	\item $\EE_{\alpha \sim p(\alpha|x)} \left ((\EE [y|x, \alpha]  - \EE[y|x])^2\right ) = \VV(y|x) - \EE_{\alpha \sim p(\alpha|x)}[ \VV(y|x, \alpha) ] = \VV(y_i, Y_i) - \sum_j \VV_i(y_i, T_{ij}) A_j$
+\end{itemize}
+
+\subsubsection{Remarque 1}
+
+Pour les calculs il faut se souvenir que les tenseurs contiennent des proba !
+
+Donc $<y|x>= \EE[y|x] = \sum_i y_i Y_i$ car $Y_i$ ne contient la densité de proba mais pas les valeurs de $y$ !
+
+De même $\VV(y|x) = \sum_i y_i^2 Y_i - <y|x>^2 = \VV(y_i, Y_i)$
+
+\subsubsection{Remarque 2}
+
+Pour la stabilité numérique il convient de travailler en logproba.
+
+En effet $x$ représente un jeu de donnée donc $p(x | y_i, \alpha_j) = \prod_k^N p(x_k | y_i, \alpha_j)$ pour N assez grand.
+Ceci va produire des nombre très petit très vite !
+
+On calculera plutôt : $\log p(x | y_i, \alpha_j) = \sum_k^N log p(x_k | y_i, \alpha_j) = \ell(x | y_i, \alpha_j)$
+
+La renormalisation se fera facilement avec un softmax : 
+$$ 
+    T_{ij} = p(y_i, \alpha_j | x) = \frac{e^{\ell(y_i, \alpha_j| x)} }{\sum_{n,m} e^{\ell(y_n, \alpha_m| x)} }
+$$
+
+
+
 \subsection{Maximum likelihood} % (fold)
 \label{sub:maximum_likelihood}
 
@@ -67,7 +122,7 @@
 
 \topic{These methods don't scale to high dimensions}
 
-\content{Computation complexity makes it intractable}
+\content{Computation complexity makes likelihood and posterior intractable}
 \content{Numerical stability high dimensional integral ?}
 \content{Maybe a "simple" example that shows how often in real life this setting may happen}
 
@@ -246,6 +301,40 @@ Note : $c$ is also a sufficient summary statistic
 
 \content{Explain how profiled likelihood works and why is works}
 \content{Introduce Fisher information matrix and Cramer Rao bound (since we will use it later for INFERNO)}
+
+\subsection{Other definition} % (fold)
+\label{sub:other_definition}
+
+Définition de la variance :
+
+$\VV(Y) = \EE[(Y - \EE[Y])^2] = \EE(Y^2) - [\EE(Y)]^2$
+
+Théorème de la variance totale \needcite :
+
+\begin{eqnarray}
+    \VV[Y] =& \EE_X \left (\VV[Y|X] \right ) &+ \VV_X \left (\EE[Y|X]\right ) \\
+    \VV[Y] =& \EE_X \left (\VV[Y|X] \right ) &+ \EE_X \left ( (\EE [Y|X]  - \EE[Y])^2\right )
+\end{eqnarray}
+
+
+En remplaçant la v.a. $Y$ par $y|x$ et $X$ par $\alpha$ on obtient :
+
+$$
+\VV[y|x] = \EE_{\alpha \sim p(\alpha|x)} \left (\VV[y|x, \alpha] \right ) + \EE_{\alpha \sim p(\alpha|x)} \left ( (\EE [y|x, \alpha]  - \EE[y|x])^2\right )
+$$
+
+
+On dirait presque que : 
+$$\EE_{\alpha \sim p(\alpha|x)} \left ((\EE [y|x, \alpha]  - \EE[y|x])^2\right )$$
+représente l'erreur systématique. 
+Car c'est l'écart de notre estimation de $y$ sachant $x$ et $\alpha$ par rapport à la moyenne.
+Surtout, si $\alpha|x$ est parfaitement connu (ie c'est un dirac) alors ce terme s'annule !
+
+Mais je ne suis pas sûr que l'on puisse dire que
+$$\EE_{\alpha \sim p(\alpha|x)} \left (\VV[y|x, \alpha] \right )$$
+représente l'erreur statistique.
+
+Mais si ça marche on aurrait une définition claire et précise de ce qu'est l'erreur statistique et l'erreur systématique.
 
 
 \subsection{Looking for better} % (fold)

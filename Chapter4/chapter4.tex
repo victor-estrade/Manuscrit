@@ -11,12 +11,15 @@
     \graphicspath{{Chapter4/Figs/Vector/}{Chapter4/Figs/}}
 \fi
 
+\topic{Il faut un benchmark solide pour comparer les méthodes}
+
 \section{Constitution du benchmark} % (fold)
 \label{sec:constitution_du_benchmark}
 
+\content{Weak baselines, too many (too complex or specific) objective functions and other problems in presenting ML results.}
 
-\section{Data} % (fold)
-\label{sec:data}
+\section{Toy datasets} % (fold)
+\label{sec:toy_datasets}
 
 \subsection{Apple and pears} % (fold)
 \label{sub:apple_and_pears}
@@ -36,6 +39,29 @@ Leading to some uncertainty in the predicted proportion that must be reported.
 
 \subsection{Toy 1D} % (fold)
 \label{sub:toy_1d}
+
+Le toy qui va nous interesser ici est un mélange de 2 distributions, une gamma et une gaussienne, avec une observable 1D $x$.
+\autoref{fig:minitoy_distrib} présente la distribution des données pour un tirage de 10000 instances.
+
+Le paramètre d'intérêt est le coef de mélange des 2 distributions $y$.
+Le paramètre de nuisance $\alpha$ est un rescaling de l'observable $x$.
+
+Sans $\alpha$ :
+$$
+    p(x | y) = y \mathcal N(x|a, b) + (1-y) Gamma(x|s, \theta)
+$$
+
+Avec $\alpha$ :
+$$
+    p(x | y, \alpha) = y \mathcal N(x|\alpha a, \alpha b) + (1-y) Gamma(x|\alpha s, \theta)
+$$
+
+\begin{figure}[htb]
+    \includegraphics[width=\linewidth]{minitoy/distrib.png}
+    \caption{Data distribution of the 1D toy}
+    \label{fig:minitoy_distrib}
+\end{figure}
+
 
 
 \subsection{Toy 3D} % (fold)
@@ -73,12 +99,26 @@ Ce toy a l'avantage d'être multidimensionnel et plus complexe que le précéden
 \end{figure}
 
 
-\subsection{Higgs data} % (fold)
-\label{sub:higgs_data}
+\section{Higgs data} % (fold)
+\label{sec:higgs_data}
 
+\subsection{Simulation} % (fold)
+\label{sub:simulation}
+
+\content{Un peu de blabla sur Geant4 \needcite et à quel points ces simulations sont complexes.}
 \content{importance weight}
-\content{nuisance parameters}
+
+\subsection{HiggsML challenge} % (fold)
+\label{sub:higgsml_challenge}
+
+\content{Petit rappel sur le challenge qui a permi à ces données d'exister et d'être publique !}
+\content{détails : \#samples, \#features, etc}
+
+\subsection{Nuisance parameters} % (fold)
+\label{sub:nuisance_parameters}
+
 \content{simulateur rapide}
+\content{nuisance parameters}
 
 
 
