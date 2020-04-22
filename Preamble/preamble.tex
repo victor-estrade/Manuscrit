@@ -182,8 +182,8 @@
 % ******************************** Todo Notes **********************************
 %% Uncomment the following lines to have todonotes.
 
-% \ifsetDraft
-  %\usepackage[dvipsnames]{xcolor}
+
+\ifsetDraft
   \definecolor{amethyst}{rgb}{0.6, 0.4, 0.8}
   \definecolor{brickred}{rgb}{0.8, 0.25, 0.33}
   \definecolor{brightube}{rgb}{0.82, 0.62, 0.91}
@@ -196,6 +196,7 @@
   \definecolor{apricot}{rgb}{0.98, 0.81, 0.69}
   \definecolor{iceberg}{rgb}{0.44, 0.65, 0.82}
   \definecolor{lightcornflowerblue}{rgb}{0.6, 0.81, 0.93}
+  %\usepackage[dvipsnames]{xcolor}
   % http://latexcolor.com/ for other color and code to define them
   \usepackage[colorinlistoftodos]{todonotes}
   \newcommand{\victor}[1]{\todo[size=\small,inline,color=almond]{#1  \-- Victor}}
@@ -205,15 +206,15 @@
 
   \newcommand{\topic}[1]{\todo[size=\small,inline,color=celadon]{Topic : #1}}
   \newcommand{\content}[1]{\todo[size=\small,inline,color=lightcornflowerblue]{Content : #1}}
-%\else
-% \newcommand{\mynote}[1]{}
-% \newcommand{\listoftodos}{}
-% 
-% \newcommand{\benjamin}[1]{}
-% \newcommand{\isabelle}[1]{}
-% \newcommand{\balthazar}[1]{}
-% \newcommand{\antoine}[1]{}
-%\fi
+
+\else
+  \newcommand{\victor}[1]{}
+  \newcommand{\isabelle}[1]{}
+  \newcommand{\cecile}[1]{}
+  \newcommand{\david}[1]{}
+  \newcommand{\topic}[1]{}
+  \newcommand{\content}[1]{}
+\fi
 
 % Example todo: \mynote{Hey! I have a note}
 \usepackage[normalem]{ulem}
@@ -244,9 +245,10 @@
 \newcommand*{\pact}{{p^{(p)}}}
 \newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
 \newcommand*{\x}{{\bm{x}}}
-\newcommand*{\taub}{{\bm{\tau}}}
+\newcommand*{\v}{{\bm{v}}}
 \newcommand*{\y}{{\bm{y}}}
 \newcommand*{\h}{{\bm{h}}}
+\newcommand*{\taub}{{\bm{\tau}}}
 \newcommand*{\ttrain}{\ensuremath{\mathcal{T}^{\text{train}}}}
 \newcommand*{\ttest}{\ensuremath{\mathcal{T}^{\text{test}}}}
 \newcommand*{\EE}{\mathbb{E}}
@@ -273,7 +275,7 @@
 
 % double commands that do the same things
 \newcommand*{\yy}{{\y}}
-\newcommand*{\xx}{{\x}}
+\newcommand*{\vv}{{\v}}
 \newcommand*{\ttt}{{\taub}}
 
 % macro for theorems

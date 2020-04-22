@@ -99,8 +99,14 @@ Ce toy a l'avantage d'être multidimensionnel et plus complexe que le précéden
 \end{figure}
 
 
+
+
+
+
 \section{Higgs data} % (fold)
 \label{sec:higgs_data}
+
+
 
 \subsection{Simulation} % (fold)
 \label{sub:simulation}
@@ -108,11 +114,15 @@ Ce toy a l'avantage d'être multidimensionnel et plus complexe que le précéden
 \content{Un peu de blabla sur Geant4 \needcite et à quel points ces simulations sont complexes.}
 \content{importance weight}
 
+
+
 \subsection{HiggsML challenge} % (fold)
 \label{sub:higgsml_challenge}
 
 \content{Petit rappel sur le challenge qui a permi à ces données d'exister et d'être publique !}
 \content{détails : \#samples, \#features, etc}
+
+
 
 \subsection{Nuisance parameters} % (fold)
 \label{sub:nuisance_parameters}
@@ -120,6 +130,81 @@ Ce toy a l'avantage d'être multidimensionnel et plus complexe que le précéden
 \content{simulateur rapide}
 \content{nuisance parameters}
 
+
+
+
+
+\section{Best inference on toys} % (fold)
+\label{sec:best_inference_on_toys}
+
+The toy data does not suffer from intractable likelihood making it possible to compute the posterior probability using standard bayesian inference.
+The computed posterior is the best possible inference and will be compared with the other methods that assumes the likelihood is intracteble.
+
+\subsection{Computing the posterior} % (fold)
+\label{sub:computing_the_posterior}
+
+Computing the integral by hand can be tedious.
+The simple method proposed allow to avoid it.
+
+Start with a grid, fine enough, going through the possible values. $y_i, \alpha_j$.
+
+From Bayes theorem : 
+$$
+    p(y_i, \alpha_j | x) = \frac{p(x|y_i, \alpha_j) p(y_i, \alpha_j)}{p(x)}
+$$
+
+The 2 following tensor can be computed from the simulator.
+\begin{itemize}
+  \item likelihood : $L_{ij} = p(x|y_i, \alpha_j)$
+  \item prior : $K_{ij} = p(y_i, \alpha_j)$ 
+\end{itemize}
+
+giving the tensor $ R_{ij} = p(x|y_i, \alpha_j) p(y_i, \alpha_j) $ 
+which after renormalization gives the posterior tensor $ T_{ij} = p(y_i, \alpha_j | x)$.
+
+The marginal probabilities are computed from $T_{ij}$ :
+\begin{itemize}
+  \item $p(y_i | x) = \sum_j T_{ij} = Y_i$
+  \item $p(\alpha_j | x) = \sum_i T_{ij} = A_j$
+\end{itemize}
+
+the neural network should compute : $p(y_i | x, \alpha_j) = \frac{p(y_i, \alpha_j | x)}{p(\alpha_j | x)} = \frac{T_{ij}}{A_j} = N_{ij}$
+
+We then obtain the quantities we are interested in :
+\begin{itemize}
+  \item $ \VV(y|x) = \VV(y_i, Y_i) $
+  \item $ \EE_{\alpha \sim p(\alpha|x)}[ \VV(y|x, \alpha) ] = \sum_j \VV(y|x, \alpha_j) p(\alpha_j | x) = \sum_j \VV_i(y_i, N_{ij}) A_j$
+  \item $\EE_{\alpha \sim p(\alpha|x)} \left ((\EE [y|x, \alpha]  - \EE[y|x])^2\right ) = \VV(y|x) - \EE_{\alpha \sim p(\alpha|x)}[ \VV(y|x, \alpha) ] = \VV(y_i, Y_i) - \sum_j \VV_i(y_i, T_{ij}) A_j$
+\end{itemize}
+
+
+\subsubsection{Note 1}
+
+For the computations it is necessary to remember that the tensors contain probabilities !
+Meaning $<y|x>= \EE[y|x] = \sum_i y_i Y_i$ because $Y_i$ only contains probability densities, not values of $y$ !
+
+Same applies for $\VV(y|x) = \sum_i y_i^2 Y_i - <y|x>^2 = \VV(y_i, Y_i)$
+
+
+\subsubsection{Note 2}
+
+For numerical stability it is best to work with log probabilities.
+
+Indeed $x$ is a dataset so $p(x | y_i, \alpha_j) = \prod_k^N p(x_k | y_i, \alpha_j)$ for N big enough to obtain too small number to be stored in 64 bits.
+
+It is smarter to compute : $\log p(x | y_i, \alpha_j) = \sum_k^N log p(x_k | y_i, \alpha_j) = \ell(x | y_i, \alpha_j)$
+Then $\ell(y_i, \alpha_j| x) = \log p(x|y_i, \alpha_j) + \log p(y_i, \alpha_j)$
+
+And renormalizing using a softmax :
+$$ 
+    T_{ij} = p(y_i, \alpha_j | x) = \frac{e^{\ell(y_i, \alpha_j| x)} }{\sum_{n,m} e^{\ell(y_n, \alpha_m| x)} }
+$$
+
+
+\subsubsection{Note 3}
+
+If there is multiple nuisance parameters $\alpha$, $\beta$, etc the tensor are simply n-dimensional : $L_{ijk...}$, $T_{ijk...}$, $K_{ijk...}$, etc.
+And all sums over $j$ become summs over $j,k, ...$ which is easily handle with broadcasting in modern numeric libraries.
 
 
 
@@ -170,6 +255,9 @@ it is possible to estimated the criterions
 \begin{equation}
   MSE(\hmu) = Var(\hmu) + [Bias(\hmu)]^2
 \end{equation}
+
+
+
 
 \subsection{Evaluation of the variance estimator} % (fold)
 \label{sub:evaluation_of_the_variance_estimator}

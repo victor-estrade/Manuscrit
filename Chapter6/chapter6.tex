@@ -17,3 +17,75 @@
 \victor{Sur les vrais données on doit utiliser une méthode numérique}
 \victor{Quel est le budget accessible ? Combien coute la méthode normale en théorie et dans la vrai vie ? On refait vraiment tourner la simulation à chaque fois ? Combien coute ma méthode ?}
 \victor{Neural network as Estimator \& estimate its variance}
+
+
+\section{Thoughts} % (fold)
+\label{sec:thoughts}
+
+\subsection{Calibration} % (fold)
+\label{sub:calibration}
+
+According to "something-I-have-not-found-anywhere-yet" we should not use the data to infer the nuisance parameters \ie improve the calibration.
+Indeed trying to narrow down the distribution of the nuisance params $p(\alpha|x)$ using the given data $x^\star$ is considered dangerous.
+
+But I do not understand why.
+
+Here is the problem : if the calibration is nearly perfect then $p(\alpha|x)$ is narrow (\ie very small variance) the simulation data $x|\alpha$ is close to the true data used for inference $x^\star$. Then the classifier (or any other method) output is not going to change much according to $\alpha$ because all $\alpha$ are very close to each other.
+
+If the calibration is not perfect $p(\alpha|x)$ is not a narrow distribution. Then the simulation data $x|\alpha$ will vary enough for the classifier/method to change its output. But if the classifier can "feel it" then how the calibration does not ?
+
+
+example : tau energy scale.
+It is quite simple to measure the tau energy scale from the data. Take the tau feature, average it and compare to the simulation. This gives a perfect estimator of the tau enery scale. This is doing calibration on the given data $x^\star$.
+I do not see how it is dangerous to rescale the data... We do it all the time in Machine Learning before doing linear regression or feeding the data to the neural network. Usually it is done sample-wise but here a sample is simply a dataset. One dataset is one $x$.
+
+
+What I do understand is that the data will be used to infer many parameters in different studies. 
+If all these studies uses a home made re-calibration then 2 studies using the same experiment will use different values for the nuisance param which seems foolish and can probably leads to wrong conclusions.
+Example : the tau energy scale has one value (one distrib) for the entire experiment. If Paul finds 1.2 with its method and Jean find 1.1 with another method they may find different conclusion for the exact same study on the exact same data !
+
+To avoid this problem the calibration is done in a controled region where no studies will look because other parameters have little influence there.
+This should makes the calibration as powerfull as possible meaning the proba $p(\alpha|x)$ as narrow as possible.
+
+Now we have a $p(\alpha|x)$ that should not be modified in studies using this experiment.
+Meaning we cannot improve the second part of the variance : 
+$$\EE_{\alpha \sim p(\alpha|x)} \left ((\EE [y|x, \alpha]  - \EE[y|x])^2\right )$$
+which measures the deviation of the estimator according to the average value of the estimator.
+
+
+Unless we improve the estimator itself to be resilient to change in the values of $\alpha$.
+
+My intuition is that it is impossible if the estimator is well built (\ie not broken).
+This seems to lead to the bias-variance trade-off.
+
+$$
+\VV[y|x] = \EE_{\alpha \sim p(\alpha|x)} \left (\VV[y|x, \alpha] \right ) + \EE_{\alpha \sim p(\alpha|x)} \left ( (\EE [y|x, \alpha]  - \EE[y|x])^2\right )
+$$
+
+If I improve the second term the first one (representing the average variance of the estimator) will get bigger.
+In other words what we win in systematic error we will loose it in statistical error.
+
+I get that disantangling the nuisance from the interest param is the goal. 
+But I think a classifier is already doing it (probably not by chance, cross entropy is deeply linked to the objective function) in the higgs dataset.
+
+
+What I still do not understand completly is why we don't improve the frozen calibration ?
+According to Bayes theorem we can (carefully) improve knowledge on a parameter with multiple experiment.
+
+
+If my intuition is wrong and the controled region calibration is the best way of doing calibration. 
+Then all inference aware methods are dangerous since the neural network can learn to calibrate.
+
+This is exactly what I allow my big neural net to do with all the reduction functions inside it.
+And INFERNO-like methods can indeed use one bin to calibrate on the data.
+
+
+Reminder of my thoughts :
+\begin{itemize}
+	\item Rescaling the dataset is like rescaling a feature in ML. It is not dangerous in usual ML. Is it really dangerous here ?
+	\item Multiple home-made calibration on same dataset may lead to wrong conclusions
+	\item Calibration done in a controled region is a workaround to freeze calibration for every study using this data
+	\item Can we improve this frozen calibration ? cf bayes theorem to improve our knowledge in view of new observations
+\end{itemize}
+
+

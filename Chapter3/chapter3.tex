@@ -90,6 +90,8 @@ Therefore requires data for which the ground truth is available which is verifie
 
 Finally the likelihood, with Gaussian kernels, is fully differentiable making possible the use of stochastic gradient descent methods to obtain the neural network parameters $\phi$.
 
+
+
 \subsection{Training principle} % (fold)
 \label{sub:training_principle}
 
@@ -106,10 +108,10 @@ For convenience the optimization is usually turned into a minimization of the ne
 
 In the simple case of one Gaussian component ($K=1$) the NLL is :
 \begin{equation}
-    \phi^\star = \argmin_\phi \left\{ \log(\sigma(x;\phi)) + \frac{1}{2}\log(2\pi) + \frac{(\theta - y(x;\phi))^2}{2\sigma(x;\phi)^2} \right\}
+    \phi^\star = \argmin_\phi \left\{ \log(\sigma(x;\phi)) + \frac{1}{2}\log(2\pi) + \frac{(\theta^\star - y(x;\phi))^2}{2\sigma(x;\phi)^2} \right\}
 \end{equation}
 
-The learning procedure is supervised since we need both observed data $x$ and the associated value for  $\theta$.
+The learning procedure is supervised since we need both observed data $x$ and the associated value for  $\theta^\star$.
 
 Since the likelihood is fully differentiable in $\phi$, the optimization can be solved using stochastic gradient descent methods.
 
@@ -125,6 +127,8 @@ Since the likelihood is fully differentiable in $\phi$, the optimization can be 
  \caption{Training procedure}
 \end{algorithm}
 
+
+
 \subsection{Training details} % (fold)
 \label{sub:training_details}
 
@@ -135,10 +139,17 @@ Since the likelihood is fully differentiable in $\phi$, the optimization can be 
 )}
 \content{Maybe worse with mixture ? I did not try any....}
 
+
+
 \subsection{Extract parameters} % (fold)
 \label{sub:extract_parameters}
 
 \topic{We have access to the full posterior (formulas included). So parameter estimation is now easy}
+
+
+
+\subsubsection{Extract moments} % (fold)
+\label{ssub:extract_moments}
 
 As long as a flexible and powerful enough parametric differentiable function is mapping the data $x$ to the parameter $\theta$ it is possible to approximate the conditional density.
 Once trained the inference is straightforward.
@@ -158,7 +169,15 @@ From the experimental data $x^\star$ the mean and variance can be easily extract
     & = \sum_{i=0}^K m_i(x^\star ; \phi) \left [ \sigma_i(x^\star ; \phi)^2 + y_i(x^\star ; \phi)^2 - \bar \theta^2 \right ]
 \end{align}
 
+
+
+\subsubsection{Extract modes} % (fold)
+\label{ssub:extract_modes}
+
 \content{If multimodal model then it is more complicated. But still possible to simply sample many instances from this mixture and do a fine histogram... We are back to a problem where we have the exact formulas ! So we can compute likelihood etc.}
+
+
+
 
 
 \section{Special architecture} % (fold)
@@ -168,6 +187,8 @@ From the experimental data $x^\star$ the mean and variance can be easily extract
 \topic{Neural network using reduction function, such as the average, can extract complex link between the parameters of a generative distribution and a dataset which is a realisation of this distribution.}
 
 \content{Details about the neural network architecture for MDN with importance weighted dataset as input}
+
+
 
 \subsection{Mixture models} % (fold)
 \label{sub:mixture_models}
@@ -179,6 +200,8 @@ The requirement that the mixture coefficients $m_i$ sum up to 1 is enforced usin
 Similarly the standard deviation of Gaussians should always be strictly positive which is fulfilled by interpreting the neuron output as $\log(\sigma_i)$.
 No particular operation are necessary on the mean $y_i$ of the Gaussians since it can take whatever real value.
 
+
+
 \subsection{Datasetwise input} % (fold)
 \label{sub:datasetwise_input}
 
@@ -187,14 +210,16 @@ No particular operation are necessary on the mean $y_i$ of the Gaussians since i
 In order to accurately capture the complex mapping between the data and the parameters the architecture of the neural network should embody the constraints of the chosen family distribution.
 
 If the studied process is stochastic the observations are usually composed of repeated independent measurements of an event.
-Then the observable is not a real valued vector $x \in \RR$ but a set of data points $D = \{v_i \in \RR \}_{i=0}^N$.
-The output is still a real valued vector meaning that the neural network architecture should include some reduction function to map the set of vector to a single vector.
+Then the observable is not a real valued vector $\xx \in \RR^d$ but a set of data points $D = \{\v_i \in \RR^d \}_{i=0}^N$.
+The output is still a real valued vector meaning that the neural network architecture should include some reduction function to map the set of vector $D$ to a single vector $\y$.
 Usual candidates are averages, minima, maxima, products, sums, geometric means or others that reduce the dimension and remain invariant to the input order of the input vectors.
-In practice the average is the favorite one.
+In practice the average is the favorite one \needcite.
 
 Section 7 of \cite{lucas:hal-01791126} gives a proof that the given \emph{"permutation invariant neural networks"} architecture is a universal approximator.
 
 \content{Drawing of the architecture}
+
+
 
 \subsection{Weighted instances} % (fold)
 \label{sub:weighted_instances}
@@ -204,7 +229,7 @@ Section 7 of \cite{lucas:hal-01791126} gives a proof that the given \emph{"permu
 When the studied process includes some very rare events the simulation uses importance sampling. 
 The simulation output includes importance weights to allow many rare events to be produced while keeping the distribution of events similar to reality.
 The neural network must take into account the importance weights to accurately regress the parameters.
-Which leads to use weighted average instead of simple average for example.
+Which leads to use weighted average instead of simple average for example. (and makes maximum and other unweighted reduction ill-suited to this setting)
 
 More precisely, for 2 datasets $D$ and $D^\prime$ if the associated empirical distribution are equal then the neural network output should also be equal.
 
@@ -223,13 +248,17 @@ and $\delta$ is the Dirac distribution function.
 \content{Drawing of the architecture with weights}
 
 
+
 \section{Nuisance parameters} % (fold)
 \label{sec:nuisance_parameters}
+
+
 
 \subsection{Ignore them} % (fold)
 \label{sub:ignore_them}
 
 \topic{The model can simply learn the marginal posteriors "like a boss"}
+
 
 
 
@@ -271,8 +300,14 @@ $\hat\sigma$  $\gets$ $\hat\sigma - \hat\mu^2$ \;
 \caption{Marginalizing the nuisance parameters $\alpha$ using MC to compute the integral.}
 \end{algorithm}
 
+
+
+
+
 \section{Discussing the related work} % (fold)
 \label{sec:discussing_the_related_work}
+
+
 
 \subsection{INFERNO} % (fold)
 \label{sub:inferno}
@@ -283,6 +318,8 @@ In this work the next step, maximum likelihood fit to retrieve the parameter of 
 
 
 \cite{DECASTRO2019170inferno} is the closest work of this study in which the authors optimize a neural network to produce of summary statistics that reduces the uncertainty on the parameters of interest estimation.
+
+
 
 \subsection{Neural statistician} % (fold)
 \label{sub:neural_statistician}

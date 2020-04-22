@@ -329,18 +329,20 @@ supported!}
 
 % Line numbering (can be switched off)
 \ifPHD@lineno
-\RequirePackage[switch,pagewise,mathlines]{lineno}
+\RequirePackage[pagewise,displaymath,mathlines]{lineno}
 \renewcommand{\frontmatter}{%
   \cleardoublepage
   \@mainmatterfalse
   \pagenumbering{roman}
   \nolinenumbers
+  \color{black}
 }
 \renewcommand{\mainmatter}{%
   \cleardoublepage
   \@mainmattertrue
   \pagenumbering{arabic}
   \linenumbers
+  \color{black}
 }
 \renewcommand{\backmatter}{%
   \if@openright
@@ -350,6 +352,7 @@ supported!}
   \fi
   \@mainmatterfalse
   \linenumbers
+  \color{black}
 }
 
 % Fix display lineno issue in mathmode

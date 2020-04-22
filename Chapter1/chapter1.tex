@@ -25,6 +25,9 @@
 
 \topic{Simulations combined with machine learning make possible to extract knowledge even in highly complex and stochastic process like High Energy Physics}
 
+
+
+
 \section{Inference through simulation} % (fold)
 \label{sec:inference_through_simulation}
 
@@ -35,6 +38,9 @@
 \content{Dans un monde simple tout est "facile"}
 \content{Introduire le problème d'extraction d'un coefficient de mélange(lié à cross-section)}
 
+
+
+
 \subsection{Bayesian inference} % (fold)
 \label{sub:bayesian_inference}
 
@@ -44,59 +50,14 @@
 \content{Brute force method to do bayesian inference}
 \content{Other (better) methods like variational inference}
 
-On construit une grille, suffisement fine, parcourant les valeurs possibles $y_i, \alpha_j$.
-
-Th. de Bayes : 
+Assuming that the likelihood $p(\theta | x)$ is available the Bayes theorem indicates how to access the posterior pobability.
 $$
-    p(y_i, \alpha_j | x) = \frac{p(x|y_i, \alpha_j) p(y_i, \alpha_j)}{p(x)}
+    p(\theta | x) = \frac{p(x|\theta) p(\theta)}{p(x)} = \frac{p(x|\theta) p(\theta)}{\int_\theta p(x|\theta) p(\theta)}
 $$
 
-On a donc à partir des 2 tenseurs : 
-\begin{itemize}
-	\item likelihood : $L_{ij} = p(x|y_i, \alpha_j)$
-	\item prior : $K_{ij} = p(y_i, \alpha_j)$ 
-\end{itemize}
-
-le tenseur $ R_{ij} = p(x|y_i, \alpha_j) p(y_i, \alpha_j) $ 
-qui après renormalisation donne le tenseur posterior $ T_{ij} = p(y_i, \alpha_j | x)$.
-
-À partir de $T_{ij}$ on va calculer les proba marginales :
-\begin{itemize}
-	\item $p(y_i | x) = \sum_j T_{ij} = Y_i$
-	\item $p(\alpha_j | x) = \sum_i T_{ij} = A_j$
-\end{itemize}
-
-et ce que doit apprendre notre réseau de neuronne : $p(y_i | x, \alpha_j) = \frac{p(y_i, \alpha_j | x)}{p(\alpha_j | x)} = \frac{T_{ij}}{A_j} = N_{ij}$
-
-On obtient alors les grandeurs qui nous intéressent
-\begin{itemize}
-	\item $ \VV(y|x) = \VV(y_i, Y_i) $
-	\item $ \EE_{\alpha \sim p(\alpha|x)}[ \VV(y|x, \alpha) ] = \sum_j \VV(y|x, \alpha_j) p(\alpha_j | x) = \sum_j \VV_i(y_i, N_{ij}) A_j$
-	\item $\EE_{\alpha \sim p(\alpha|x)} \left ((\EE [y|x, \alpha]  - \EE[y|x])^2\right ) = \VV(y|x) - \EE_{\alpha \sim p(\alpha|x)}[ \VV(y|x, \alpha) ] = \VV(y_i, Y_i) - \sum_j \VV_i(y_i, T_{ij}) A_j$
-\end{itemize}
-
-\subsubsection{Remarque 1}
-
-Pour les calculs il faut se souvenir que les tenseurs contiennent des proba !
-
-Donc $<y|x>= \EE[y|x] = \sum_i y_i Y_i$ car $Y_i$ ne contient la densité de proba mais pas les valeurs de $y$ !
-
-De même $\VV(y|x) = \sum_i y_i^2 Y_i - <y|x>^2 = \VV(y_i, Y_i)$
-
-\subsubsection{Remarque 2}
-
-Pour la stabilité numérique il convient de travailler en logproba.
-
-En effet $x$ représente un jeu de donnée donc $p(x | y_i, \alpha_j) = \prod_k^N p(x_k | y_i, \alpha_j)$ pour N assez grand.
-Ceci va produire des nombre très petit très vite !
-
-On calculera plutôt : $\log p(x | y_i, \alpha_j) = \sum_k^N log p(x_k | y_i, \alpha_j) = \ell(x | y_i, \alpha_j)$
-
-La renormalisation se fera facilement avec un softmax : 
-$$ 
-    T_{ij} = p(y_i, \alpha_j | x) = \frac{e^{\ell(y_i, \alpha_j| x)} }{\sum_{n,m} e^{\ell(y_n, \alpha_m| x)} }
-$$
-
+The inference is then straitforward.
+Computing $p(\theta | x)$ for the possible values $\theta$ \ie where the prior probability is not zero.
+The integral on the denominator can either be computed by hand or approximated with Monte Carlo.
 
 
 \subsection{Maximum likelihood} % (fold)
