@@ -56,8 +56,11 @@ $$
 $$
 
 The inference is then straitforward.
+The prior $p(\theta)$ contains all the current knowledge about the problem. 
+If no knowledge is available a non informative prior is chosen, usually a uniform distribution over the domain of $\theta$.
 Computing $p(\theta | x)$ for the possible values $\theta$ \ie where the prior probability is not zero.
 The integral on the denominator can either be computed by hand or approximated with Monte Carlo.
+
 
 
 \subsection{Maximum likelihood} % (fold)
@@ -69,6 +72,8 @@ The integral on the denominator can either be computed by hand or approximated w
 \content{Maximum likelihood gradient descent methods}
 \content{Maximum likelihood variance estimation}
 
+
+
 \subsection{Toy problem} % (fold)
 \label{sub:toy_problem}
 
@@ -76,6 +81,7 @@ The integral on the denominator can either be computed by hand or approximated w
 
 \content{Introduce 1D toy as example}
 \content{Introduce cross section estimations / mixture coefficient inference}
+
 
 
 \subsection{Combinatorial explosion} % (fold)
@@ -87,6 +93,8 @@ The integral on the denominator can either be computed by hand or approximated w
 \content{Numerical stability high dimensional integral ?}
 \content{Maybe a "simple" example that shows how often in real life this setting may happen}
 
+
+
 \subsection{Intractable models} % (fold)
 \label{sub:intractable_models}
 
@@ -94,6 +102,8 @@ The integral on the denominator can either be computed by hand or approximated w
 
 \content{Approximation requiered to build some part of LHC simulation as an example}
 \victor{Very short subsection ?}
+
+
 
 
 
@@ -111,12 +121,14 @@ The integral on the denominator can either be computed by hand or approximated w
 \content{How it was done before machine learning}
 
 
+
 \subsection{Select features} % (fold)
 \label{sub:select_features}
 
 \topic{Too many dimension ? Discard the less relevants ones}
 
 \victor{Pas sûr que ça soit vraiment utilisé. Demander à David.}
+
 
 
 \subsection{Machine learning} % (fold)
@@ -219,6 +231,7 @@ Note : $c$ is also a sufficient summary statistic
 \content{Physicis alos uses the Neyman-Pearson theorem on statistical test to justify maximum likelihood estimator usage. Should I include it here ? or in \autoref{sub:maximum_likelihood} ?}
 
 
+
 \subsection{Combinaison} % (fold)
 \label{sub:combinaison}
 
@@ -231,10 +244,14 @@ Note : $c$ is also a sufficient summary statistic
 \content{Clin d'oeil au tracking. On a le code mais le faire passer à l'échelle reste très difficile.}
 
 
+
+
 \section{Systematic effects} % (fold)
 \label{sec:systematic_effects}
 
 \topic{Systematic effects make inference more complex by introducing nuisance parameters}
+
+
 
 \subsection{Definition} % (fold)
 \label{sub:definition}
@@ -242,12 +259,16 @@ Note : $c$ is also a sufficient summary statistic
 \content{Definition and example of systematic effects (not only in HEP !)}
 \victor{Laisser le lecteur penser de lui même à l'adaptation de domaine.}
 
+
+
 \subsection{Classifier optimality} % (fold)
 \label{sub:classifier_optimality}
 
 \topic{Systematic effect breaks the optimality of the classifier}
 
 \content{Why the proof does not work anymore}
+
+
 
 \subsection{Variance estimations} % (fold)
 \label{sub:variance_estimations}
@@ -258,6 +279,8 @@ Note : $c$ is also a sufficient summary statistic
 \content{Introduce systematic vs statistical uncertainty as the 2 component of the variance}
 \content{Glen's formulas ?}
 
+
+
 \subsection{Profiled likelihood} % (fold)
 \label{sub:profiled_likelihood}
 
@@ -265,6 +288,9 @@ Note : $c$ is also a sufficient summary statistic
 
 \content{Explain how profiled likelihood works and why is works}
 \content{Introduce Fisher information matrix and Cramer Rao bound (since we will use it later for INFERNO)}
+
+
+
 
 \subsection{Other definition} % (fold)
 \label{sub:other_definition}
@@ -299,6 +325,9 @@ $$\EE_{\alpha \sim p(\alpha|x)} \left (\VV[y|x, \alpha] \right )$$
 représente l'erreur statistique.
 
 Mais si ça marche on aurrait une définition claire et précise de ce qu'est l'erreur statistique et l'erreur systématique.
+
+
+
 
 
 \subsection{Looking for better} % (fold)
