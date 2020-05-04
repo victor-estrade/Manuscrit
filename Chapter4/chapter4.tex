@@ -18,8 +18,14 @@
 
 \content{Weak baselines, too many (too complex or specific) objective functions and other problems in presenting ML results.}
 
+\victor{Ce que j'essaie de faire c'est mettre un peu d'ordre. Donc je doit décrire les métriques utilisée par les autres papier. Décrire ce que je veux ranger}
+
+
 \section{Toy datasets} % (fold)
 \label{sec:toy_datasets}
+
+
+
 
 \subsection{Apple and pears} % (fold)
 \label{sub:apple_and_pears}
@@ -37,21 +43,27 @@ This simplicity is wanted to test the method.
 Since the weight of a fruit is stochastic, two bags of fruits with the same number of apples and pears may have a different average weight.
 Leading to some uncertainty in the predicted proportion that must be reported.
 
+
+
+
+
+
 \subsection{Toy 1D} % (fold)
 \label{sub:toy_1d}
 
-Le toy qui va nous interesser ici est un mélange de 2 distributions, une gamma et une gaussienne, avec une observable 1D $x$.
-\autoref{fig:minitoy_distrib} présente la distribution des données pour un tirage de 10000 instances.
+The toy that will interest us here is a mixture of 2 distributions with an observable $x \in \RR$.
+A gamma that will represent the background process and a gaussian to represent the signal process.
+\autoref{fig:minitoy_distrib} presents the data distribution for a 10,000 instances sampling.
 
-Le paramètre d'intérêt est le coef de mélange des 2 distributions $y$.
-Le paramètre de nuisance $\alpha$ est un rescaling de l'observable $x$.
+The parameter of interest is the mixing coefficient of the 2 $y$ distributions.
+The nuisance parameter $\alpha$ is a rescaling of the observable $x$.
 
-Sans $\alpha$ :
+Without nuisance parameter $\alpha$ the likelihood is :
 $$
     p(x | y) = y \mathcal N(x|a, b) + (1-y) Gamma(x|s, \theta)
 $$
 
-Avec $\alpha$ :
+Including nuisance parameter $\alpha$ the likelihood becomes :
 $$
     p(x | y, \alpha) = y \mathcal N(x|\alpha a, \alpha b) + (1-y) Gamma(x|\alpha s, \theta)
 $$
@@ -64,33 +76,35 @@ $$
 
 
 
+
 \subsection{Toy 3D} % (fold)
 \label{sub:toy_3d}
 
+To get closer to the reality the toy example introduced in \cite{DECASTRO2019170inferno} is also included.
+This toy is a mixture of 2 process named background and signal as usual.
 
-L'exemple jouet introduit dans \cite{DECASTRO2019170inferno} est un mélange de 2 processus (background \& signal)
 
-
-Pour les backgrounds :
+For the backgrounds :
 $$
 f_b (x|r, \lambda) = \mathcal N \left ( (x_0, x_1) | (2+r, 0) 
 \begin{bmatrix} 5 & 0 \\ 0 & 9 \end{bmatrix} \right ) Exp((x_2| \lambda)
 $$
 
 
-Pour les signaux :
+For the signals :
 $$
 f_s (x|r, \lambda) = \mathcal N \left ( (x_0, x_1) | (1, 1) 
 \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \right ) Exp((x_2| 2)
 $$
 
-Ce qui donne la vraissemblance :
+Leading to the likelihood :
 $$
 p(x | r, \lambda, \mu ) = (1-\mu) f_b(x|r, \lambda) + \mu f_s(x|r, \lambda)
 $$
 
-Ce toy a l'avantage d'être multidimensionnel et plus complexe que le précédent.
+This toy is multi dimensional, more complex and includes 2 nuisance parameters.
 
+\autoref{fig:s3d2_pairgrid} shows the distributions of a sampled dataset.
 
 \begin{figure}[htb]
     \includegraphics[width=\linewidth]{s3d2/pairgrid}
@@ -121,6 +135,8 @@ Ce toy a l'avantage d'être multidimensionnel et plus complexe que le précéden
 
 \content{Petit rappel sur le challenge qui a permi à ces données d'exister et d'être publique !}
 \content{détails : \#samples, \#features, etc}
+\content{Perte de DER_mass_mmc ??}
+
 
 
 
@@ -142,6 +158,8 @@ The computed posterior is the best possible inference and will be compared with 
 
 \subsection{Computing the posterior} % (fold)
 \label{sub:computing_the_posterior}
+
+\victor{Trop de détail : à déplacer dans l'appendice A}
 
 Computing the integral by hand can be tedious.
 The simple method proposed allow to avoid it.
@@ -274,6 +292,48 @@ If this is not the case an approximation is available using \autoref{eq:var_hmu}
 \begin{equation}
   MSE(\hshmu) = Var(\hshmu) + [Bias(\hshmu)]^2
 \end{equation}
+
+
+
+
+
+
+\section{Details} % (fold)
+\label{sec:details}
+
+
+
+\subsection{Baselines} % (fold)
+\label{sub:baselines}
+
+
+
+
+
+\subsection{Neural network architectures} % (fold)
+\label{sub:neural_network_architectures}
+
+\content{How the architectures were chosen}
+
+
+
+
+\subsection{Hyper-parameter search} % (fold)
+\label{sub:hyper_parameter_search}
+
+\content{Grid search on which HP}
+
+
+
+
+
+\subsection{Cross validation} % (fold)
+\label{sub:cross_validation}
+
+\content{Shuffle split and seeding}
+
+
+
 
 
 
