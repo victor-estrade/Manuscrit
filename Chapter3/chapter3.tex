@@ -90,6 +90,7 @@ Therefore requires data for which the ground truth is available which is verifie
 
 Finally the likelihood, with Gaussian kernels, is fully differentiable making possible the use of stochastic gradient descent methods to obtain the neural network parameters $\phi$.
 
+\victor{Why density network are not very popular ?}
 
 
 \subsection{Training principle} % (fold)
@@ -210,15 +211,25 @@ No particular operation are necessary on the mean $y_i$ of the Gaussians since i
 In order to accurately capture the complex mapping between the data and the parameters the architecture of the neural network should embody the constraints of the chosen family distribution.
 
 If the studied process is stochastic the observations are usually composed of repeated independent measurements of an event.
-Then the observable is not a real valued vector $\xx \in \RR^d$ but a set of data points $D = \{\v_i \in \RR^d \}_{i=0}^N$.
-The output is still a real valued vector meaning that the neural network architecture should include some reduction function to map the set of vector $D$ to a single vector $\y$.
+Then the observable is not a real valued vector $\xx \in \RR^d$ but a set of data points $D = \{\xx_i \in \RR^d \}_{i=0}^N$.
+The output is still a real valued vector meaning that the neural network architecture should include some reduction function to map the set of vector $D$ to a single vector $\yy$.
 Usual candidates are averages, minima, maxima, products, sums, geometric means or others that reduce the dimension and remain invariant to the input order of the input vectors.
 In practice the average is the favorite one \needcite.
 
-Section 7 of \cite{lucas:hal-01791126} gives a proof that the given \emph{"permutation invariant neural networks"} architecture is a universal approximator.
+Section 7 of \cite{lucas:hal-01791126} gives a proof that the given \emph{"permutation invariant neural networks"} architecture is a universal approximator of permutation invariant functions.
 
 \content{Drawing of the architecture}
 
+La \autoref{fig:average_layer} récapitule l'architecture d'une couche d'un tel réseau de neuronne.
+
+\begin{figure}[htb]
+    \includegraphics[width=\linewidth]{average_layer}
+    \caption{Single layer of the datasetwise neural network. U and V are 2 matrices of the same shape. r(X) is the result of the reduction of the input data X. In practivce the + operator is relying on broadcasting to sum V.r(X) to each sample of X.}
+    \label{fig:average_layer}
+\end{figure}
+
+
+\victor{Ecrire + en détails les formules}
 
 
 \subsection{Weighted instances} % (fold)
@@ -247,6 +258,12 @@ and $\delta$ is the Dirac distribution function.
 
 \content{Drawing of the architecture with weights}
 
+
+\begin{figure}[htb]
+    \includegraphics[width=\linewidth]{weighted_average_layer}
+    \caption{Single layer of the weighted datasetwise neural network. The reduction function takes into account the sample weights.}
+    \label{fig:weighted_average_layer}
+\end{figure}
 
 
 \section{Nuisance parameters} % (fold)
