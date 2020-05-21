@@ -245,6 +245,25 @@ Note : $c$ is also a sufficient summary statistic
 
 
 
+\subsection{Example with cross section} % (fold)
+\label{sub:example_with_cross_section}
+
+\content{Comment on passe du ratio de vraissemblance du classifier à Poisson}
+
+On a plein de processus binomiaux et un théorème indiquant que la loi de Poisson est une excelente approximation quand on a plein de points.
+
+Donc le nombre d'events dans une boite donnée suit une loi de Poisson.
+\begin{equation}
+	n \sim Poisson(\mu s + b)
+\end{equation}
+
+\begin{equation}
+	P(n| \mu, s, b) = \frac{(\mu s +b)^n }{n!} e^{-(\mu s + b)}
+\end{equation}
+
+$s$ et $b$ sont des sorties du modèle calculer avec le classifieur sur la simulation.
+C'est ça le lien. Mais pourquoi c'est comme ça ?
+
 
 \section{Systematic effects} % (fold)
 \label{sec:systematic_effects}
