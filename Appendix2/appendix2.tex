@@ -157,3 +157,94 @@ Augment the simulated data with the likelihood ratio ...
 \begin{itemize}
 	\item \url{https://www.osti.gov/servlets/purl/1469751} Nature paper about how much ML help HEP.
 \end{itemize}
+
+
+\section{Plan and structure} % (fold)
+\label{sec:plan_and_structure}
+
+Suivant le conseil de François je commence par le "steak", ie ce dont je veux parler / les sujets principaux du manuscrit.
+
+Contributions :
+\begin{itemize}
+    \item Décrire certaines limites de l'adaptation de domaine pour réduire l'influence des effets systeméatiques
+    \item (Application de la regression directe sur un dataset pondéré à HEP)
+    \begin{itemize}
+        \item inspiration : PointNet, papier de correntin, Neural statistician, papier de Théo (bio-stat en général) ?
+    \end{itemize}
+    \item Décrire certaines limites à l'inférence par régression directe
+\end{itemize}
+
+
+Pour pouvoir en parler je dois introduire :
+\begin{itemize}
+    \item Un tout petit peu de physique
+    \begin{itemize}
+        \item description minimaliste du systeme
+        \item mais quand même insister sur le fait que c'est bien + compliqué
+    \end{itemize}
+    \item Les techniques d'inférence
+    \begin{itemize}
+        \item Inférence bayesienne
+        \item maximum de vraisemblance
+    \end{itemize}
+    \item Le probleme inverse
+    \item Les effets systématiques et leur conséquence
+\end{itemize}
+
+Il faut aussi parler des solutions actuelles et autres empreints à la litterature
+\begin{itemize}
+    \item data augmentation
+    \item tangent propagation
+    \item pivot
+    \item inferno
+\end{itemize}
+
+Que je me positionne par rapport à d'autres alternatives non explorées:
+\begin{itemize}
+    \item Variationnal inference
+    \item ABC methods
+    \item Bayesian networks
+    \item Disentagling
+    \item Fairness
+    \item Mining gold
+\end{itemize}
+
+
+Présentation du benchmark ie des données, des XP, etc
+\begin{itemize}
+    \item Présenter les jeux de données
+    \begin{itemize}
+        \item Toy 1D
+        \item Toy inferno
+        \item HiggsML
+    \end{itemize}
+    \item Présenter la métrique pour comparer les méthodes
+    \item Présenter les résultats sur ces données
+    \begin{itemize}
+        \item Tout marche bien jusqu'à un certain point
+        \item Classement difficile mais : Bayes & likelihood > classifier and inerno > direct regression
+        \item Rien ne semble battre la baseline sur HiggsML
+    \end{itemize}
+    \item Approfondir l'interprétation de ces résultats avec les XP auxilières
+    \begin{itemize}
+        \item Forest robustness
+        \item Toy trop facile (linear correlation with mu)
+        \item No correlation with higgs
+        \item Signal too weak => regression learning impossible
+        \item Separation between domain in higgs very difficult (at sample size)
+        \item Autres ???
+    \end{itemize}
+    \item Rien ne marche ici mais systematic aware learning ça marche dans d'autre cas.
+\end{itemize}
+
+
+Discussion sur les limites et les perspectives
+\begin{itemize}
+    \item limite minimal pour la réduction de la variance systématique (pas de démêlage parfait possible)
+    \item Amélioration du simulateur
+    \item Probabilistic programming ?
+    \item Calibration commune pour de multiples analyses
+    \item Calibration and Prior vs posterior ? (territoire glissant) 
+    \item j'ai envie de donner un regard critique sur l'obscurantisme autour des statistiques
+    \item j'ai envie de donner un regard critique sur la méthodologie pour mesurer les performances
+\end{itemize}

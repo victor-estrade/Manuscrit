@@ -413,7 +413,7 @@ supported!}
 
 % Adding watermark in draft mode with time stamp
 \RequirePackage{everypage}
-\RequirePackage[absolute]{textpos}
+% \RequirePackage[absolute]{textpos}
 % Default values for draft watermark
 \newcommand\draftposition{top}
 \newcommand\draftnodeanchor{1in+\voffset-\topmargin}
