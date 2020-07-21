@@ -3,7 +3,7 @@
 %********************************** Second Chapter *****************************
 %*******************************************************************************
 
-\chapter{SOTA}  %Title of the First Chapter
+\chapter{Systematic effect resilience techniques}  %Title of the First Chapter
 \label{chap:sota}
 
 \ifpdf
@@ -12,58 +12,16 @@
     \graphicspath{{Chapter2/Figs/Vector/}{Chapter2/Figs/}}
 \fi
 
-\section{Unsuitable methods} % (fold)
-\label{sec:unsuitable_methods}
-
-\topic{Variational inference requires likelihood and ABC does not scale.}
-\content{What we are not going to devellop. But justifying why !}
-
-\subsection{ABC methods} % (fold)
-\label{sub:abc_methods}
-
-\content{short review of ABC methods and why we cannot rely on it for this problem.}
-
-\victor{TODO : Décrire succintement rejection algo et les idées principales d'amélioration. }
-
-One solution to do inference with an intractable likelihood is the Approximate Bayesian Computation (ABC).
-The most traditional ABC algorithm is the rejection algorithm which is computationally expensive.
-Although significant improvement can be achieved with advanced Monte Carlo methods this is still known to take a long time to converge \needcite.
-
-
-\subsection{Variational inference} % (fold)
-\label{sub:variational_inference}
-
-\topic{Variational inference requires likelihood}
-
-\victor{TODO : VI avec des NN. Stochastic VI.}
-On the other hand Variational Inference (VI) is extremely fast but can lead to biased estimation which is a severe drawback when it leads to underestimating the uncertainty.
-
-In high Energy Physics (HEP), which motivated this work, the use of machine learning produced summary statistics combined with domain knowledge allow to conduct exact inference in the absence of nuisance parameters.
-\victor{"Extact" inference me semble maladroit}
-
-
-\subsection{Bayesian networks} % (fold)
-\label{sub:bayesian_networks}
-
-\topic{Could be a solution. But no time to explore everything}
-\content{Personne n'aime les Bayesian networks. Il faudrait exprimer pourquoi.}
-\victor{Other physicists have tried and got prelimnary results. Need to see if they made progress !}
-
-
-\subsection{Disentangling} % (fold)
-\label{sub:disentangling}
-
-\content{Why not using disentangling ?}
-
 
 \section{Domain adaptation} % (fold)
 \label{sec:domain_adaptation}
 
 \topic{If the classifier output is independant of the nuisance parameters then we win !}
 
-\subsection{Continuous domain adaptation} % (fold)
-\label{sub:continuous_domain_adaptation}
+\subsection{Why it should work} % (fold)
+\label{sub:why_it_should_work}
 
+\topic{If the classifier output is independant of the nuisance parameters then we win !}
 \topic{This is a very peculiar case of domain adaptation}
 \content{We have a continuous domain shift. Not a discreat number of domains. + we are supervised}
 
@@ -120,11 +78,55 @@ Let's not stay stuck with classification then.
 \topic{if you can make siluation differentiable enough and invert the fisher info matrix)}
 
 
-\section{Mining gold} % (fold)
-\label{sec:mining_gold}
+\section{Other methods} % (fold)
+\label{sec:other_methods}
+
+\topic{Variational inference requires likelihood and ABC does not scale.}
+\content{What we are not going to devellop. But justifying why !}
+
+\subsection{ABC methods} % (fold)
+\label{sub:abc_methods}
+
+\content{short review of ABC methods and why we cannot rely on it for this problem.}
+
+\victor{TODO : Décrire succintement rejection algo et les idées principales d'amélioration. }
+
+One solution to do inference with an intractable likelihood is the Approximate Bayesian Computation (ABC).
+The most traditional ABC algorithm is the rejection algorithm which is computationally expensive.
+Although significant improvement can be achieved with advanced Monte Carlo methods this is still known to take a long time to converge \needcite.
+
+
+\subsection{Variational inference} % (fold)
+\label{sub:variational_inference}
+
+\topic{Variational inference requires likelihood}
+
+\victor{TODO : VI avec des NN. Stochastic VI.}
+On the other hand Variational Inference (VI) is extremely fast but can lead to biased estimation which is a severe drawback when it leads to underestimating the uncertainty.
+
+In high Energy Physics (HEP), which motivated this work, the use of machine learning produced summary statistics combined with domain knowledge allow to conduct exact inference in the absence of nuisance parameters.
+\victor{"Extact" inference me semble maladroit}
+
+
+\subsection{Bayesian networks} % (fold)
+\label{sub:bayesian_networks}
+
+\topic{Could be a solution. But no time to explore everything}
+\content{Personne n'aime les Bayesian networks. Il faudrait exprimer pourquoi.}
+\victor{Other physicists have tried and got prelimnary results. Need to see if they made progress !}
+
+
+\subsection{Disentangling} % (fold)
+\label{sub:disentangling}
+
+\content{Why not using disentangling ?}
+
+
+\subsection{Mining gold from simulator} % (fold)
+\label{sub:mining_gold_from_simulator}
+
+% subsection mining_gold_from_simulator (end)
 
 \topic{Improve the simulator to give more informations about the intractable likelihood !}
 
-\content{Je sais pas trop encore quoi mettre là dedans....}
-
-
+\content{Can't do it for now because I don't have access to the simulator}

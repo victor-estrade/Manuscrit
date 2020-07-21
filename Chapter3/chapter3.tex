@@ -17,8 +17,9 @@
 \content{We can get rid of the domain knowledge requierment and simply let a big neural network do all the work for us.}
 \content{This method is inspired from mixture density networks, inferno and neural statistician.}
 
-\section{Setting} % (fold)
-\label{sec:setting}
+\section{Motivation} % (fold)
+\label{sec:motivation}
+
 
 \topic{Although the generator is available classical Bayesian inference is difficult because of the intractable likelihood.}
 \content{Blabla de rappel pour ceux qui ont esquivé les autres chapitres}
@@ -38,6 +39,9 @@ From Bayes theorem we get :
 Unfortunately the likelihood $p(x | \theta)$ is often intractable because of high dimensional integrals.
 Instead of replacing the likelihood or trying to regress it we propose to directly approximate the posterior $p(\theta | x)$ with a sufficiently powerfull and tractable distribution $q_\phi(\theta | x)$.
 
+
+\content{Simpler workflow}
+\content{Likelihood free}
 
 \section{Density networks} % (fold)
 \label{sec:density_networks}

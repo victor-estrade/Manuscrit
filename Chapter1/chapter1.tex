@@ -25,7 +25,59 @@
 
 \topic{Simulations combined with machine learning make possible to extract knowledge even in highly complex and stochastic process like High Energy Physics}
 
+\content{Objectif : Improving the precision of parameter estimation in a special case of the inverse problem in the presence of systematic effect.}
 
+
+\section{LHC experiments} % (fold)
+\label{sec:lhc_experiments}
+
+\topic{C'est très complexe mais on a pas besoin de toute cette complexité pour saisir le problème.}
+
+
+\subsection{Counting problem} % (fold)
+\label{sub:counting_problem}
+
+\content{Short description of the physical system}
+The system producing the data studied in this analysis is a particle collider.
+Without getting into the details a particle collider is a machine accelerating small brick of matter, proton in this case, in oposite direction to smash them against each other.
+
+\begin{figure}[htb]
+    \includegraphics[width=\linewidth]{particle_collider_0}
+    \caption{Very simple particle collider}
+    \label{fig:particle_collider_0}
+\end{figure}
+
+
+\content{Soft / hard collision}
+
+\begin{figure}[htb]
+  \centering
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{particle_collider_soft}
+    \caption{soft collision}
+    \label{fig:soft_collision}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{particle_collider_hard}
+    \caption{hard collision}
+    \label{fig:hard_collision}
+  \end{subfigure}
+  \caption{soft collision (left) and hard collision (right)}
+  \label{fig:collision}
+\end{figure}
+
+\content{Explain what an event is}
+\content{Introduce cross section estimations / mixture coefficient inference}
+\content{This is a count problem. We want to estimate the amount of H to tau tau events}
+
+
+\subsection{The model} % (fold)
+\label{sub:the_model}
+
+\content{Standard model to describe what happen.}
+\content{Short description of the generative model}
+\content{Simulation of the entire experiment}
 
 
 \section{Inference through simulation} % (fold)
@@ -35,14 +87,12 @@
 
 \topic{Simulations/models are useful to explain data (therefore understand the undelying process that generated the data)}
 
+
 \content{Dans un monde simple tout est "facile"}
 \content{Introduire le problème d'extraction d'un coefficient de mélange(lié à cross-section)}
 
-
-
-
-\subsection{Bayesian inference} % (fold)
-\label{sub:bayesian_inference}
+\subsection{Classic parameter estimation} % (fold)
+\label{sub:classic_parameter_estimation}
 
 \topic{Bayesian inference gives access to the full posterior}
 
@@ -62,10 +112,6 @@ Computing $p(\theta | x)$ for the possible values $\theta$ \ie where the prior p
 The integral on the denominator can either be computed by hand or approximated with Monte Carlo.
 
 
-
-\subsection{Maximum likelihood} % (fold)
-\label{sub:maximum_likelihood}
-
 \topic{Maximum likelihood is more focused on what we are looking for (parameter estimation)}
 
 \content{Maximum likelihood link to bayesian inference}
@@ -74,29 +120,16 @@ The integral on the denominator can either be computed by hand or approximated w
 
 
 
-\subsection{Toy problem} % (fold)
-\label{sub:toy_problem}
-
-\topic{On a 1D/1-params (no nuisance) toy example things goes smoothly}
-
-\content{Introduce 1D toy as example}
-\content{Introduce cross section estimations / mixture coefficient inference}
 
 
-
-\subsection{Combinatorial explosion} % (fold)
-\label{sub:combinatorial_explosion}
+\subsection{Inverse problem} % (fold)
+\label{sub:inverse_problem}
 
 \topic{These methods don't scale to high dimensions}
 
 \content{Computation complexity makes likelihood and posterior intractable}
 \content{Numerical stability high dimensional integral ?}
 \content{Maybe a "simple" example that shows how often in real life this setting may happen}
-
-
-
-\subsection{Intractable models} % (fold)
-\label{sub:intractable_models}
 
 \topic{(another issue) Sometimes approximation needs to be made in order to build a simulation}
 
@@ -105,26 +138,13 @@ The integral on the denominator can either be computed by hand or approximated w
 \content{Here or in the previous subsection : 1/2 page on the processes to simulate an event. In order to make clear how complicated it is.}
 
 
-
-
-
-\section{Dimension reduction} % (fold)
-\label{sec:dimension_reduction}
-
-\topic{Recucing the dimension without losing the relevant information is necessary but also possible (optimal)}
-\topic{Classifiers to the rescue ! With some domain knowledge it is possible to avoid using the original likelihood.}
-
-\subsection{Hand crafted} % (fold)
-\label{sub:hand_crafted}
+\subsection{Hand crafted dimension reduction} % (fold)
+\label{sub:hand_crafted_dimension_reduction}
 
 \topic{Ask a theorist to build a low dimensional feature}
 
 \content{How it was done before machine learning}
 
-
-
-\subsection{Select features} % (fold)
-\label{sub:select_features}
 
 \topic{Too many dimension ? Discard the less relevants ones}
 
@@ -132,8 +152,10 @@ The integral on the denominator can either be computed by hand or approximated w
 
 
 
-\subsection{Machine learning} % (fold)
-\label{sub:machine_learning}
+
+\subsection{Count estimation} % (fold)
+\label{sub:count_estimation}
+
 
 \topic{Classifiers can achieve optimal inference}
 
@@ -233,21 +255,8 @@ Note : $c$ is also a sufficient summary statistic
 
 
 
-\subsection{Combinaison} % (fold)
-\label{sub:combinaison}
-
-
-\topic{In real life we do both}
-\victor{Meaning : computing hand crafted features to reduce from $\RR^{100 000}$ to $\RR^{40}$ then using machine learning to reduce to $\RR$}
-
-\content{We don't need ML when we know how to write the code to compute features}
-\content{We use ML when we don't know how to write the code}
-\content{Clin d'oeil au tracking. On a le code mais le faire passer à l'échelle reste très difficile.}
-
-
-
-\subsection{Example with cross section} % (fold)
-\label{sub:example_with_cross_section}
+\subsection{Poisson distribution} % (fold)
+\label{sub:poisson_distribution}
 
 \content{Comment on passe du ratio de vraissemblance du classifier à Poisson}
 
@@ -266,6 +275,21 @@ $s$ et $b$ sont des sorties du modèle calculer avec le classifieur sur la simul
 C'est ça le lien. Mais pourquoi c'est comme ça ?
 
 
+\content{Binned Poisson to increase Sig/Bkg}
+
+
+\subsection{Workflow} % (fold)
+\label{sub:workflow}
+
+\topic{In real life we do both mathematical models + machine learning.}
+\victor{Meaning : computing hand crafted features to reduce from $\RR^{100 000}$ to $\RR^{40}$ then using machine learning to reduce to $\RR$}
+
+\content{We don't need ML when we know how to write the code to compute features}
+\content{We use ML when we don't know how to write the code}
+\content{Clin d'oeil au tracking. On a le code mais le faire passer à l'échelle reste très difficile.}
+\content{Schéma du workflow pour calculer notre estimateur}
+
+
 \section{Systematic effects} % (fold)
 \label{sec:systematic_effects}
 
@@ -278,42 +302,6 @@ C'est ça le lien. Mais pourquoi c'est comme ça ?
 
 \content{Definition and example of systematic effects (not only in HEP !)}
 \victor{Laisser le lecteur penser de lui même à l'adaptation de domaine.}
-
-
-
-\subsection{Classifier optimality} % (fold)
-\label{sub:classifier_optimality}
-
-\topic{Systematic effect breaks the optimality of the classifier}
-
-\content{Why the proof does not work anymore}
-
-
-
-\subsection{Variance estimations} % (fold)
-\label{sub:variance_estimations}
-
-\topic{We can measure the effect of systematics on the final variance (inference is still possible)}
-
-\content{It does not "breaks" it but increase the variance/uncertainty}
-\content{Introduce systematic vs statistical uncertainty as the 2 component of the variance}
-\content{Glen's formulas ?}
-
-
-
-\subsection{Profiled likelihood} % (fold)
-\label{sub:profiled_likelihood}
-
-\topic{The current way of measuring the variance of our estimation to include systematics is "profiled likelihood"}
-
-\content{Explain how profiled likelihood works and why is works}
-\content{Introduce Fisher information matrix and Cramer Rao bound (since we will use it later for INFERNO)}
-
-
-
-
-\subsection{Other definition} % (fold)
-\label{sub:other_definition}
 
 Définition de la variance :
 
@@ -347,6 +335,38 @@ représente l'erreur statistique.
 Mais si ça marche on aurrait une définition claire et précise de ce qu'est l'erreur statistique et l'erreur systématique.
 
 
+\content{Schéma inverse problem with nuisance parameters}
+
+\subsection{Classifier optimality} % (fold)
+\label{sub:classifier_optimality}
+
+\topic{Systematic effect breaks the optimality of the classifier}
+
+\content{Why the proof does not work anymore}
+
+\content{Poisson likelihood is not broken but weakened}
+
+\subsection{Variance estimations} % (fold)
+\label{sub:variance_estimations}
+
+\topic{We can measure the effect of systematics on the final variance (inference is still possible)}
+
+\content{On a caché ça sous le tapis jusqu'à maintenant mais c'est le coeur du sujet !}
+\content{It does not "breaks" it but increase the variance/uncertainty}
+\content{Introduce systematic vs statistical uncertainty as the 2 component of the variance}
+\content{Glen's formulas ?}
+
+\content{Marginalization could do the job but is computationally expensive}
+
+
+\subsection{Profiled likelihood} % (fold)
+\label{sub:profiled_likelihood}
+
+\topic{The current way of measuring the variance of our estimation to include systematics is "profiled likelihood"}
+
+\content{Explain how profiled likelihood works and why is works}
+\content{Introduce Fisher information matrix and Cramer Rao bound (since we will use it later for INFERNO)}
+
 
 
 
@@ -355,6 +375,6 @@ Mais si ça marche on aurrait une définition claire et précise de ce qu'est l'
 
 \topic{This document is about going further than the "simple" classifier method}
 
-\content{Annonce de la suite}
+\content{Annonce de la suite / du plan du manuscrit}
 
 
