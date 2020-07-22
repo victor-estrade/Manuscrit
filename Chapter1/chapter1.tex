@@ -28,27 +28,40 @@
 \content{Objectif : Improving the precision of parameter estimation in a special case of the inverse problem in the presence of systematic effect.}
 
 
+
+
+
+
 \section{LHC experiments} % (fold)
 \label{sec:lhc_experiments}
 
 \topic{C'est très complexe mais on a pas besoin de toute cette complexité pour saisir le problème.}
 
 
+
+
+
+
 \subsection{Counting problem} % (fold)
 \label{sub:counting_problem}
 
-\content{Short description of the physical system}
-The system producing the data studied in this analysis is a particle collider.
-Without getting into the details a particle collider is a machine accelerating small brick of matter, proton in this case, in oposite direction to smash them against each other.
+The system producing the data studied in this analysis is the famous Large Hardon Collider (LHC).
+Without getting into the details a particle collider is a machine accelerating small bricks of matter, protons in this case, in opposite direction to smash them against each others.
+The resulting collision produces high energy particles whose properties are captured by the various measurement apparatus which is reduced here for simplicity to a "giant camera".
 
 \begin{figure}[htb]
-    \includegraphics[width=\linewidth]{particle_collider_0}
+    \centering
+    \includegraphics[width=0.8\linewidth]{particle_collider_0}
     \caption{Very simple particle collider}
     \label{fig:particle_collider_0}
 \end{figure}
 
 
-\content{Soft / hard collision}
+These collisions can be classified into 2 kinds :
+\begin{itemize}
+	\item the soft collisions when the protons "missed" each other and does not produce high energy particles
+	\item the hard collisions when the protons smashed on each other and produces many particles
+\end{itemize}
 
 \begin{figure}[htb]
   \centering
@@ -67,17 +80,53 @@ Without getting into the details a particle collider is a machine accelerating s
   \label{fig:collision}
 \end{figure}
 
-\content{Explain what an event is}
-\content{Introduce cross section estimations / mixture coefficient inference}
-\content{This is a count problem. We want to estimate the amount of H to tau tau events}
+The hard collisions, named \emph{event} in the field of High Energy Physics (HEP), are way rarer than the soft one.
+The process creating the high energy particles is fundamentally stochastic.
+Meaning that the nature and properties (eg. kinematics) of the produced particles are not fully predictable but follow
+probability distributions whose shapes and properties are deterministics.
+
+The vast majority of the particles created in the process are already well known.
+To produce rare, therefore interesting, particles the accelerator must produce millions collisions each seconds.
+
+The LHC is housing many experiments.
+The one that is of interest in this work is a measurement of the frequency of a specific process ( H to tau tau).
+Each event following this process is defined as a \emph{signal} event versus the \emph{background} events that gather all the other processes.
+Leading to a counting experiment of the number of signals $s$ and the number of backgrounds $b$ to give access to the value of interest $\frac{s}{s + b}$.
+
+In many interesting cases, including ours, the nature of the event (signal/background) are not among the possible measurement that can be made.
+
+
+\content{Introduce cross section estimations / mixture coefficient inference ?}
+$m$ is therefore connected to branch factor (cross section ?) of the Higgs boson which is the parameter we want to measure.
+\victor{Link between cross-section, branch factor, luminosity ?}
+
+
+
 
 
 \subsection{The model} % (fold)
 \label{sub:the_model}
 
-\content{Standard model to describe what happen.}
-\content{Short description of the generative model}
-\content{Simulation of the entire experiment}
+The theory describing particle collisions and productions is the Standard Model \needcite (SM).
+The counting experiment final objective is to improve our knowledge of one of the free parameter of the SM.
+In other word we are fitting the SM parameters to the data of the experiment.
+
+The model of the experiment includes several major steps : 
+\begin{enumerate}
+	\item The collision
+	\item The particle production from the collision
+	\item Particle desintegrations into other particles and interactions between produced particles
+	\item Reaction of the measurement apparatus to the particles going through it.
+\end{enumerate}
+
+Each of these steps is very complex and requires a lot of work from the community.
+
+\victor{L'objectif est de donner un apperçu de la complexité de la chose. Sans entrer + que ça dans les détails...}
+\victor{TODO : Donner un aperçu de la complexité de chaque étape en 1 ou 2 phrases.}
+
+
+
+
 
 
 \section{Inference through simulation} % (fold)
@@ -91,32 +140,41 @@ Without getting into the details a particle collider is a machine accelerating s
 \content{Dans un monde simple tout est "facile"}
 \content{Introduire le problème d'extraction d'un coefficient de mélange(lié à cross-section)}
 
+
+
+
+
+
+
 \subsection{Classic parameter estimation} % (fold)
 \label{sub:classic_parameter_estimation}
 
-\topic{Bayesian inference gives access to the full posterior}
+\topic{Bayesian inference gives access to the full posterior distribution}
 
-\content{Introduce the basic statistics tools that we will use}
-\content{Brute force method to do bayesian inference}
-\content{Other (better) methods like variational inference}
 
-Assuming that the likelihood $p(\theta | x)$ is available the Bayes theorem indicates how to access the posterior pobability.
+Assuming that the model provides a likelihood $p(\mu | x)$ the Bayes theorem indicates how to access the posterior pobability.
 $$
-    p(\theta | x) = \frac{p(x|\theta) p(\theta)}{p(x)} = \frac{p(x|\theta) p(\theta)}{\int_\theta p(x|\theta) p(\theta)}
+    p(\mu | x) = \frac{p(x|\mu) p(\mu)}{p(x)} = \frac{p(x|\mu) p(\mu)}{\int_\mu p(x|\mu) p(\mu)}
 $$
 
+The prior $p(\mu)$ contains all the current knowledge about the problem. 
+If no knowledge is available a non informative prior is chosen, usually a uniform distribution over the domain of $\mu$.
 The inference is then straitforward.
-The prior $p(\theta)$ contains all the current knowledge about the problem. 
-If no knowledge is available a non informative prior is chosen, usually a uniform distribution over the domain of $\theta$.
-Computing $p(\theta | x)$ for the possible values $\theta$ \ie where the prior probability is not zero.
+Computing $p(\mu | x)$ for the possible values $\mu$ \ie where the prior probability is not zero.
 The integral on the denominator can either be computed by hand or approximated with Monte Carlo.
 
+Often the full posterior is not required and only the most pobable value of the parameter is infered.
+In our problem we do not have a prior knowledge on the parameter of interest making maximum a posteriori and maximum likelihood estimator strickly equivalent.
 
-\topic{Maximum likelihood is more focused on what we are looking for (parameter estimation)}
+\begin{align}
+	\argmax_\mu p(\mu | x) &= \argmax_\mu p(\mu | x) \\
+							&= \argmax_\mu \frac{p(x|\mu) p(\mu)}{p(x)} \\
+							&= \argmax_\mu p(x|\mu) p(\mu) \\
+							&= \argmax_\mu p(x|\mu)\\
+\end{align}
 
-\content{Maximum likelihood link to bayesian inference}
-\content{Maximum likelihood gradient descent methods}
-\content{Maximum likelihood variance estimation}
+
+\content{Citer maximum likelihood gradient descent methods ?}
 
 
 
@@ -127,15 +185,40 @@ The integral on the denominator can either be computed by hand or approximated w
 
 \topic{These methods don't scale to high dimensions}
 
-\content{Computation complexity makes likelihood and posterior intractable}
-\content{Numerical stability high dimensional integral ?}
+Unfortunately the likelihood provided by the model is not tracktable.
+The process leading from the collisions to the obvervables involves numerous latent variables $z_1, ..., z_n$ where $n=10^6$.
+Making the marginal likelihood intraclable because of high dimensional integrals.
+\begin{equation}
+	\label{eq:intractable_integral}
+	p(x|\mu) = \int_{z_1} \int_{z_2} ... \int_{z_n} p(x|\mu, z_1, z_2, ..., z_n) p(z_1) p(z_2) ... p(z_n)
+\end{equation}
+
+\victor{What do we know about numerical stability of high dimensional integral ?}
 \content{Maybe a "simple" example that shows how often in real life this setting may happen}
 
-\topic{(another issue) Sometimes approximation needs to be made in order to build a simulation}
+Moreover sometimes simplifications needs to be made in order to build the model \needcite making the computed likelihood only a approximation of the true likelihood.
+Some other times computable formulas simply do not exist.
 
 \content{Approximation requiered to build some part of LHC simulation as an example}
-\victor{Very short subsection ?}
 \content{Here or in the previous subsection : 1/2 page on the processes to simulate an event. In order to make clear how complicated it is.}
+
+
+However building a simulator working only in forward mode allowing to sample from $p(x|m)$ is possible.
+The objective is to infer causal parameters from observations hence reversing the forward process which goes from causal parameters to observations.
+This is more generaly known as the \emph{inverse problem}.
+There is no general solution yet to this problem altough it occures often in experimental science.
+
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.8\linewidth]{inverse_problem}
+    \caption{The inverse problem objective is to go from the observables to the causal parameter of the model embeded by the simulator}
+    \label{fig:inverse_problem}
+\end{figure}
+
+
+
+
 
 
 \subsection{Hand crafted dimension reduction} % (fold)
@@ -153,6 +236,8 @@ The integral on the denominator can either be computed by hand or approximated w
 
 
 
+
+
 \subsection{Count estimation} % (fold)
 \label{sub:count_estimation}
 
@@ -162,51 +247,43 @@ The integral on the denominator can either be computed by hand or approximated w
 \content{Proof of best estimator with bayesian classifier}
 \content{Intuition of classifer as separator of population in order to compute a ratio}
 
-\victor{Cette section reprend le papier de Neal \cite{Neal:2007zz}}
+This section borrows many results from \cite{Neal:2007zz}.
 
 We are studying a stochatic phenomenon which generative process is described as :
 
 \begin{equation}
 	\label{eq:mixture_model}
-	p(x|m) = m p(x|s) + (1-m) p(x|b)
+	p(x|m) = m p(x|S) + (1-m) p(x|B)
 \end{equation}
 where $x$ is the set of observable features of the studied event gathered in a vector.
 Events are split into 2 classes : the signals $S$ and the backgrounds $B$.
-$m$ is the mixture coefficient between suignals and backgrounds.
+Note that $S$ and $B$ are one of the numerous latent variable $z_i$ in \autoref{eq:intractable_integral}.
+$m$ is the mixture coefficient between signals and backgrounds.
 
-$m$ can be seen as the probability for an event to be a signal $p(s)$. 
-It naturally follows that $1-m$ is the probability for an event to be a background $p(b)=1-p(s)$.
+$m$ can be seen as the probability for an event to be a signal $p(S)$. 
+It naturally follows that $1-m$ is the probability for an event to be a background $p(B)=1-p(S)$.
 \autoref{eq:mixture_model} can be written as
 \begin{equation}
-	p(x) = p(s)p(x|s) + p(b)p(x|b)
+	p(x) = p(S)p(x|S) + p(B)p(x|B)
 \end{equation}
 
-In many interesting cases the nature of the event (signal/background) are not among the possible measurement that can be made.
-Moreover the likelihoods $p(x|s)$ and $p(x|b)$ are intractable because of high dimension integrals or simply because computable formulas do not exist.
+As previously explained the likelihoods $p(x|S)$ and $p(x|B)$ are intractable because of high dimension integrals.
 However building a simulator working only in forward mode allowing to sample from $p(x|m)$ is possible.
-This problem is known as the inverse problem. 
-The objective is to infer causal parameters from observations hence reversing the forward process which goes from causal parameters to observations.
-
-
-The example that motivates this work is comming from High Energy Physics (HEP) where events are collisions in a particle accelerator.
-Signals are events giving birth to a Higgs boson and backgrounds gather all the other collisions.
-$m$ is therefore connected to branch factor (cross section ?) of the Higgs boson which is the parameter we want to measure.
-
-\victor{Link between cross-section, branch factor, luminosity ?}
+This allow us to build a training dataset for some machine learning later.
 
 Measurements are made from a large bunch of independant and identically distributed events $D=\{x_i\}_{i=1}^N$.
 
 \begin{align*}
-	p(D|m) =& \prod_{i=1}^N m p(x|s) + (1-m) p(x|b) \\
-	       =& \prod_{i=1}^N p(x|b) \left [(1-m) + m \frac{p(x|s)}{p(x|b)} \right ]\\
-	       =& \underbrace{\left[ \prod_{i=1}^N p(x|b) \right ]}_{h(x)} \times 
-	       \underbrace{\left [\prod_{i=1}^N (1-m) + m \frac{p(x|s)}{p(x|b)} \right ]}_{g_m(T(x))}
+	p(D|m) =& \prod_{i=1}^N m p(x|S) + (1-m) p(x|B) \\
+	       =& \prod_{i=1}^N p(x|B) \left [(1-m) + m \frac{p(x|S)}{p(x|B)} \right ]\\
+	       =& \underbrace{\left[ \prod_{i=1}^N p(x|B) \right ]}_{h(x)} \times 
+	       \underbrace{\left [\prod_{i=1}^N (1-m) + m \frac{p(x|S)}{p(x|B)} \right ]}_{g_m(T(x))}
 \end{align*}
-with $T(x) = \frac{p(x|s)}{p(x|b)} $
+with $T(x) = \frac{p(x|S)}{p(x|B)} $
 
-Fisher-Neyman factorization theorem states that $T(x)$ is a sufficient summary statistic to obtain $m$
+The Fisher-Neyman factorization theorem \needcite states that $T(x)$ is a sufficient summary statistic to obtain $m$
 
-The maximum likelihood estimator, noted $\hat m$ is commonly used to estimate the parameter of interest.
+The maximum likelihood estimator, noted $\hat m$, is commonly used to estimate the parameter of interest.
 Recall that maximum likelihood estimator are strictly equivalent to a maximum a posteriori estimator using a uniform prior.
 This is a reasonable choice when we do not have prior knowledge as in this example.
 
@@ -218,10 +295,10 @@ It is more convenient (numerical stability) to express the result as a deviation
 The deviation is defined as :
 
 \begin{equation}
-	\mu = \frac{p(s)}{p_{SM}(s)} = \frac{m}{p_{SM}(s)}
+	\mu = \frac{p(S)}{p_{SM}(S)} = \frac{m}{p_{SM}(S)}
 \end{equation}
-$p_{SM}(s)$ is the expected probability to get a signal following the Standard Model.
-Recovering $m$ from $\mu$ is trivially done with $m = \mu p_{SM}(s)$.
+$p_{SM}(S)$ is the expected probability to get a signal following the Standard Model.
+Recovering $m$ from $\mu$ is trivially done with $m = \mu p_{SM}(S)$.
 
 The estimator is now :
 \begin{align}
@@ -236,9 +313,9 @@ The estimator is now :
 $T(x)$ can be obtained using a classifier $c$ trained to separate signals and backgrounds.
 A Bayes optimal classifier output gives :
 \begin{equation}
-	c(x) = \frac{s p(x|s)}{(1-s) p(x|b) + s p(x|s)}
+	c(x) = \frac{n_s p(x|S)}{(1-n_s) p(x|B) + n_s p(x|S)}
 \end{equation}
-where $s$ is the fraction of signals used in the training dataset.
+where $n_s$ is the fraction of signals used in the training dataset.
 
 \begin{equation}
 	T(x) = \frac{c(x)}{(1-c(x))} \frac{(1-s)}{s} 
@@ -247,7 +324,7 @@ where $s$ is the fraction of signals used in the training dataset.
 
 Note : $c$ is also a sufficient summary statistic
 \begin{equation}
-	g_\mu(T(x)) = 1 - \mu p_{SM}(s) + \mu p_{SM}(s) \times \frac{c(x)}{(1-c(x))} \frac{(1-s)}{s} = f_\mu(c(x))
+	g_\mu(T(x)) = 1 - \mu p_{SM}(S) + \mu p_{SM}(S) \times \frac{c(x)}{(1-c(x))} \frac{(1-s)}{s} = f_\mu(c(x))
 \end{equation}
 
 \content{Limitation : what happens if the classifier is not (Bayes) optimal ? Can we detect it ?}
@@ -255,45 +332,84 @@ Note : $c$ is also a sufficient summary statistic
 
 
 
+
+
+
 \subsection{Poisson distribution} % (fold)
 \label{sub:poisson_distribution}
 
-\content{Comment on passe du ratio de vraissemblance du classifier à Poisson}
+The system allow 2 kind of collisions : soft and hard collisions.
+The hard collisions are very rare compared to the soft collisions.
+The data can be modeled by counting iid Bernouilli rare process which is well approximated by a Poisson distribution \needcite when the number of samples is large.
+The hard collision are splitted into 2 categories the signal events and the background events.
+The amount of background event $b$ is known (to a certain extent) thanks to measurement made in the data space where few or no signal can be found.
 
-On a plein de processus binomiaux et un théorème indiquant que la loi de Poisson est une excelente approximation quand on a plein de points.
+The total amout of event $n$ follows a Poisson distribution of parameter $s + b$.
+Since usually $s$ is very small the parameter of interest is a deviation $\mu$ from an expected value $s$.
 
-Donc le nombre d'events dans une boite donnée suit une loi de Poisson.
 \begin{equation}
 	n \sim Poisson(\mu s + b)
 \end{equation}
 
+Giving the likelihood :
 \begin{equation}
 	P(n| \mu, s, b) = \frac{(\mu s +b)^n }{n!} e^{-(\mu s + b)}
 \end{equation}
 
-$s$ et $b$ sont des sorties du modèle calculer avec le classifieur sur la simulation.
-C'est ça le lien. Mais pourquoi c'est comme ça ?
+A computable likelihood is now available !
+This allow to use more classic parameter estimation like maximum likelihood.
+The only drawback is that the nature of the event (signal/background) is not available in the data.
+But a classifier can be trained to separate signals and backgrounds from training data extracted from the simulator.
+As seen previously a classifier decision function is a sufficient summary statisticmaking this method optimal.
+\victor{optimal method = strong claim. Better be sure about it}
+
+To improve inference the classifier is also used to select a bunch of regions rich in signals.
+\victor{(yes but how/why !!) Probably a simple result link to signal / noise ratio but I can't find it...}
+Leading to a binned likelihood :
+
+\begin{equation}
+	p(D|\mu) = \prod_{i=1}^M Poisson(n_i | \mu, s_i, b_i) = \prod_{i=1}^M \frac{(\mu s_i + b_i)^n }{n!} e^{-(\mu s_i + b_i)}
+\end{equation}
 
 
-\content{Binned Poisson to increase Sig/Bkg}
+
+
+
 
 
 \subsection{Workflow} % (fold)
 \label{sub:workflow}
 
-\topic{In real life we do both mathematical models + machine learning.}
-\victor{Meaning : computing hand crafted features to reduce from $\RR^{100 000}$ to $\RR^{40}$ then using machine learning to reduce to $\RR$}
+\victor{En fait qu'est-ce que je veux dire ici ?}
 
-\content{We don't need ML when we know how to write the code to compute features}
-\content{We use ML when we don't know how to write the code}
-\content{Clin d'oeil au tracking. On a le code mais le faire passer à l'échelle reste très difficile.}
-\content{Schéma du workflow pour calculer notre estimateur}
+In practice the data go through many processes like trigger selection, tracking, event reconstructions, etc computing hand crafted features to reduce the dimensionality from $\RR^{100 000}$ to $\RR^{40}$ then using machine learning to reduce to $\RR$.
+Although machine learning is slowly taking place in some of these steps \needcite.
+All the domain knowledge is concentrated in the simulator and the hand crafted data processing.
+
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.3\linewidth]{workflow}
+    \caption{The workflow of maximum likelihood inference using an optimizer}
+    \label{fig:workflow}
+\end{figure}
+
+
+
+
+
+
+
+
+
 
 
 \section{Systematic effects} % (fold)
 \label{sec:systematic_effects}
 
 \topic{Systematic effects make inference more complex by introducing nuisance parameters}
+
+
 
 
 
@@ -337,6 +453,11 @@ Mais si ça marche on aurrait une définition claire et précise de ce qu'est l'
 
 \content{Schéma inverse problem with nuisance parameters}
 
+
+
+
+
+
 \subsection{Classifier optimality} % (fold)
 \label{sub:classifier_optimality}
 
@@ -345,6 +466,14 @@ Mais si ça marche on aurrait une définition claire et précise de ce qu'est l'
 \content{Why the proof does not work anymore}
 
 \content{Poisson likelihood is not broken but weakened}
+
+
+\begin{equation}
+	p(D|\mu, \alpha) = \underbrace{\left[ \prod_{i=1}^N p(x|B, \alpha) \right ]}_{h_\alpha(x)} \times 
+       \underbrace{\left [\prod_{i=1}^N (1-\mu) + \mu \frac{p(x|S, \alpha)}{p(x|B, \alpha)} \right ]}_{g_\mu(T_\alpha(x))}
+\end{equation}
+
+
 
 \subsection{Variance estimations} % (fold)
 \label{sub:variance_estimations}
@@ -359,6 +488,9 @@ Mais si ça marche on aurrait une définition claire et précise de ce qu'est l'
 \content{Marginalization could do the job but is computationally expensive}
 
 
+
+
+
 \subsection{Profiled likelihood} % (fold)
 \label{sub:profiled_likelihood}
 
@@ -366,6 +498,13 @@ Mais si ça marche on aurrait une définition claire et précise de ce qu'est l'
 
 \content{Explain how profiled likelihood works and why is works}
 \content{Introduce Fisher information matrix and Cramer Rao bound (since we will use it later for INFERNO)}
+
+
+references : 
+\begin{itemize}
+	\item \url{https://arxiv.org/abs/physics/0403059}
+	\item \url{https://arxiv.org/abs/1007.1727}
+\end{itemize}
 
 
 
