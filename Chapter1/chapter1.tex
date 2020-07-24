@@ -3,7 +3,7 @@
 %*********************************** First Chapter *****************************
 %*******************************************************************************
 
-\chapter{Data-driven science}  %Title of the First Chapter
+\chapter{An exemple of data-driven science}  %Title of the First Chapter
 \label{chap:intro_stat}
 \ifpdf
     \graphicspath{{Chapter1/Figs/Raster/}{Chapter1/Figs/PDF/}{Chapter1/Figs/}}
@@ -32,8 +32,10 @@
 
 
 
-\section{LHC experiments} % (fold)
-\label{sec:lhc_experiments}
+\section{Inverse problem at LHC} % (fold)
+\label{sec:inverse_problem_at_lhc}
+
+% section inverse_problem_at_lhc (end)
 
 \topic{C'est très complexe mais on a pas besoin de toute cette complexité pour saisir le problème.}
 
@@ -41,9 +43,8 @@
 
 
 
-
-\subsection{Counting problem} % (fold)
-\label{sub:counting_problem}
+\subsection{The system} % (fold)
+\label{sub:the_system}
 
 The system producing the data studied in this analysis is the famous Large Hardon Collider (LHC).
 Without getting into the details a particle collider is a machine accelerating small bricks of matter, protons in this case, in opposite direction to smash them against each others.
@@ -139,7 +140,7 @@ Although modeling what happens between the particle production and the apparatus
 Leading to the necessity to infer what happened before the measurement from the data.
 But also turning the vast majority of the intermediate quantities into latent or hidden variables.
 Latent variables are noted $z$ or $z_i$.
-One of this latent variable was already mentioned previously \autoref{sub:counting_problem} : the \emph{label} of the event indicating the nature of the particule, in our case if it is a \emph{signal} or a \emph{background} event.
+One of this latent variable was already mentioned previously \autoref{sub:the_system} : the \emph{label} of the event indicating the nature of the particule, in our case if it is a \emph{signal} or a \emph{background} event.
 
 \victor{L'objectif est de donner un apperçu de la complexité de la chose. Sans entrer + que ça dans les détails...}
 \victor{TODO : Donner un aperçu de la complexité de chaque étape en 1 ou 2 phrases.}
@@ -156,53 +157,34 @@ And the data distribution of $x$ depends on the latent variable $z$.
 
 
 
-
-
-\section{Inference through simulation} % (fold)
-\label{sec:inference_through_simulation}
-
-\victor{Or "Inference with/using simulations" ?}
-
-\topic{Simulations/models are useful to explain data (therefore understand the undelying process that generated the data)}
-
-
-\content{Dans un monde simple tout est "facile"}
-\content{Introduire le problème d'extraction d'un coefficient de mélange(lié à cross-section)}
-
-
-
-
-
-
-
 \subsection{Classic parameter estimation} % (fold)
 \label{sub:classic_parameter_estimation}
 
 \topic{Bayesian inference gives access to the full posterior distribution}
 
 
-Assuming that the model provides a likelihood $p(\mu | x)$ the Bayes theorem indicates how to access the posterior pobability.
+Assuming that the model provides a likelihood $p(x | \mu)$ the Bayes theorem indicates how to access the posterior pobability.
 \begin{equation}	
     p(\mu | x) = \frac{p(x|\mu) p(\mu)}{p(x)} = \frac{p(x|\mu) p(\mu)}{\int_\mu p(x|\mu) p(\mu)}
 \end{equation}
 
-The prior $p(\mu)$ contains all the current knowledge about the problem. 
+The prior $p(\mu)$ contains all the current knowledge about the parameter. 
 If no knowledge is available a non informative prior is chosen, usually a uniform distribution over the domain of $\mu$.
 The inference is then straitforward.
 Computing $p(\mu | x)$ for the possible values $\mu$ \ie where the prior probability is not zero.
 The integral on the denominator can either be computed by hand or approximated with Monte Carlo.
 
-Often the full posterior is not required and only the most pobable value of the parameter is infered.
-In our problem we do not have a prior knowledge on the parameter of interest making maximum a posteriori and maximum likelihood estimators strickly equivalent.
-
+Often the full posterior is not required and only the most probable value of the parameter is infered.
+When no prior knowledge on the parameter of interest is available maximum a posteriori and maximum likelihood estimators are strickly equivalent.
 \begin{align}
 	\argmax_\mu p(\mu | x) &= \argmax_\mu p(\mu | x) \\
 							&= \argmax_\mu \frac{p(x|\mu) p(\mu)}{p(x)} \\
 							&= \argmax_\mu p(x|\mu) p(\mu) \\
 							&= \argmax_\mu p(x|\mu)\\
 \end{align}
-
 Solving this maximization usually involves either analytical computing of the formulas \victor{Why not givin an example in the appendix ?} or an numerical optimization process (eg. gradient ascent, coordinate ascent)
+
+
 
 
 
@@ -232,7 +214,7 @@ Some other times computable formulas simply do not exist \needcite.
 \content{Here or in the previous subsection : 1/2 page on the processes to simulate an event. In order to make clear how complicated it is.}
 
 
-However building a simulator working only in forward mode allowing to sample from $p(x|\mu)$ is possible.
+However building a simulator working only in forward mode allowing to sample from $p(x|\mu)$ is easier and possible in cour case.
 The objective is then to infer causal parameters from observations hence reversing the forward process which goes from causal parameters to observations.
 This is more generaly known as the \emph{inverse problem}.
 There is no general solution yet to this problem altough it occures often in experimental science.
@@ -250,6 +232,27 @@ There is no general solution yet to this problem altough it occures often in exp
 
 
 
+
+
+\section{Inference through simulation} % (fold)
+\label{sec:inference_through_simulation}
+
+\victor{Or "Inference with/using simulations" ?}
+
+\topic{Simulations/models are useful to explain data (therefore understand the undelying process that generated the data)}
+
+
+\content{Dans un monde simple tout est "facile"}
+\content{Introduire le problème d'extraction d'un coefficient de mélange(lié à cross-section)}
+
+
+
+
+
+
+
+
+
 \subsection{Hand crafted dimension reduction} % (fold)
 \label{sub:hand_crafted_dimension_reduction}
 
@@ -258,14 +261,11 @@ Examples : histograms, kernel density estimation.
 Tackling the inverse problem with density estimation is subject to the curse of dimensionality.
 Restricting the observables to only one or two dimensions requires those dimension to carry all or most the information about the estimated parameter.
 
-The first idea to achive such constraint is to use domain knowledge.
+The first idea to achieve such constraint is to use domain knowledge.
 Bassically ask the theorist to find a computable quantity from the possible measurement allowing to infer the parameter.
-\content{How it was done before machine learning}
-\topic{Ask a theorist to build a low dimensional feature}
+\victor{TODO : Fouiller les années 80 à la recherche d'exemple}
 
-
-\topic{Too many dimension ? Discard the less relevants ones}
-\victor{Pas sûr que ça soit vraiment utilisé. Demander à David.}
+\victor{Discard the less relevants ones (feature selection). Pas sûr que ça soit vraiment utilisé. Demander à David.}
 
 The second possibility is to use machine learning to reduce the dimension of the data.
 
@@ -279,11 +279,6 @@ The second possibility is to use machine learning to reduce the dimension of the
 \subsection{Count estimation} % (fold)
 \label{sub:count_estimation}
 
-
-\topic{Classifiers can achieve optimal inference}
-
-\content{Proof of best estimator with bayesian classifier}
-\content{Intuition of classifer as separator of population in order to compute a ratio}
 
 This section borrows many results from \cite{Neal:2007zz}.
 
@@ -304,7 +299,7 @@ It naturally follows that $1-\mu$ is the probability for an event to be a backgr
 	p(x) = p(S)p(x|S) + p(B)p(x|B)
 \end{equation}
 
-As previously explained the likelihoods $p(x|S)$ and $p(x|B)$ are intractable because of high dimension integrals.
+As previously explained the likelihoods $p(x|S)$ and $p(x|B)$ are intractable because they involves high dimension integrals.
 However building a simulator working only in forward mode allowing to sample from $p(x|\mu)$ is possible.
 This allow us to build a training dataset for some machine learning later.
 
@@ -313,6 +308,7 @@ Measurements are made from a large bunch of independant and identically distribu
 \begin{align*}
 	p(D|\mu) =& \prod_{i=1}^N \mu p(x|S) + (1-\mu) p(x|B) \\
 	       =& \prod_{i=1}^N p(x|B) \left [(1-\mu) + \mu \frac{p(x|S)}{p(x|B)} \right ]\\
+\label{eq:Fisher-Neyman}
 	       =& \underbrace{\left[ \prod_{i=1}^N p(x|B) \right ]}_{h(x)} \times 
 	       \underbrace{\left [\prod_{i=1}^N (1-\mu) + \mu \frac{p(x|S)}{p(x|B)} \right ]}_{g_\mu(T(x))}
 \end{align*}
@@ -321,7 +317,6 @@ with $T(x) = \frac{p(x|S)}{p(x|B)} $
 The Fisher-Neyman factorization theorem \needcite states that $T(x)$ is a sufficient summary statistic to obtain $\mu$
 
 The maximum likelihood estimator, noted $\hat \mu$, is commonly used to estimate the parameter of interest.
-Recall that maximum likelihood estimator are strictly equivalent to a maximum a posteriori estimator using a uniform prior.
 This is a reasonable choice when we do not have prior knowledge as in this example.
 
 \begin{equation}
@@ -335,7 +330,7 @@ The deviation is defined as :
 	\mu = \frac{p(S)}{p_{SM}(S)} = \frac{\mu_0}{p_{SM}(S)}
 \end{equation}
 $p_{SM}(S)$ is the expected probability to get a signal following the Standard Model.
-Recovering $\mu$ from $\mu_0$ is trivially done with $\mu_0 = \mu p_{SM}(S)$.
+Recovering the frequency $\mu_0$ from $\mu$ is trivially done with $\mu_0 = \mu p_{SM}(S)$.
 
 The estimator is now :
 \begin{align}
@@ -371,9 +366,8 @@ Note : $c$ is also a sufficient summary statistic
 
 
 
-
-\subsection{Poisson distribution} % (fold)
-\label{sub:poisson_distribution}
+\subsection{Poisson count process} % (fold)
+\label{sub:poisson_count_process}
 
 The system allows 2 kind of collisions : soft and hard collisions.
 The hard collisions are very rare compared to the soft collisions.
@@ -414,30 +408,6 @@ Leading to a binned likelihood :
 
 
 
-\subsection{Workflow} % (fold)
-\label{sub:workflow}
-
-\victor{En fait qu'est-ce que je veux dire ici ?}
-
-In practice the data go through many processes like trigger selection, tracking, event reconstructions, etc computing hand crafted features to reduce the dimensionality from $\RR^{100 000}$ to $\RR^{40}$ then using machine learning to reduce to $\RR$.
-Although machine learning is slowly becoming part of these steps \needcite.
-All the domain knowledge is concentrated in the simulator and the hand crafted data processing.
-
-
-\begin{figure}[htb]
-    \centering
-    \includegraphics[width=0.3\linewidth]{workflow}
-    \caption{The workflow of maximum likelihood inference using an optimizer}
-    \label{fig:workflow}
-\end{figure}
-
-
-
-
-
-
-
-
 
 
 
@@ -470,9 +440,9 @@ Nuisance parameters can appear from :
 For example : Bob wants to estimate the efficiency of its hotplate by measuring the time required to heat 1L of water in a saucepan to boiling temperature.
 Each time Bob need boiling water to cook he will run this little experiment.
 Bob measured the temperature of the water and the air and the air pressure and know the electric power of his hotplate.
-Unfortunatelly Bob is using tap water and cannot measure the amount of impurities in the water (for whatever reason) which have a influence on the boiling temperature.
+Unfortunatelly Bob is using tap water and cannot measure the amount of impurities in the water which have a influence on the boiling temperature.
 The impurities concentration in the water is now a nuisance parameter of the problem (fundamental uncertainty).
-Moreover the thermometer is a cheap one and may be biased introducing another nuisance parameter (apparatus imperfection).
+Moreover the thermometer is a cheap one and may be biased toward lower or upper temperature introducing another nuisance parameter (apparatus imperfection).
 Finally to simplify the computation Bob assumed that the heat produced by the hotplate would be mostly transmitted to the water although this approximation is too strong Bob will take it into account as an additionnal nuisance parameter (theory flaws).
 
 
@@ -490,17 +460,13 @@ Finally to simplify the computation Bob assumed that the heat produced by the ho
 \label{sub:classifier_optimality}
 
 
-Nuisance parameters will be noted $\alpha$.
-
-\topic{Systematic effect breaks the optimality of the classifier}
-\content{It does not "breaks" it but increase the variance/uncertainty}
-
-\content{Why the proof does not work anymore}
+The introduction of nuisance parameters, noted $\alpha$, in \autoref{eq:Fisher-Neyman} makes it impossible to use the Fisher-Neyman theorem.
 
 \begin{equation}
 	p(D|\mu, \alpha) = \underbrace{\left[ \prod_{i=1}^N p(x|B, \alpha) \right ]}_{h_\alpha(x)} \times 
        \underbrace{\left [\prod_{i=1}^N (1-\mu) + \mu \frac{p(x|S, \alpha)}{p(x|B, \alpha)} \right ]}_{g_\mu(T_\alpha(x))}
 \end{equation}
+Now $h_\alpha(x)$ does not depends only in $x$.
 
 
 \content{Poisson likelihood is not broken but weakened}
@@ -510,13 +476,11 @@ Nuisance parameters will be noted $\alpha$.
 \subsection{Variance estimations} % (fold)
 \label{sub:variance_estimations}
 
-\topic{We can measure the effect of systematics on the final variance (inference is still possible)}
-
-\content{On a caché ça sous le tapis jusqu'à maintenant mais c'est le coeur du sujet !}
-\content{Introduce systematic vs statistical uncertainty as the 2 component of the variance}
-\content{Glen's formulas ?}
-
-\content{Marginalization could do the job but is computationally expensive}
+For now the concerns were mostly the inference of the parameter.
+But this is only half the answer.
+The other half is the confidence interval.
+The confidence interval can be divided into 2 parts.
+The one comming mostly from the lack of data is called \emph{statistical variance} and the other takes origin from the sensitivity of the inference to nuisance parameter and is named \emph{systematic variance}.
 
 Reminder of the variance definition :
 
@@ -530,25 +494,15 @@ Law of total variance \needcite :
 \end{eqnarray}
 
 
-Substituing with our problem  $Y = \mu|x$ and $X = \alpha$ :
+Substituing with our problem the estimator $Y = \mu|x$ and the nuisance parameter $X = \alpha$ :
 
 $$
 \mathbb{V}[\mu|x] = \underbrace{\mathbb{E}_{\alpha \sim p(\alpha|x)} \left (\mathbb{V}[\mu|x, \alpha] \right )}_{V_{stat}} + \underbrace{\mathbb{E}_{\alpha \sim p(\alpha|x)} \left ( (\mathbb{E} [\mu|x, \alpha]  - \mathbb{E}[\mu|x])^2\right )}_{V_{syst}}
 $$
 
-The variance of our estimator
+The variance of our estimator is splitted into :
+the average of the variances of our estimator and the deviation from the average estimator induced by the nuisance parameter.
 
-On dirait presque que : 
-$$\EE_{\alpha \sim p(\alpha|x)} \left ((\EE [\mu|x, \alpha]  - \EE[\mu|x])^2\right )$$
-représente l'erreur systématique. 
-Car c'est l'écart de notre estimation de $\mu$ sachant $x$ et $\alpha$ par rapport à la moyenne.
-Surtout, si $\alpha|x$ est parfaitement connu (ie c'est un dirac) alors ce terme s'annule !
-
-Mais je ne suis pas sûr que l'on puisse dire que
-$$\EE_{\alpha \sim p(\alpha|x)} \left (\VV[\mu|x, \alpha] \right )$$
-représente l'erreur statistique.
-
-Mais si ça marche on aurrait une définition claire et précise de ce qu'est l'erreur statistique et l'erreur systématique.
 
 
 
@@ -570,6 +524,31 @@ references :
 	\item \url{https://arxiv.org/abs/1007.1727}
 	\item \url{https://arxiv.org/abs/physics/0408039} coverage study of marginalization of nuisance params
 \end{itemize}
+
+
+
+
+\section{Summary} % (fold)
+\label{sec:summary}
+
+
+\subsection{Workflow} % (fold)
+\label{sub:workflow}
+
+\victor{En fait qu'est-ce que je veux dire ici ?}
+
+In practice the data go through many processes like trigger selection, tracking, event reconstructions, etc computing hand crafted features to reduce the dimensionality from $\RR^{100 000}$ to $\RR^{40}$ then using machine learning to reduce to $\RR$.
+Although machine learning is slowly becoming part of these steps \needcite.
+All the domain knowledge is concentrated in the simulator and the hand crafted data processing.
+
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.3\linewidth]{workflow}
+    \caption{The workflow of maximum likelihood inference using an optimizer}
+    \label{fig:workflow}
+\end{figure}
+
 
 
 

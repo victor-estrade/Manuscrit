@@ -17,13 +17,18 @@
 \content{We can get rid of the domain knowledge requierment and simply let a big neural network do all the work for us.}
 \content{This method is inspired from mixture density networks, inferno and neural statistician.}
 
+
+
+
 \section{Motivation} % (fold)
 \label{sec:motivation}
 
-
 \topic{Although the generator is available classical Bayesian inference is difficult because of the intractable likelihood.}
-\content{Blabla de rappel pour ceux qui ont esquivé les autres chapitres}
-\victor{Est-ce qu'il y a besoin d'une section pour ça ?}
+
+
+\subsection{Likelihood free} % (fold)
+\label{sub:likelihood_free}
+
 
 A generative model $G(\theta)$ is available to simulate the studied process and retrieve the observations $x$ from given parameters $\theta$.
 The objective is to reverse the generator $G^{-1}(x)$ to access the quantities of interest ruling the process.
@@ -40,18 +45,41 @@ Unfortunately the likelihood $p(x | \theta)$ is often intractable because of hig
 Instead of replacing the likelihood or trying to regress it we propose to directly approximate the posterior $p(\theta | x)$ with a sufficiently powerfull and tractable distribution $q_\phi(\theta | x)$.
 
 
-\content{Simpler workflow}
-\content{Likelihood free}
 
-\section{Density networks} % (fold)
-\label{sec:density_networks}
+\subsection{Simple workflow} % (fold)
+\label{sub:simple_workflow}
 
+
+
+
+
+
+
+
+
+\section{Regression} % (fold)
+\label{sec:regression}
+
+% section regression (end)
 
 \topic{Mixture density networks are a tractable but powerful tool to approximate a conditional probability density.}
+
+
+
+
+
+
 
 \subsection{Core idea} % (fold)
 \label{sub:core_idea}
 
+
+
+
+\subsection{Density networks} % (fold)
+\label{sub:density_networks}
+
+% subsection density_networks (end)
 \topic{Approximate the posterior with a very powerfull and flexible model}
 
 A way of approximating the posterior $p(\theta | x)$ is to define a tractable but flexible enough family of distribution $q_\phi(\theta | x)$ parametrized by $\phi$.
@@ -97,6 +125,10 @@ Finally the likelihood, with Gaussian kernels, is fully differentiable making po
 \victor{Why density network are not very popular ?}
 
 
+
+
+
+
 \subsection{Training principle} % (fold)
 \label{sub:training_principle}
 
@@ -134,6 +166,10 @@ Since the likelihood is fully differentiable in $\phi$, the optimization can be 
 
 
 
+
+
+
+
 \subsection{Training details} % (fold)
 \label{sub:training_details}
 
@@ -146,10 +182,30 @@ Since the likelihood is fully differentiable in $\phi$, the optimization can be 
 
 
 
+\subsection{Architecture details} % (fold)
+\label{sub:architecture_details}
+
+
+\content{Softmax for mixture coefficient.}
+\victor{Pas utilisé car pas besoin de mélange de distrib. À supprimer ?}
+
+The requirement that the mixture coefficients $m_i$ sum up to 1 is enforced using softmax operator on the $K$ output neurons representing the $m_i$.
+Similarly the standard deviation of Gaussians should always be strictly positive which is fulfilled by interpreting the neuron output as $\log(\sigma_i)$.
+No particular operation are necessary on the mean $y_i$ of the Gaussians since it can take whatever real value.
+
+
+
+
+
+
+
+
+
 \subsection{Extract parameters} % (fold)
 \label{sub:extract_parameters}
 
 \topic{We have access to the full posterior (formulas included). So parameter estimation is now easy}
+
 
 
 
@@ -176,6 +232,7 @@ From the experimental data $x^\star$ the mean and variance can be easily extract
 
 
 
+
 \subsubsection{Extract modes} % (fold)
 \label{ssub:extract_modes}
 
@@ -185,31 +242,14 @@ From the experimental data $x^\star$ the mean and variance can be easily extract
 
 
 
-\section{Special architecture} % (fold)
-\label{sec:special_architecture}
 
-
-\topic{Neural network using reduction function, such as the average, can extract complex link between the parameters of a generative distribution and a dataset which is a realisation of this distribution.}
-
-\content{Details about the neural network architecture for MDN with importance weighted dataset as input}
-
-
-
-\subsection{Mixture models} % (fold)
-\label{sub:mixture_models}
-
-\content{Softmax for mixture coefficient.}
-\victor{Pas utilisé car pas besoin de mélange de distrib. À supprimer ?}
-
-The requirement that the mixture coefficients $m_i$ sum up to 1 is enforced using softmax operator on the $K$ output neurons representing the $m_i$.
-Similarly the standard deviation of Gaussians should always be strictly positive which is fulfilled by interpreting the neuron output as $\log(\sigma_i)$.
-No particular operation are necessary on the mean $y_i$ of the Gaussians since it can take whatever real value.
 
 
 
 \subsection{Datasetwise input} % (fold)
 \label{sub:datasetwise_input}
 
+\topic{Neural network using reduction function, such as the average, can extract complex link between the parameters of a generative distribution and a dataset which is a realisation of this distribution.}
 \topic{Independent measurement requires permutation invariant functions}
 
 In order to accurately capture the complex mapping between the data and the parameters the architecture of the neural network should embody the constraints of the chosen family distribution.
@@ -236,8 +276,14 @@ La \autoref{fig:average_layer} récapitule l'architecture d'une couche d'un tel 
 \victor{Ecrire + en détails les formules}
 
 
-\subsection{Weighted instances} % (fold)
-\label{sub:weighted_instances}
+
+
+
+
+
+
+\subsection{Sample weights} % (fold)
+\label{sub:sample_weights}
 
 \topic{Weighted instances requires weighted reduction functions}
 
@@ -270,21 +316,23 @@ and $\delta$ is the Dirac distribution function.
 \end{figure}
 
 
-\section{Nuisance parameters} % (fold)
-\label{sec:nuisance_parameters}
+\subsection{Handle nuisance parameter} % (fold)
+\label{sub:handle_nuisance_parameter}
 
 
-
-\subsection{Ignore them} % (fold)
-\label{sub:ignore_them}
+subsubsection
+\subsubsection{Ignore them} % (fold)
+\label{subsub:ignore_them}
 
 \topic{The model can simply learn the marginal posteriors "like a boss"}
 
 
 
 
-\subsection{Marginalization} % (fold)
-\label{sub:marginalization}
+
+
+\subsubsection{Marginalization} % (fold)
+\label{subsub:marginalization}
 
 \topic{Nuisance parameters are marginalized using Monte Carlo integral approximation.}
 
@@ -320,6 +368,8 @@ The neural network $f$ produces the mixture parameters $m_i, y_i, \sigma_i$ from
 $\hat\sigma$  $\gets$ $\hat\sigma - \hat\mu^2$ \;
 \caption{Marginalizing the nuisance parameters $\alpha$ using MC to compute the integral.}
 \end{algorithm}
+
+
 
 
 
@@ -362,4 +412,10 @@ Such architecture is shown in \cite{Edwards17neuralstatistician}, in the context
 
 \victor{Related to Amortized VI ?}
 \victor{Related to simple Gaussian fit ?}
+
+
+\subsection{Limitations} % (fold)
+\label{sub:limitations2}
+
+
 

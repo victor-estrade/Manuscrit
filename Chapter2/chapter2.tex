@@ -3,7 +3,7 @@
 %********************************** Second Chapter *****************************
 %*******************************************************************************
 
-\chapter{Systematic effect resilience techniques}  %Title of the First Chapter
+\chapter{Systematic aware learning}  %Title of the First Chapter
 \label{chap:sota}
 
 \ifpdf
@@ -11,6 +11,9 @@
 \else
     \graphicspath{{Chapter2/Figs/Vector/}{Chapter2/Figs/}}
 \fi
+
+
+
 
 
 \section{Domain adaptation} % (fold)
@@ -25,10 +28,21 @@
 \topic{This is a very peculiar case of domain adaptation}
 \content{We have a continuous domain shift. Not a discreat number of domains. + we are supervised}
 
+
+
+
+
+
 \subsection{Data augmentation} % (fold)
 \label{sub:data_augmentation}
 
 \topic{The easiest (and naive) way of being good across domain}
+
+
+
+
+
+
 
 \subsection{Regularization} % (fold)
 \label{sub:regularization}
@@ -37,11 +51,20 @@
 \content{Tangent Prop}
 
 
+
+
+
+
+
 \subsection{Adversarial training} % (fold)
 \label{sub:adversarial_training}
 
 \content{DANN and Pivot}
 \content{Make clear that Pivot is better founded (theory) than DANN, the bottleneck at the end is a good idea (says Maths)}
+
+
+
+
 
 
 \subsection{Cross-entropy} % (fold)
@@ -52,6 +75,13 @@ Recall that the optimality of the Bayesian classifier is no more.
 Let's not stay stuck with classification then.
 
 
+
+
+
+
+
+
+
 \section{Soft histograms} % (fold)
 \label{sec:soft_histograms}
 
@@ -60,10 +90,20 @@ Let's not stay stuck with classification then.
 \content{INFERNO and other soft histograms + Inferted Fisher info matrix as objective function}
 
 
+
+
+
 \subsection{Differentiable histograms} % (fold)
 \label{sub:differentiable_histograms}
 
 \topic{Using softmax or approximating gradients makes the histograms differentiable}
+
+
+
+
+
+
+
 
 \subsection{Differentiable simulator} % (fold)
 \label{sub:differentiable_simulator}
@@ -72,10 +112,22 @@ Let's not stay stuck with classification then.
 
 \content{Fast simulation through recomputing only the skewed features according to nuisance parameter}
 
+
+
+
+
+
+
 \subsection{Limitations} % (fold)
 \label{sub:limitations}
 
 \topic{if you can make siluation differentiable enough and invert the fisher info matrix)}
+
+
+
+
+
+
 
 
 \section{Other methods} % (fold)
@@ -83,6 +135,9 @@ Let's not stay stuck with classification then.
 
 \topic{Variational inference requires likelihood and ABC does not scale.}
 \content{What we are not going to devellop. But justifying why !}
+
+
+
 
 \subsection{ABC methods} % (fold)
 \label{sub:abc_methods}
@@ -94,6 +149,10 @@ Let's not stay stuck with classification then.
 One solution to do inference with an intractable likelihood is the Approximate Bayesian Computation (ABC).
 The most traditional ABC algorithm is the rejection algorithm which is computationally expensive.
 Although significant improvement can be achieved with advanced Monte Carlo methods this is still known to take a long time to converge \needcite.
+
+
+
+
 
 
 \subsection{Variational inference} % (fold)
@@ -108,6 +167,11 @@ In high Energy Physics (HEP), which motivated this work, the use of machine lear
 \victor{"Extact" inference me semble maladroit}
 
 
+
+
+
+
+
 \subsection{Bayesian networks} % (fold)
 \label{sub:bayesian_networks}
 
@@ -116,10 +180,18 @@ In high Energy Physics (HEP), which motivated this work, the use of machine lear
 \victor{Other physicists have tried and got prelimnary results. Need to see if they made progress !}
 
 
+
+
+
+
 \subsection{Disentangling} % (fold)
 \label{sub:disentangling}
 
 \content{Why not using disentangling ?}
+
+
+
+
 
 
 \subsection{Mining gold from simulator} % (fold)
