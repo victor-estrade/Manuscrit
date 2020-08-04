@@ -20,49 +20,37 @@
 
 
 
+
+
 \section{Motivation} % (fold)
 \label{sec:motivation}
 
 \topic{Although the generator is available classical Bayesian inference is difficult because of the intractable likelihood.}
 
 
+
+
+
 \subsection{Likelihood free} % (fold)
 \label{sub:likelihood_free}
 
 
-A generative model $G(\theta)$ is available to simulate the studied process and retrieve the observations $x$ from given parameters $\theta$.
+A generative model $G(\mu)$ is available to simulate the studied process and retrieve the observations $x$ from given parameters $\mu$.
 The objective is to reverse the generator $G^{-1}(x)$ to access the quantities of interest ruling the process.
 
 Since the process is stochastic the generator can produce different observations from the same parameters.
-The probability of observing $x$ if the generator is fed with $\theta$ is $p(x | \theta)$.
-Therefore reversing the generator means finding $p(\theta | x)$.
+The probability of observing $x$ if the generator is fed with $\mu$ is $p(x | \mu)$.
+Therefore reversing the generator means finding $p(\mu | x)$.
 From Bayes theorem we get :
 
 \begin{equation}
-    p(\theta | x) = \frac{p(x | \theta) p(\theta) }{p(x)}
+    p(\mu | x) = \frac{p(x | \mu) p(\mu) }{p(x)}
 \end{equation}
-Unfortunately the likelihood $p(x | \theta)$ is often intractable because of high dimensional integrals.
-Instead of replacing the likelihood or trying to regress it we propose to directly approximate the posterior $p(\theta | x)$ with a sufficiently powerfull and tractable distribution $q_\phi(\theta | x)$.
+Unfortunately the likelihood $p(x | \mu)$ is often intractable because of high dimensional integrals.
+Instead of replacing the likelihood or trying to regress it we propose to directly approximate the posterior $p(\mu | x)$ with a sufficiently powerfull and tractable distribution $q_\phi(\mu | x)$.
 
-
-
-\subsection{Simple workflow} % (fold)
-\label{sub:simple_workflow}
-
-
-
-
-
-
-
-
-
-\section{Regression} % (fold)
-\label{sec:regression}
-
-% section regression (end)
-
-\topic{Mixture density networks are a tractable but powerful tool to approximate a conditional probability density.}
+\autoref{chap:intro_stat} showed a workaround for the study of a mixture coefficient of a poisson counting process.
+This chapter presents an inference method which does not require more domain knowledge than the simulator itself and may be applied on any parameter of interest, not only a mixture coefficient.
 
 
 
@@ -73,6 +61,80 @@ Instead of replacing the likelihood or trying to regress it we propose to direct
 \subsection{Core idea} % (fold)
 \label{sub:core_idea}
 
+\content{Poser le problème comme un problème d'apprentissage}
+
+The parameter of interest impact is not on the observables $x$ but on the distribution of the observables $p(x|\mu)$.
+This is invisible at the sample scale.
+With only one sample $x$ it is not possible to get knowledge on the parameter $\mu$.
+Measuring properties of the distibution is only moving the problem from a sample scale to a dataset scale.
+
+The learning problem is to get from an empirical distribution $D = \{x_i\}_{i=0}^N \in \RR^{d\times N}$ to a real number $\mu \in \RR$.
+This is a regression problem.
+The training algorithm and architecture details is left in \autoref{sec:regression}.
+A training or testing dataset is then a set of pairs $\{(D_i, \mu_i)\}_{i=0}^M$.
+
+To avoid confusion between the dataset $D_i$, which is now a data point, and the dataset $Train = \{(D_i, \mu_i)\}_{i=0}^M$ we will call $D_i$ a sampleset and $Train$ a dataset
+
+The training and testing sets can be obtained by sampling the parameter from a prior distribution then using the simulator to transform this parameter to its corresponding dataset.
+
+The last detail to take care of is the size of the sampleset.
+The ideal size is the expected size of the experimental data or a range of possible data size.
+But it may be too large to train a neural network with available computation power in a reasonable time.
+The size of the sampleset is then a tradeoff between the size of the experimental dataset and available computation power.
+
+\begin{algorithm}[H]
+ M $\gets$ dataset size \;
+ Dataset $\gets []$ \;
+ \For{$i \in [0, M]$}{
+ $N \gets$ sample size \;
+  $\mu_i$    $\gets$ sample from $p(\mu)$ \;
+  $D_i \gets []$ \;
+
+ \For{$j \in [0, N]$}{
+  $x_j$  $\gets$ sample from $G(\mu_i)$ \;
+  $D_i$.append( $x_i$ ) \;
+  }
+ Dataset.append ( $(D_i, \mu_i)$ ) \;
+ }
+ \caption{Generating dataset}
+\end{algorithm}
+
+
+
+
+
+
+
+
+\subsection{Simple workflow} % (fold)
+\label{sub:simple_workflow}
+
+The workflow presented in \autoref{chap:intro_stat} relies on several steps : simulator, classifier, likelihood and optimizer.
+The final inference suffers from the accumulation of sub-optimality of these steps.
+Which is why each steps recieves special care.
+This can be quite expensive and sometimes reaching a near optimal process is not possible.
+
+The proposed workflow is simpler and relies only on a simulator and the training of a regressor.
+Mathematical modeling will always be more accurate than an approximative model obtained with machine learning.
+Making mathematical modeling the first method to try anyway.
+When mathematical modeling is flawed with too expensive computation power or irrealistic approximations then machine learning may be a better approach.
+
+This new workflow moves the computation power of the optimization process from inference (maximum likelihood optimization) to training (back-propagation) leading to faster inference once put in production.
+
+Analysis of the final data obtained at the LHC can leverage long computation on a cluster.
+But the speed of inference is critical for the high level trigger of the LHC where decisions must be made.
+Other domains as high frequency trading, web advertising recommandation, real time applications also requires fast inference.
+
+
+
+
+\section{Regression} % (fold)
+\label{sec:regression}
+
+
+
+
+\topic{Mixture density networks are a tractable but powerful tool to approximate a conditional probability density.}
 
 
 
@@ -82,19 +144,20 @@ Instead of replacing the likelihood or trying to regress it we propose to direct
 % subsection density_networks (end)
 \topic{Approximate the posterior with a very powerfull and flexible model}
 
-A way of approximating the posterior $p(\theta | x)$ is to define a tractable but flexible enough family of distribution $q_\phi(\theta | x)$ parametrized by $\phi$.
+A way of approximating the posterior $p(\mu | x)$ is to define a tractable but flexible enough family of distribution $q_\phi(\mu | x)$ parametrized by $\phi$.
 
-Initially introduced in \cite{Bishop94mixturedensity} as a generalization of least square methods to train neural network, mixture density networks (MDN) can be made as powerful as one require while staying tractable and allowing to estimate the uncertainties of the predictions.
+Initially introduced in \cite{Bishop94mixturedensity} as a generalization of least square methods to train neural network, mixture density networks (MDN) can be made as powerful as required while staying tractable.
+Used as a regressor MDN allows to estimate both the expected value and its uncertainty as detailed is \autoref{sub:extract_parameters}.
 
 The target density is approximated by a linear combination of kernels $k$ :
 
 \begin{equation}
-    q_\phi(\theta | x) = \sum_{i=0}^K m_i(x ; \phi) k_i(\theta | x ; \phi)
+    q_\phi(\mu | x) = \sum_{i=0}^K m_i(x ; \phi) k_i(\mu | x ; \phi)
 \end{equation}
 where $m_i(x ; \phi)$ are the mixture coefficient
-and the kernels $k_i(\theta | x ; \phi)$ usually taken as Gaussian :
+and the kernels $k_i(\mu | x ; \phi)$ usually chosen as Gaussian :
 \begin{equation}
-    k_i(\theta | x ; \phi) = \frac{1}{\sigma_i(x ; \phi) \sqrt{2 \pi}} e^{- \frac{1}{2} \left ( \frac{\theta-y_i(x ; \phi)}{\sigma_i(x ; \phi)} \right )^2} 
+    k_i(\mu | x ; \phi) = \frac{1}{\sigma_i(x ; \phi) \sqrt{2 \pi}} e^{- \frac{1}{2} \left ( \frac{\mu-y_i(x ; \phi)}{\sigma_i(x ; \phi)} \right )^2} 
 \end{equation}
 
 $m_i(x ; \phi)$, $\sigma_i(x ; \phi)$ and $y_i(x ; \phi)$ are the outputs of a neural network, whose parameters are gathered in $\phi$, and taking the data as input.
@@ -106,23 +169,9 @@ Finally, the mixture coefficient have to sum up to 1.
 The motivation for this approximation is twofold.
 First, given enough well chosen parameters a Gaussian mixture model can approximate any density.
 Second, a neural network with enough hidden unit is able to approximate any continuous function with arbitrarily precision.
-Combining these two properties leads to an arbitrarily powerful approximation of any conditional density $p(\theta|x)$ given enough resources.
+Combining these two properties leads to an arbitrarily powerful approximation of any conditional density $p(\mu|x)$ given enough resources.
 
-The neural network parameters $\phi$ can then be obtained by maximizing the likelihood that the model produced the given data.
 
-\begin{equation}
-    \phi^\star = \argmax_\phi \mathcal L (\phi)
-\end{equation}
-\begin{equation}
-    \mathcal L (\phi) = \sum_{i=0}^K m_i(x ; \phi) k_i(\theta | x ; \phi)
-\end{equation}
-
-Similarly to training a regular neural network regressor with least square, MDN's training is supervised.
-Therefore requires data for which the ground truth is available which is verified in our case.
-
-Finally the likelihood, with Gaussian kernels, is fully differentiable making possible the use of stochastic gradient descent methods to obtain the neural network parameters $\phi$.
-
-\victor{Why density network are not very popular ?}
 
 
 
@@ -133,11 +182,16 @@ Finally the likelihood, with Gaussian kernels, is fully differentiable making po
 \label{sub:training_principle}
 
 \topic{MDN are trained like classical regressor and allow to compute the uncertainty of the predictions.}
+The neural network parameters $\phi$ can then be obtained by maximizing the likelihood that the model produced the given data.
 
-The neural network parameters $\phi$ are obtained by maximizing the likelihood :
 \begin{equation}
     \phi^\star = \argmax_\phi \mathcal L (\phi)
 \end{equation}
+\begin{equation}
+    \mathcal L (\phi) = \sum_{i=0}^K m_i(x ; \phi) k_i(\mu | x ; \phi)
+\end{equation}
+
+
 For convenience the optimization is usually turned into a minimization of the negative log likelihood (NLL) :
 \begin{equation}
     \phi^\star = \argmin_\phi - \log \mathcal L (\phi)
@@ -145,17 +199,19 @@ For convenience the optimization is usually turned into a minimization of the ne
 
 In the simple case of one Gaussian component ($K=1$) the NLL is :
 \begin{equation}
-    \phi^\star = \argmin_\phi \left\{ \log(\sigma(x;\phi)) + \frac{1}{2}\log(2\pi) + \frac{(\theta^\star - y(x;\phi))^2}{2\sigma(x;\phi)^2} \right\}
+    \phi^\star = \argmin_\phi \left\{ \log(\sigma(x;\phi)) + \frac{1}{2}\log(2\pi) + \frac{(\mu^\star - y(x;\phi))^2}{2\sigma(x;\phi)^2} \right\}
 \end{equation}
 
-The learning procedure is supervised since we need both observed data $x$ and the associated value for  $\theta^\star$.
+Similarly to training a regular neural network regressor with least square, MDN's training is supervised.
+Therefore requires data for which the ground truth is available which is verified in our case since we need both observed data $x$ and the associated value for  $\mu^\star$.
 
-Since the likelihood is fully differentiable in $\phi$, the optimization can be solved using stochastic gradient descent methods.
+Finally the likelihood, with Gaussian kernels, is fully differentiable making possible the use of stochastic gradient descent methods to obtain the neural network parameters $\phi$.
+
 
 \begin{algorithm}[H]
  \For{$i \in [0, N]$}{
-  $\theta_i$    $\gets$ sample from $p(\theta)$ \;
-  $x_i$      $\gets$ $G(\theta_i)$ \;
+  $\mu_i$    $\gets$ sample from $p(\mu)$ \;
+  $x_i$      $\gets$ $G(\mu_i)$ \;
   $m_i, y_i, \sigma_i$ $\gets$ $f(x_i; \phi_i)$ \;
   $loss_i$   $\gets$ $-\log \mathcal L(\phi_i; m_i, y_i, \sigma_i)$ \;
   $grads_i$  $\gets$ backward($loss_i$) \;
@@ -170,31 +226,54 @@ Since the likelihood is fully differentiable in $\phi$, the optimization can be 
 
 
 
-\subsection{Training details} % (fold)
-\label{sub:training_details}
-
-\topic{These network requires special care when trained.}
-\content{Basically explain why this method is not so popular. This loss is more difficult to train that a mean squared error.}
-\content{Tips and tricks to train these networks}
-\content{Reduce Adam inertia to avoid bouncing loss (Gradients of mean and variance don't converge at the same rate !
-)}
-\content{Maybe worse with mixture ? I did not try any....}
-
-
-
 \subsection{Architecture details} % (fold)
 \label{sub:architecture_details}
-
-
-\content{Softmax for mixture coefficient.}
-\victor{Pas utilisé car pas besoin de mélange de distrib. À supprimer ?}
 
 The requirement that the mixture coefficients $m_i$ sum up to 1 is enforced using softmax operator on the $K$ output neurons representing the $m_i$.
 Similarly the standard deviation of Gaussians should always be strictly positive which is fulfilled by interpreting the neuron output as $\log(\sigma_i)$.
 No particular operation are necessary on the mean $y_i$ of the Gaussians since it can take whatever real value.
 
 
+\victor{TODO : Un dessin ?}
 
+
+
+
+
+\subsection{Training details} % (fold)
+\label{sub:training_details}
+
+One particularity of the MDN with gaussian kernels is the difference between the convergence speed of the mean and the variance 
+
+\begin{equation}
+    loss = \textcolor{myred}{\log(\sigma(x;\phi))} + \frac{\textcolor{myblue}{(\mu^\star - y(x;\phi))^2}}{2\textcolor{mypurple}{\sigma(x;\phi)}^2}
+\end{equation}
+
+At the begining of training the predicted mean $y$ is far from the truth $\mu^\star$.
+The \textcolor{mypurple}{purple} term tries to compensate for the \textcolor{myblue}{blue} term leading to a fast increase of $\sigma$ to while the regressor moves to better predictions.
+The constrain of the \textcolor{myred}{red} term is negligeable because of its log scale.
+
+Once better predictions occur more often the constrain on $\sigma$ ($\textcolor{myred}{\log(\sigma(x;\phi))}$) slowly (still log scale) narrow the output probability density near the correct value of $\mu^\star$.
+
+This leads to bouncing loss when Adam optimizer \needcite is used with default parameter because the inertia of the gradient descent is too high.
+The gradient descent of the neural network parameter is bouncing back and forth around some local minimum without reaching convergence.
+
+To fix this issue $\beta_1$ and $\beta_2$ must be set to lower values to reduce inertia.
+Typically $\beta_1=0.5$ and $\beta_2=0.9$.
+
+\victor{TODO : ajouter un graphique de la loss qui rebondi. et un avec la loss qui rebondi pas}
+
+Even if the inertia of the optimizer is fixed outliers can lead to unstable training.
+Many steps without outliers will make the network overconfident ie narrow down the estimated variance of prediction.
+Once an outlier appear in some mini-batch the average loss will go up and $\sigma$ may jump to higher values.
+Again many steps without outliers reduces $\sigma$ until a new outlier appear, and so on.
+If the criterion to stop training leads does not take into account this effect the performances of the MDN is stained with randomness.
+
+Fixing this issue requires to make sure that the mini-batches are representative of the true distribution of the data.
+Simply increasing the mini-batch size is often enough.
+
+The 2 issues presented here may occure even for the simple case of one Gaussian kernel.
+This may explain why MDN are not so popular in the deep learning community.
 
 
 
@@ -207,37 +286,43 @@ No particular operation are necessary on the mean $y_i$ of the Gaussians since i
 \topic{We have access to the full posterior (formulas included). So parameter estimation is now easy}
 
 
+As long as a flexible and powerful enough parametric differentiable function is mapping the data $x$ to the parameter $\mu$ it is possible to approximate the conditional density.
+Once trained the inference is straightforward since closed formulas are available.
 
 
 \subsubsection{Extract moments} % (fold)
 \label{ssub:extract_moments}
 
-As long as a flexible and powerful enough parametric differentiable function is mapping the data $x$ to the parameter $\theta$ it is possible to approximate the conditional density.
-Once trained the inference is straightforward.
-From the experimental data $x^\star$ the mean and variance can be easily extracted:
+From the experimental data $x^\star$ the mean and variance can be easily extracted using usual formulas for mixture models \needcite :
 
 \begin{align}
-    \bar \theta & = \mathbb E_{p(\theta | x^\star)}[\theta] \\
-    & \approx \mathbb E_{q_\phi(\theta | x^\star)}[\theta] \\
-    & = \sum_{i=0}^K m_i(x^\star ; \phi) \int d\theta ~ \theta ~ k_i(\theta | x^\star ; \phi) \\
-    & = \sum_{i=0}^K m_i(x^\star ; \phi) y_i(x^\star ; \phi)
+    \bar \mu & = \mathbb E_{p(\mu | x^\star)}[\mu] \\
+    & \approx \mathbb E_{q_\phi(\mu | x^\star)}[\mu] \\
+    & = \sum_{i=0}^K m_i(x^\star ; \phi) \int d\mu ~ \mu ~ k_i(\mu | x^\star ; \phi) \\
+    \label{eq:extract_mean}& = \sum_{i=0}^K m_i(x^\star ; \phi) y_i(x^\star ; \phi)
 \end{align}
 
 \begin{align}
-    \Delta\theta^2 & = \mathbb V_{p(\theta | x^\star)}[\theta] \\
-    & \approx \mathbb V_{q_\phi(\theta | x^\star)}[\theta] \\
-    & = \sum_{i=0}^K m_i(x^\star ; \phi) \int d\theta ~ \theta^2 ~ k_i(\theta | x^\star ; \phi) - \bar \theta^2 \\
-    & = \sum_{i=0}^K m_i(x^\star ; \phi) \left [ \sigma_i(x^\star ; \phi)^2 + y_i(x^\star ; \phi)^2 - \bar \theta^2 \right ]
+    \Delta\mu^2 & = \mathbb V_{p(\mu | x^\star)}[\mu] \\
+    & \approx \mathbb V_{q_\phi(\mu | x^\star)}[\mu] \\
+    & = \sum_{i=0}^K m_i(x^\star ; \phi) \int d\mu ~ \mu^2 ~ k_i(\mu | x^\star ; \phi) - \bar \mu^2 \\
+    \label{eq:extract_sigma} & = \sum_{i=0}^K m_i(x^\star ; \phi) \left [ \sigma_i(x^\star ; \phi)^2 + y_i(x^\star ; \phi)^2 - \bar \mu^2 \right ]
 \end{align}
 
+The last step (\autoref{eq:extract_mean} and \autoref{eq:extract_sigma}) assumes that the kernels are all gaussian.
 
-
+Of course if the target distribution is a simple gaussian the mean and standard deviation are directly computed by the neural network.
 
 \subsubsection{Extract modes} % (fold)
 \label{ssub:extract_modes}
 
-\content{If multimodal model then it is more complicated. But still possible to simply sample many instances from this mixture and do a fine histogram... We are back to a problem where we have the exact formulas ! So we can compute likelihood etc.}
+As seen in \autoref{sub:classic_parameter_estimation} the mode of posterior distribution may be prefered to the full distribution itself.
+There is no formulas to extract modes from a mixture of distribution even if all the sub-distribution are gaussian.
+However all the parameters of our mixture distibution are known making fast otimization to search for maxima possible but also sampling from this distribution to estimate its properties.
 
+A simple example : the search of a global maximum can be approximated by the highest value of a histogram built on a very large sample from the mixture distribution.
+Sampling from a mixture of a dozen gaussians is way cheaper than running a signle full simulation of the process.
+Moreover this naive approximation can be used to narrow down the search using optimization.
 
 
 
@@ -262,10 +347,7 @@ In practice the average is the favorite one \needcite.
 
 Section 7 of \cite{lucas:hal-01791126} gives a proof that the given \emph{"permutation invariant neural networks"} architecture is a universal approximator of permutation invariant functions.
 
-\content{Drawing of the architecture}
-
-La \autoref{fig:average_layer} récapitule l'architecture d'une couche d'un tel réseau de neuronne.
-
+The \autoref{fig:average_layer} summaries \textbf{one layer} of such neural network.
 \begin{figure}[htb]
     \includegraphics[width=\linewidth]{average_layer}
     \caption{Single layer of the datasetwise neural network. U and V are 2 matrices of the same shape. r(X) is the result of the reduction of the input data X. In practivce the + operator is relying on broadcasting to sum V.r(X) to each sample of X.}
@@ -304,11 +386,6 @@ with,
 \end{equation}
 and $\delta$ is the Dirac distribution function.
 
-\victor{Oui mais Quid du fait que l'incertitude dépend du nombre d'évènement ? $\sigma$ doit changer si j'ai 10 fois moins d'évènements, non ? Oui mais d'un autre coté le réseaux est conçu pour pouvoir extraire la variance des observables d'entrée donc il peut gérer ça tout seul... Aussi si on a 10 fois moins d'évènement la distribution empirique n'est pas du tout la même donc c'est pas pertinent !}
-
-\content{Drawing of the architecture with weights}
-
-
 \begin{figure}[htb]
     \includegraphics[width=\linewidth]{weighted_average_layer}
     \caption{Single layer of the weighted datasetwise neural network. The reduction function takes into account the sample weights.}
@@ -320,7 +397,6 @@ and $\delta$ is the Dirac distribution function.
 \label{sub:handle_nuisance_parameter}
 
 
-subsubsection
 \subsubsection{Ignore them} % (fold)
 \label{subsub:ignore_them}
 
@@ -418,4 +494,10 @@ Such architecture is shown in \cite{Edwards17neuralstatistician}, in the context
 \label{sub:limitations2}
 
 
+The variance is learned meaning it should be tested as well.
+The classic method can measure their variance (from math).
+Coverage test ?
+
+Training can be coslty.
+The regressor eats datasets, not samples.
 
