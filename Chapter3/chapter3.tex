@@ -73,9 +73,9 @@ This is a regression problem.
 The training algorithm and architecture details is left in \autoref{sec:regression}.
 A training or testing dataset is then a set of pairs $\{(D_i, \mu_i)\}_{i=0}^M$.
 
-To avoid confusion between the dataset $D_i$, which is now a data point, and the dataset $Train = \{(D_i, \mu_i)\}_{i=0}^M$ we will call $D_i$ a sampleset and $Train$ a dataset
+To avoid confusion between the dataset $D_i$, which is now a data point, and the dataset $Train = \{(D_i, \mu_i)\}_{i=0}^M$ we will call in this chapter $D_i$ a sampleset and $Train$ a dataset.
 
-The training and testing sets can be obtained by sampling the parameter from a prior distribution then using the simulator to transform this parameter to its corresponding dataset.
+The training and testing datasets can be obtained by sampling the parameter from a prior distribution then using the simulator to transform this parameter to its corresponding dataset.
 
 The last detail to take care of is the size of the sampleset.
 The ideal size is the expected size of the experimental data or a range of possible data size.
@@ -350,12 +350,21 @@ Section 7 of \cite{lucas:hal-01791126} gives a proof that the given \emph{"permu
 The \autoref{fig:average_layer} summaries \textbf{one layer} of such neural network.
 \begin{figure}[htb]
     \includegraphics[width=\linewidth]{average_layer}
-    \caption{Single layer of the datasetwise neural network. U and V are 2 matrices of the same shape. r(X) is the result of the reduction of the input data X. In practivce the + operator is relying on broadcasting to sum V.r(X) to each sample of X.}
+    \caption{Single layer of the datasetwise neural network. $U$ and $V$ are 2 matrices of the same shape. $r(X)$ is the result of the reduction of the input data $X$. In practice the + operator is relying on broadcasting to sum $V.r(X)$ or $b$ to each sample in $U.X$.}
     \label{fig:average_layer}
 \end{figure}
 
 
-\victor{Ecrire + en détails les formules}
+
+An input sampleset $X$ is analogus to a mini-batch in classical neural network training since it is a matrix of shape $n \times d_0$ with $n$ the number of samples and $d_0$ the number of dimension of a sample.
+
+Reminder : a fully connected single layer neural network is composed of a matrix weight $U \in \RR^{d_0\times d_1}$, a bias vector $b \in \RR^{d_1}$ and a non linearity function $F : \RR^{d_0\times d_1} \to \RR^{d_0\times d_1}$.
+The output of a fully connected layer is $ F(U.X+b) \in \RR^{N \times d_1}$.
+There is an implicit broadcasing in the sum $(U.X)+b$ since $b$ is a vector and $U.X$ is a matrix.
+
+Here the layer is augmented with another weight matrix $V  \in \RR^{d_0\times d_1}$ and a permutation invariant reduction function $r : \RR^{N \times d_0} \to \RR^{d_0}$.
+The output is $ F(U.X+b+V.r(X)) \in \RR^{N \times d_1}$.
+The sum $(U.X+b) + (V.r(X))$ involves the same broadcasting as the one between the bias $b$ and $U.X$.
 
 
 
@@ -369,12 +378,12 @@ The \autoref{fig:average_layer} summaries \textbf{one layer} of such neural netw
 
 \topic{Weighted instances requires weighted reduction functions}
 
-When the studied process includes some very rare events the simulation uses importance sampling. 
+When the studied process includes some very rare events the simulation uses importance sampling \needcite. 
 The simulation output includes importance weights to allow many rare events to be produced while keeping the distribution of events similar to reality.
 The neural network must take into account the importance weights to accurately regress the parameters.
-Which leads to use weighted average instead of simple average for example. (and makes maximum and other unweighted reduction ill-suited to this setting)
+Which leads to use weighted average instead of simple average for example and makes maximum and other unweighted reduction ill-suited to this setting.
 
-More precisely, for 2 datasets $D$ and $D^\prime$ if the associated empirical distribution are equal then the neural network output should also be equal.
+More precisely, for 2 samplesets $D$ and $D^\prime$ if the associated empirical distribution are equal then the neural network output should also be equal.
 
 \begin{equation}
     \forall x, p_D(x) = p_{D^\prime}(x) \implies f(D; \phi) = f(D^\prime; \phi)
@@ -393,14 +402,56 @@ and $\delta$ is the Dirac distribution function.
 \end{figure}
 
 
+
+
+
+
+
 \subsection{Handle nuisance parameter} % (fold)
 \label{sub:handle_nuisance_parameter}
+
+The objective is to infer the parameter $\mu$ of a model that describes a stochastic system from experimental data $D^\star$.
+However $\mu$ alone is not enough to describe the experimental data.
+More causal parameters, noted $\alpha$, are required.
+Since the parameters $\alpha$ are not the object of study they are tagged as \emph{nuisance} parameters in opposition to the parameter \emph{of interest} $\mu$.
+
+Until now nuisance parameters were ignored for simplicity.
+This section describes two ways to handle nuisance parameters when learning direct regression of the parameter of interest.
+
+
+
 
 
 \subsubsection{Ignore them} % (fold)
 \label{subsub:ignore_them}
 
 \topic{The model can simply learn the marginal posteriors "like a boss"}
+
+The first way is to simply ignore them and directly approximate the marginal posterior $p(\mu|D)$.
+The training dataset should include a representative set of samplesets for the problem.
+Meaning that instead of simply sampling a new value $\mu_i$ for each sampleset $D_i$ also sample the nuisance parameters from theirs prior distribution to feed them to the simulator $D_i = G(\mu_i, \alpha_i)$.
+
+\begin{algorithm}[H]
+ M $\gets$ dataset size \;
+ Dataset $\gets []$ \;
+ \For{$i \in [0, M]$}{
+ $N \gets$ sample size \;
+  $\mu_i$    $\gets$ sample from $p(\mu)$ \;
+  $\alpha_i$    $\gets$ sample from $p(\alpha)$  \# new \;
+  $D_i \gets []$ \;
+
+ \For{$j \in [0, N]$}{
+  $x_j$  $\gets$ sample from $G(\mu_i, \alpha_i)$  \# new \;
+  $D_i$.append( $x_i$ ) \;
+  }
+ Dataset.append ( $(D_i, \mu_i)$ ) \;
+ }
+ \caption{Generating dataset}
+\end{algorithm}
+
+
+The regressor is supposed to internaly handle the impact of the nuisance parameters.
+This puts all the pressure of systematic effect on the training which may be too much to allow accurate learning.
 
 
 
@@ -412,30 +463,25 @@ and $\delta$ is the Dirac distribution function.
 
 \topic{Nuisance parameters are marginalized using Monte Carlo integral approximation.}
 
-The objective is to infer the parameter $\mu$ of a model that describes a stochastic system from experimental data $D$.
-However $\mu$ alone is not enough to describe the experimental data.
-More causal parameters, noted $\alpha$, are required.
-Since the parameters $\alpha$ are not the object of study they are tagged as \emph{nuisance} parameters in opposition to the parameter \emph{of interest} $\mu$.
-
-The nuisance parameters have to be marginalized.
+The other way is to learn the posterior $p(\mu | D, \alpha)$ then to marginlaize the nuisance parameters.
 \begin{equation}
-    p(\mu | x) = \int d\alpha ~ p(\alpha | x) ~ p(\mu | x, \alpha)
+    p(\mu | D) = \int d\alpha ~ p(\alpha | D) ~ p(\mu | D, \alpha)
 \end{equation}
 
 This integral can be approximated with Monte Carlo.
 
 \begin{equation}
-  \int d\alpha ~ p(\alpha) ~ f(\alpha)
-  \approx \sum_i w_i ~ f(\alpha_i)
+  \int \int d\alpha ~ p(\alpha | D) ~ p(\mu | D, \alpha)
+  \approx \sum_i w_i ~ p(\mu | D, \alpha_i)
 \end{equation}
 
-Where $p(\mu | x, \alpha)$ is approximated using a trained MDN as seen previously.
-The neural network $f$ produces the mixture parameters $m_i, y_i, \sigma_i$ from the experimental data $x^\star$ and sampled $\alpha$.
+Where $p(\mu | D, \alpha)$ is approximated using a trained MDN as seen in the previous sections.
+In the case of a MDN $f$ with gaussian kernels, $f$ produces the mixture parameters $m_i, y_i, \sigma_i$ from the experimental data $D^\star$ and sampled $\alpha$.
 
 \begin{algorithm}[H]
  \For{$i \in [0, N]$}{
   $\alpha_i, w_i$ $\gets$ MC sample from $p(\alpha)$ \;
-  $m_j, y_j, \sigma_j = f(x^\star, \alpha; \phi^\star)$ \;
+  $\{m_j, y_j, \sigma_j\}_{j=0}^K = f(D^\star, \alpha; \phi^\star)$ \;
   $\bar\mu = \sum_{j=0}^K m_j y_j $ \;
   $\Delta\mu = \sum_{j=0}^K m_j \left [ \sigma_j^2 + y_j^2 - \bar \mu^2 \right ]$ \;
   $\hat\mu$  $\gets$ $\hat\mu + w_i \times \bar\mu$ \;
@@ -454,45 +500,73 @@ $\hat\sigma$  $\gets$ $\hat\sigma - \hat\mu^2$ \;
 \section{Discussing the related work} % (fold)
 \label{sec:discussing_the_related_work}
 
+\subsection{Similar architecture} % (fold)
+\label{sub:similar_architecture}
+
+Causal parameters are often related to properties of the distribution of the data in statistical simulations.
+The architecture should reflect this link in order for a neural network to capture the relevant information.
+This work is using Mixture density network \cite{Bishop94mixturedensity} combined with neural network architectures design to learn summary statistics on datasets.
+
+Neural Statistician \cite{Edwards17neuralstatistician} is also relying on a similar neural network architecture in the context of transfer learning and one shot learning, where the neural network is producing summary statistics to embed the link between similar datasets.
+The idea in Neural Statistician is that similar datasets can be gathered as originating from the same generative model including a global parameter to control the shift between domains.
+
+In this work the architecture is slightly improved to take into account importance weights.
+Moreover the objective is completely different since we consider supervised regression.
+
+
+Another paper \cite{lucas:hal-01791126} is using this architecture to do regression as an adversarial network to reduce mode dropping in generative network.
+The adversarial network is encouraged to capture the difference between the real and the fake image distribution by predicting the ratio of fake images in a mini-batch.
+This is an inference of a mixture coefficient on an empirical distribution which is exactly the objective given in this work, only missing the estimation of a confidence interval for the predicted mixture coefficient.
+
+Learning to Pivot \cite{louppe_learning_2016} uses a MDN with a mixture of gaussians as adversarial networks in one example.
+Pivot adversarial network could also profit from the dataset wise architecture.
+
+
+\victor{ TODO : And bio-informatic : ask Théo.}
 
 
 \subsection{INFERNO} % (fold)
 \label{sub:inferno}
 
 Using a neural network to directly map the dataset to the estimated parameter distribution can be viewed as an extension of the work done in INFERNO \cite{DECASTRO2019170inferno}. 
-Indeed the current state of the art is using a classifier score histogram to produce summary static while INFERNO includes the summary statistic production in the neural network.
-In this work the next step, maximum likelihood fit to retrieve the parameter of interest, is also left to the neural network.
+INFERNO leverage the domain knowledge of the likelihood at a dataset level to compute a lower bound of the total variance of the maximum likelihood estimator (see \autoref{sub:inferno}).
+Allowing the neural network to produce histogram like summary statistics while reducing the uncertainty on the parameters of interest estimation.
+
+The method presented in this chapter can be seen as an extension of INFERNO without the domain knowledge of the likelihood.
+
+In addition INFERNO is producing a function $ F : D \in \RR^{N\times d} \to v \in \RR^k $ which is exactly what the samplesetwise architecture is doing.
+Meaning that the neural network layer architecture described in \autoref{sub:datasetwise_input} can be used with INFERNO to produce arbitrary complex permutation invariant histogram-like functions.
+
+Although the regressor is trained using some chosen likelihood it is not straightforward that the inferno loss can be applied here too.
 
 
-\cite{DECASTRO2019170inferno} is the closest work of this study in which the authors optimize a neural network to produce of summary statistics that reduces the uncertainty on the parameters of interest estimation.
+\subsection{Neural network uncertainty} % (fold)
+\label{sub:neural_network_uncertainty}
+
+The choice of mixture density network to measure the uncertainty is completly arbitrary.
+Other methods to compute neural network prediction uncertainty are available and should be cited as well.
+
+
+\victor{TODO : beaucoup trop d'articles à lire sur le sujet.}
+From \url{https://arxiv.org/pdf/1906.02530.pdf} :
+\begin{itemize}
+	\item MDN (MacKay & Gibbs, 1999)
+	\item aleatoric uncertainty(Kendall & Gal, 2017)
+	\item Bayesian approache : Laplace approximation (MacKay, 1992)
+	\item variational inference (Graves, 2011; Blundell et al., 2015)
+	\item dropout-based variational inference (Gal& Ghahramani, 2016; Kingma et al., 2015)
+	\item expectation propagation Hern ́andez-Lobato & Adams(2015)
+	\item stochastic gradient MCMC (Welling & Teh, 2011)
+	\item  training multiple probabilistic neural networks with bootstrap or ensembling (Osband et al., 2016;Lakshminarayanan et al., 2017)
+	\item re-calibration of probabilities on a held-out validation set through temperature scaling (Platt, 1999), which was shown by Guo et al. (2017) to lead to well-calibrated predictions on the i.i.d. test set.
+\end{itemize}
 
 
 
-\subsection{Neural statistician} % (fold)
-\label{sub:neural_statistician}
+\subsection*{Summary} % (fold)
+\label{sub:summary}
 
-Neural Statistician \cite{Edwards17neuralstatistician} is also relying on a similar neural network architecture to compute summary statistics.
-The idea in Neural Statistician is that similar datasets can be gathered as originating from the same generative model including a global parameter to control the shift between domains.
-In this work the architecture is slightly improved to take into account importance weights.
-Moreover the objective is completely different since we consider supervised regression.
-
-Causal parameters are often related to properties of the distribution of the data in statistical simulations.
-The architecture should reflect this link in order for a neural network to capture the relevant information.
-This work is using Mixture density network \cite{Bishop94mixturedensity} combined with neural network architectures design to learn summary statistics on datasets.
-Such architecture is shown in \cite{Edwards17neuralstatistician}, in the context of transfer learning and one shot learning, where the neural network is producing summary statistics to embed the link between similar datasets.
-
-
-
-\subsection{Others} % (fold)
-\label{sub:others}
-
-\victor{Related to Amortized VI ?}
-\victor{Related to simple Gaussian fit ?}
-
-
-\subsection{Limitations} % (fold)
-\label{sub:limitations2}
-
+\victor{ TODO : Micro résumé du chapitre, des pros/cons de la methode et transition}
 
 The variance is learned meaning it should be tested as well.
 The classic method can measure their variance (from math).
