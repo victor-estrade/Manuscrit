@@ -14,11 +14,10 @@
 
 
 \topic{A simple but efficient solution is to map the input data to the target with a neural network whose architecture and training procedure are carefully chosen.}
-\content{We can get rid of the domain knowledge requierment and simply let a big neural network do all the work for us.}
-\content{This method is inspired from mixture density networks, inferno and neural statistician.}
 
-
-
+\cecile{Pourquoi on choisit les MDN et pourquoi on combine avec l'architecture Neural statistician n'est pas clair.}
+\cecile{Changer le nom de "mixture model" car ça fait penser au génératif.}
+\cecile{Une grade partie du chapitre de parle pas de variance. Il faut citer la mesure de la variance bcp + tôt !}
 
 
 
@@ -26,6 +25,8 @@
 \label{sec:motivation}
 
 \topic{Although the generator is available classical Bayesian inference is difficult because of the intractable likelihood.}
+
+
 
 
 
@@ -46,7 +47,7 @@ From Bayes theorem we get :
 \begin{equation}
     p(\mu | x) = \frac{p(x | \mu) p(\mu) }{p(x)}
 \end{equation}
-Unfortunately the likelihood $p(x | \mu)$ is often intractable because of high dimensional integrals.
+Unfortunately the likelihood $p(x | \mu)$ is often intractable because of high dimensional integrals (see \autoref{sub:inverse_problem} and \autoref{sub:simulation}).
 Instead of replacing the likelihood or trying to regress it we propose to directly approximate the posterior $p(\mu | x)$ with a sufficiently powerfull and tractable distribution $q_\phi(\mu | x)$.
 
 \autoref{chap:intro_stat} showed a workaround for the study of a mixture coefficient of a poisson counting process.
@@ -60,8 +61,6 @@ This chapter presents an inference method which does not require more domain kno
 
 \subsection{Core idea} % (fold)
 \label{sub:core_idea}
-
-\content{Poser le problème comme un problème d'apprentissage}
 
 The parameter of interest impact is not on the observables $x$ but on the distribution of the observables $p(x|\mu)$.
 This is invisible at the sample scale.
@@ -550,13 +549,13 @@ Other methods to compute neural network prediction uncertainty are available and
 \victor{TODO : beaucoup trop d'articles à lire sur le sujet.}
 From \url{https://arxiv.org/pdf/1906.02530.pdf} :
 \begin{itemize}
-	\item MDN (MacKay & Gibbs, 1999)
-	\item aleatoric uncertainty(Kendall & Gal, 2017)
+	\item MDN (MacKay \& Gibbs, 1999)
+	\item aleatoric uncertainty(Kendall \& Gal, 2017)
 	\item Bayesian approache : Laplace approximation (MacKay, 1992)
 	\item variational inference (Graves, 2011; Blundell et al., 2015)
-	\item dropout-based variational inference (Gal& Ghahramani, 2016; Kingma et al., 2015)
-	\item expectation propagation Hern ́andez-Lobato & Adams(2015)
-	\item stochastic gradient MCMC (Welling & Teh, 2011)
+	\item dropout-based variational inference (Gal\& Ghahramani, 2016; Kingma et al., 2015)
+	\item expectation propagation Hernandez-Lobato \& Adams(2015)
+	\item stochastic gradient MCMC (Welling \& Teh, 2011)
 	\item  training multiple probabilistic neural networks with bootstrap or ensembling (Osband et al., 2016;Lakshminarayanan et al., 2017)
 	\item re-calibration of probabilities on a held-out validation set through temperature scaling (Platt, 1999), which was shown by Guo et al. (2017) to lead to well-calibrated predictions on the i.i.d. test set.
 \end{itemize}
