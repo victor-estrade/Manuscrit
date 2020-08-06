@@ -50,7 +50,7 @@ From Bayes theorem we get :
 Unfortunately the likelihood $p(x | \mu)$ is often intractable because of high dimensional integrals (see \autoref{sub:inverse_problem} and \autoref{sub:simulation}).
 Instead of replacing the likelihood or trying to regress it we propose to directly approximate the posterior $p(\mu | x)$ with a sufficiently powerfull and tractable distribution $q_\phi(\mu | x)$.
 
-\autoref{chap:intro_stat} showed a workaround for the study of a mixture coefficient of a poisson counting process.
+\autoref{chap:intro_stat} showed a workaround for the study of a mixture coefficient of a Poisson counting process.
 This chapter presents an inference method which does not require more domain knowledge than the simulator itself and may be applied on any parameter of interest, not only a mixture coefficient.
 
 
@@ -65,7 +65,7 @@ This chapter presents an inference method which does not require more domain kno
 The parameter of interest impact is not on the observables $x$ but on the distribution of the observables $p(x|\mu)$.
 This is invisible at the sample scale.
 With only one sample $x$ it is not possible to get knowledge on the parameter $\mu$.
-Measuring properties of the distibution is only moving the problem from a sample scale to a dataset scale.
+Measuring properties of the distribution is only moving the problem from a sample scale to a dataset scale.
 
 The learning problem is to get from an empirical distribution $D = \{x_i\}_{i=0}^N \in \RR^{d\times N}$ to a real number $\mu \in \RR$.
 This is a regression problem.
@@ -110,11 +110,11 @@ The size of the sampleset is then a tradeoff between the size of the experimenta
 
 The workflow presented in \autoref{chap:intro_stat} relies on several steps : simulator, classifier, likelihood and optimizer.
 The final inference suffers from the accumulation of sub-optimality of these steps.
-Which is why each steps recieves special care.
+Which is why each step receives special care.
 This can be quite expensive and sometimes reaching a near optimal process is not possible.
 
 The proposed workflow is simpler and relies only on a simulator and the training of a regressor.
-Mathematical modeling will always be more accurate than an approximative model obtained with machine learning.
+Mathematical modeling will always be more accurate than an approximate model obtained with machine learning.
 Making mathematical modeling the first method to try anyway.
 When mathematical modeling is flawed with too expensive computation power or irrealistic approximations then machine learning may be a better approach.
 
