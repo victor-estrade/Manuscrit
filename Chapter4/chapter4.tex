@@ -67,26 +67,77 @@ Then the data are gathered with importance weights reprensenting their relative 
 \content{Petit rappel sur le challenge qui a permi à ces données d'exister et d'être publique !}
 \content{détails : \#samples, \#features, etc}
 
-The data were initially produced for the HiggsML challenge \cite{Adam-Bourdarios2014} 6 years ago.
-It was a very successfull challenge.
+The data were initially produced for the HiggsML challenge \cite{Adam-Bourdarios2014}.
+It was a the most successfull challenge of its time with (some number of teams and submissions).
+The data is now publicly available \needcite.
+\victor{TODO : citer les autres articles qui ont utilisés HiggsML}
 
-Present the data : primary features, derived features, cooked features ? nb samples.
+The HiggsML dataset is composed of 818238 events described by 17 primary features and 13 features derived from the primaries.
+Near the end of the challenge X more constructed features known as "cooked features" became popular \needcite.
+The cooked features help getting good classification perfomances\needcite in some context (what context ?).
+The label designing if the event is a signal ($H\to \tau \tau$) or a backgroud (any other process) is of course available in the dataset as well.
+
+Sample weights used for the kaggle challenge is not the same ... why again ?
 
 
 
 
-
-\subsection{Nuisance parameters} % (fold)
-\label{sub:nuisance_parameters}
+\subsection{Fast re-simulator} % (fold)
+\label{sub:fast_re_simulator}
 
 \content{simulateur rapide}
 \content{nuisance parameters}
 \content{Perte de DER\_mass\_mmc ??}
 
-Turning the finite data into a infinite generator thanks to boostraping and data augmentation with nuisance parameters.
 
-What are the nuisance parameters. What influence on the features etc.
+In order to ease experiments, the first part of this work is to build a fast re-simulator of the events.
+Indeed one event require on min of CPU time to be generated.
+Regenerating the entire dataset for all the set of parameters values we might want to try would be too expensive.
+However the parameters considered in this work only affect some of the final parts of the simulation and can be computed a posteriori.
 
+A small library was published\needcite and a more recent version is available here\needcite.
+This rest of this section will briefly explain how the event are re-generated for a different set of parameters.
+
+The parameter of interest $\mu$ is the deviation of the expected number of signal from the predictions of the standard model.
+Recomputing the data only requires to multiply the sample weights of the signal events with $\mu$.
+This is already enough to build a complete workflow of the inference without nuisance parameter.
+
+5 nuisance parameters are considered : tau energy scale, lepton energy scale, jet energy scale, soft term, nasty backgrounds.
+
+\subsubsection{Energy scales} % (fold)
+\label{ssub:energy_scales}
+
+The tau energy scale is comming from apparatus imperfections leading to a slightly wrong scale of the measured energy of tau particle.
+The lepton and jet energy scale are exactly analogus but with lepton particle and jets.
+The 3 energy scale are independant from each other leading to 3 nuisance parameters. 
+This nuisance parameter is basically a proportional factor on one or several primary features (eg. PRI\_tau\_pt) stained with non negligeable uncertainty.
+Recomputing the events for a different value of the energy scale requires not only to multiply the primary features with the updated value but also all the features derived from this primaries.
+
+\subsubsection{Mass MMC} % (fold)
+\label{ssub:mass_mmc}
+
+Unfortunately the MMC mass (what the hell is it ?) cannot be easilly recomputed from primaries.
+Although DER\_Mass\_MMC is the a relevant feature (\textbf{see missing figure}) for classification it is removed from the dataset.
+
+\victor{TODO : figure top 5 or top 10 feature importances}
+
+
+\subsubsection{Soft term} % (fold)
+\label{ssub:soft_term}
+
+This is a quite interesting uisance paramter because it is a standard deviation on a random perturbation.
+
+
+\subsubsection{Nasty background} % (fold)
+\label{ssub:nasty_background}
+
+The expected number of some background are not known exactly.
+
+
+\subsubsection{Bootstraping} % (fold)
+\label{ssub:boostraping}
+
+Turning the finite data into a infinite generator thanks to boostraping.
 
 
 
@@ -98,6 +149,9 @@ What are the nuisance parameters. What influence on the features etc.
 
 Toy datasets allow a full control of the generative process and the properties of the data.
 + evaluating the influence of many parameter on the performances to cast light on the performances on real data.
+
+
+
 
 
 
