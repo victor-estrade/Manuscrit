@@ -64,8 +64,6 @@ Then the data are gathered with importance weights reprensenting their relative 
 \subsection{HiggsML challenge} % (fold)
 \label{sub:higgsml_challenge}
 
-\content{Petit rappel sur le challenge qui a permi à ces données d'exister et d'être publique !}
-\content{détails : \#samples, \#features, etc}
 
 The data were initially produced for the HiggsML challenge \cite{Adam-Bourdarios2014}.
 It was a the most successfull challenge of its time with (some number of teams and submissions).
@@ -84,10 +82,6 @@ Sample weights used for the kaggle challenge is not the same ... why again ?
 
 \subsection{Fast re-simulator} % (fold)
 \label{sub:fast_re_simulator}
-
-\content{simulateur rapide}
-\content{nuisance parameters}
-\content{Perte de DER\_mass\_mmc ??}
 
 
 In order to ease experiments, the first part of this work is to build a fast re-simulator of the events.
@@ -109,36 +103,51 @@ This is already enough to build a complete workflow of the inference without nui
 
 The tau energy scale is comming from apparatus imperfections leading to a slightly wrong scale of the measured energy of tau particle.
 The lepton and jet energy scale are exactly analogus but with lepton particle and jets.
-The 3 energy scale are independant from each other leading to 3 nuisance parameters. 
+The 3 energy scales are independant from each other leading to 3 nuisance parameters $\alpha_{tes}, \alpha_{les}, \alpha_{jes}$. 
 This nuisance parameter is basically a proportional factor on one or several primary features (eg. PRI\_tau\_pt) stained with non negligeable uncertainty.
 Recomputing the events for a different value of the energy scale requires not only to multiply the primary features with the updated value but also all the features derived from this primaries.
-
-\subsubsection{Mass MMC} % (fold)
-\label{ssub:mass_mmc}
-
-Unfortunately the MMC mass (what the hell is it ?) cannot be easilly recomputed from primaries.
-Although DER\_Mass\_MMC is the a relevant feature (\textbf{see missing figure}) for classification it is removed from the dataset.
-
-\victor{TODO : figure top 5 or top 10 feature importances}
-
 
 \subsubsection{Soft term} % (fold)
 \label{ssub:soft_term}
 
-This is a quite interesting uisance paramter because it is a standard deviation on a random perturbation.
+The missing energy transverse (met) is perturbated by a random vector sampled from a normal distribution which standard deviation is our nuisance parameter $\alpha_{st}$.
+This is a more difficult systematic effect to infer from the data.
+Just like the parameter of interest it isby definition impossible to infer the soft term from one example.
 
 
 \subsubsection{Nasty background} % (fold)
 \label{ssub:nasty_background}
 
-The expected number of some background are not known exactly.
+The background distribution is a mixture of several processes.
+The mixture coefficient of one of these processes is not known with enough precision.
+\victor{c'est celui avec un detailLabel = W}
+This nuisance parameter $\alpha_{nb}$ only requires to recompute the weights.
+Since the parameter of interest is also linked with the sample weights, ie the amount of events, this nuisance parameter directly leads to an increase of the variance of our estimator $\hmu$.
+Indeed a larger number of events in a bin can now be explained by an increase of $\mu$ or an increase of $\alpha_{nb}$.
+
+
+
+\subsubsection{Mass MMC} % (fold)
+\label{ssub:mass_mmc}
+
+Unfortunately the MMC mass (what the hell is it ?) cannot be easilly recomputed from primaries.
+Computing the MMC mass involves an expensive optimization step \victor{More details ?}.
+Although DER\_Mass\_MMC is the a relevant feature (\textbf{see missing figure}) for classification it is removed from the dataset.
+
+\victor{TODO : figure top 5 or top 10 feature importances}
+
+
 
 
 \subsubsection{Bootstraping} % (fold)
 \label{ssub:boostraping}
 
-Turning the finite data into a infinite generator thanks to boostraping.
 
+Re-generating the data is not the same as re-running the simulation.
+\victor{Results on boostrapping that says when it is OK to do it ?}
+
+Training the direct regression method requires way more data than training a classifier since a sample for a regressor is composed of thousands of events.
+With boostrapping and considering the re-generation as data augmentation the finite HiggsML dataset can be turned into an almost infinite generator of events.
 
 
 
@@ -148,7 +157,8 @@ Turning the finite data into a infinite generator thanks to boostraping.
 
 
 Toy datasets allow a full control of the generative process and the properties of the data.
-+ evaluating the influence of many parameter on the performances to cast light on the performances on real data.
+It is a necessary step to produce a test bed of the program code.
+But also to evaluate the influence of many parameter (eg. number of dimension, number of sample, signal/background separability, etc) on the performances to help explain the performances on real data.
 
 
 
@@ -158,26 +168,36 @@ Toy datasets allow a full control of the generative process and the properties o
 \subsection{Toy 1D} % (fold)
 \label{sub:toy_1d}
 
-The toy that will interest us here is a mixture of 2 distributions with one observable $x \in \RR$.
-A gamma distribution for the background process and a gaussian distribution for the signal process.
-\autoref{fig:minitoy_distrib} presents the data distribution for a 10,000 instances sampling.
+The first toy is a very simple case of estimation of a mixture coefficient in the presence of one systematic effect.
+The likelihood is known and tracktable making maximum likelihood and bayesian inference possible.
+Comparing the inference methods to the best possible inference is a first step to validate them.
 
-The parameter of interest is the mixing coefficient of the 2 $y$ distributions.
+
+The toy generative process is a mixture of 2 distributions with one observable $x \in \RR$.
+The background distribution is a gamma distribution versus a gaussian distribution for the signal process.
+\autoref{fig:minitoy_distrib} presents the data distribution.
+To make the problem non trivial and correspond more to reality the signal distribution is overlapping with the background distribution.
+
+The parameter of interest is the mixing coefficient $\mu$ of the 2 distributions.
 The nuisance parameter $\alpha$ is a rescaling of the observable $x$.
 
 Without nuisance parameter $\alpha$ the likelihood is :
 $$
-    p(x | y) = y \mathcal N(x|a, b) + (1-y) \Gamma(x|s, \theta)
+    p(x | \mu) = \mu \mathcal N(x|a, d) + (1-\mu) \Gamma(x|k, l)
 $$
+
+with $N(x|a, d)$ a gaussian with mean $a$ and standard deviation $d$ and $\Gamma(x|k, l)$ a gamma distribution with $k$ ... and $l$ the localization  ... ????
+The chosen values are : $a = 5, d=0.5, k=2, l=0$.
+
 
 Including nuisance parameter $\alpha$ the likelihood becomes :
 $$
-    p(x | y, \alpha) = y \mathcal N(x|\alpha a, \alpha b) + (1-y) \Gamma(x|\alpha s, \theta)
+    p(x | \mu, \alpha) = \mu \mathcal N(x|\alpha a, \alpha d) + (1-\mu) \Gamma(x|\alpha k, l)
 $$
 
 \begin{figure}[htb]
     \includegraphics[width=\linewidth]{minitoy/distrib.png}
-    \caption{Data distribution of the 1D toy}
+    \caption{Data distribution of the 1D toy for a 10,000 instances sampling}
     \label{fig:minitoy_distrib}
 \end{figure}
 
@@ -190,29 +210,25 @@ $$
 \label{sub:toy_3d}
 
 To get closer to reality the toy example introduced in \cite{DECASTRO2019170inferno} is also included.
-This toy is a mixture of 2 processes named background and signal as usual.
+It is a mixture of 2 processes : $f_b$ for the backgrounds and $f_s$ for the signals.
 
-
-For the backgrounds :
-$$
-f_b (x|r, \lambda) = \mathcal N \left ( (x_0, x_1) | (2+r, 0) 
-\begin{bmatrix} 5 & 0 \\ 0 & 9 \end{bmatrix} \right ) Exp((x_2| \lambda)
-$$
-
-
-For the signals :
-$$
-f_s (x|r, \lambda) = \mathcal N \left ( (x_0, x_1) | (1, 1) 
-\begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \right ) Exp((x_2| 2)
-$$
+\begin{equation}
+	f_b (x|r, \lambda) = \mathcal N \left ( (x_0, x_1) | (2+r, 0) 
+	\begin{bmatrix} 5 & 0 \\ 0 & 9 \end{bmatrix} \right ) Exp((x_2| \lambda)
+\end{equation}
+\begin{equation}
+	f_s (x|r, \lambda) = \mathcal N \left ( (x_0, x_1) | (1, 1) 
+	\begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \right ) Exp((x_2| 2)
+\end{equation}
 
 Leading to the likelihood :
-$$
-p(x | r, \lambda, \mu ) = (1-\mu) f_b(x|r, \lambda) + \mu f_s(x|r, \lambda)
-$$
+\begin{equation}
+	p(x | r, \lambda, \mu ) = (1-\mu) f_b(x|r, \lambda) + \mu f_s(x|r, \lambda)
+\end{equation}
 
 This toy is multi dimensional, more complex and includes 2 nuisance parameters.
-
+The nuisance parameters affects only the background distribution.
+Once again the background and signal distribution are overlapping.
 \autoref{fig:s3d2_pairgrid} shows the distributions of a sampled dataset.
 
 \begin{figure}[htb]
@@ -226,73 +242,84 @@ This toy is multi dimensional, more complex and includes 2 nuisance parameters.
 
 
 
-\section{Perfect inference on toys} % (fold)
-\label{sec:perfect_inference_on_toys}
+\section{Bayesian inference on toys} % (fold)
+\label{sec:bayesian_inference_on_toys}
 
 
-The toy data does not suffer from intractable likelihood making it possible to compute the posterior probability using standard bayesian inference.
-The computed posterior is the best possible inference and will be compared with the other methods that assumes the likelihood is intracteble.
+The toy problems (see \autoref{sub:toy_1d} and \autoref{sub:toy_3d} ) do not suffer from intractable likelihood making it possible to compute the posterior probability using standard bayesian inference.
+The computed posterior is the best possible inference and will be compared with the other methods that assumes the samplewise likelihood is intractable.
 
 \subsection{Computing the posterior} % (fold)
 \label{sub:computing_the_posterior}
 
-\victor{Trop de détail : à déplacer dans l'appendice A}
+The posterior probability density function of the parameter of interest $p(\mu|D)$ can be computed from the likelihood and a prior.
+The prior is chosen as uniform over the domain of possible values of $\mu$.
+
+From Bayes theorem : 
+\begin{equation}
+    p(\mu, \alpha | D) = \frac{p(D|\mu, \alpha) p(\mu, \alpha)}{p(D)}
+\end{equation}
+and
+\begin{equation}
+	p(\mu|D) = \int_{\alpha} p(\mu, \alpha | D) p(\alpha|D) d\alpha
+\end{equation}
+
+
 
 Computing the integral by hand can be tedious.
 The simple method proposed allow to avoid it.
 
-Start with a grid, fine enough, going through the possible values. $y_i, \alpha_j$.
+Start with a grid, fine enough, going through the possible values. $\mu_i, \alpha_j$.
+\begin{equation}
+    p(\mu_i, \alpha_j | x) = \frac{p(x|\mu_i, \alpha_j) p(\mu_i, \alpha_j)}{p(x)}
+\end{equation}
 
-From Bayes theorem : 
-$$
-    p(y_i, \alpha_j | x) = \frac{p(x|y_i, \alpha_j) p(y_i, \alpha_j)}{p(x)}
-$$
 
 The 2 following tensor can be computed from the simulator.
 \begin{itemize}
-  \item likelihood : $L_{ij} = p(x|y_i, \alpha_j)$
-  \item prior : $K_{ij} = p(y_i, \alpha_j)$ 
+  \item likelihood : $L_{ij} = p(x|\mu_i, \alpha_j)$
+  \item prior : $K_{ij} = p(\mu_i, \alpha_j)$ 
 \end{itemize}
 
-giving the tensor $ R_{ij} = p(x|y_i, \alpha_j) p(y_i, \alpha_j) $ 
-which after renormalization gives the posterior tensor $ T_{ij} = p(y_i, \alpha_j | x)$.
+giving the tensor $ R_{ij} = p(x|\mu_i, \alpha_j) p(\mu_i, \alpha_j) $ 
+which after renormalization gives the posterior tensor $ T_{ij} = p(\mu_i, \alpha_j | x)$.
 
 The marginal probabilities are computed from $T_{ij}$ :
 \begin{itemize}
-  \item $p(y_i | x) = \sum_j T_{ij} = Y_i$
+  \item $p(\mu_i | x) = \sum_j T_{ij} = Y_i$
   \item $p(\alpha_j | x) = \sum_i T_{ij} = A_j$
 \end{itemize}
 
-the neural network should compute : $p(y_i | x, \alpha_j) = \frac{p(y_i, \alpha_j | x)}{p(\alpha_j | x)} = \frac{T_{ij}}{A_j} = N_{ij}$
+the neural network should compute : $p(\mu_i | x, \alpha_j) = \frac{p(\mu_i, \alpha_j | x)}{p(\alpha_j | x)} = \frac{T_{ij}}{A_j} = N_{ij}$
 
 We then obtain the quantities we are interested in :
 \begin{itemize}
-  \item $ \VV(y|x) = \VV(y_i, Y_i) $
-  \item $ \EE_{\alpha \sim p(\alpha|x)}[ \VV(y|x, \alpha) ] = \sum_j \VV(y|x, \alpha_j) p(\alpha_j | x) = \sum_j \VV_i(y_i, N_{ij}) A_j$
-  \item $\EE_{\alpha \sim p(\alpha|x)} \left ((\EE [y|x, \alpha]  - \EE[y|x])^2\right ) = \VV(y|x) - \EE_{\alpha \sim p(\alpha|x)}[ \VV(y|x, \alpha) ] = \VV(y_i, Y_i) - \sum_j \VV_i(y_i, T_{ij}) A_j$
+  \item $ \VV(\mu|x) = \VV(\mu_i, Y_i) $
+  \item $ \EE_{\alpha \sim p(\alpha|x)}[ \VV(\mu|x, \alpha) ] = \sum_j \VV(\mu|x, \alpha_j) p(\alpha_j | x) = \sum_j \VV_i(\mu_i, N_{ij}) A_j$
+  \item $\EE_{\alpha \sim p(\alpha|x)} \left ((\EE [\mu|x, \alpha]  - \EE[\mu|x])^2\right ) = \VV(\mu|x) - \EE_{\alpha \sim p(\alpha|x)}[ \VV(\mu|x, \alpha) ] = \VV(\mu_i, Y_i) - \sum_j \VV_i(\mu_i, T_{ij}) A_j$
 \end{itemize}
 
 
 \subsubsection{Note 1}
 
 For the computations it is necessary to remember that the tensors contain probabilities !
-Meaning $<y|x>= \EE[y|x] = \sum_i y_i Y_i$ because $Y_i$ only contains probability densities, not values of $y$ !
+Meaning $<\mu|x>= \EE[\mu|x] = \sum_i y_i Y_i$ because $Y_i$ only contains probability densities, not values of $y$ !
 
-Same applies for $\VV(y|x) = \sum_i y_i^2 Y_i - <y|x>^2 = \VV(y_i, Y_i)$
+Same applies for $\VV(\mu|x) = \sum_i \mu_i^2 Y_i - <\mu|x>^2 = \VV(\mu_i, Y_i)$
 
 
 \subsubsection{Note 2}
 
 For numerical stability it is best to work with log probabilities.
 
-Indeed $x$ is a dataset so $p(x | y_i, \alpha_j) = \prod_k^N p(x_k | y_i, \alpha_j)$ for N big enough to obtain too small number to be stored in 64 bits.
+Indeed $x$ is a dataset so $p(x | \mu_i, \alpha_j) = \prod_k^N p(x_k | \mu_i, \alpha_j)$ for N big enough to obtain too small number to be stored in 64 bits.
 
-It is smarter to compute : $\log p(x | y_i, \alpha_j) = \sum_k^N log p(x_k | y_i, \alpha_j) = \ell(x | y_i, \alpha_j)$
-Then $\ell(y_i, \alpha_j| x) = \log p(x|y_i, \alpha_j) + \log p(y_i, \alpha_j)$
+It is smarter to compute : $\log p(x | \mu_i, \alpha_j) = \sum_k^N log p(x_k | \mu_i, \alpha_j) = \ell(x | \mu_i, \alpha_j)$
+Then $\ell(\mu_i, \alpha_j| x) = \log p(x|\mu_i, \alpha_j) + \log p(\mu_i, \alpha_j)$
 
 And renormalizing using a softmax :
 $$ 
-    T_{ij} = p(y_i, \alpha_j | x) = \frac{e^{\ell(y_i, \alpha_j| x)} }{\sum_{n,m} e^{\ell(y_n, \alpha_m| x)} }
+    T_{ij} = p(\mu_i, \alpha_j | x) = \frac{e^{\ell(\mu_i, \alpha_j| x)} }{\sum_{n,m} e^{\ell(\mu_n, \alpha_m| x)} }
 $$
 
 
