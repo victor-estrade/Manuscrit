@@ -252,81 +252,93 @@ The computed posterior is the best possible inference and will be compared with 
 \subsection{Computing the posterior} % (fold)
 \label{sub:computing_the_posterior}
 
-The posterior probability density function of the parameter of interest $p(\mu|D)$ can be computed from the likelihood and a prior.
-The prior is chosen as uniform over the domain of possible values of $\mu$.
+The marginal posterior probability density function of the parameter of interest $p(\mu|D)$ can be computed from the likelihood and a prior.
+The prior is chosen as uniform over the domain of possible values of the parameters $\mu$ and $\alpha$.
+A dataset $D$ of independant and identically distributed samples is assumed to be available.
 
 From Bayes theorem : 
 \begin{equation}
-    p(\mu, \alpha | D) = \frac{p(D|\mu, \alpha) p(\mu, \alpha)}{p(D)}
+    p(\mu, \alpha | D) = \frac{p(D|\mu, \alpha) p(\mu, \alpha)}{p(D)} = \frac{p(D|\mu, \alpha) p(\mu, \alpha)}{\int_{\alpha, \mu} p(D|\alpha, \mu) p(\mu, \alpha) d\alpha d\mu}
 \end{equation}
 and
 \begin{equation}
 	p(\mu|D) = \int_{\alpha} p(\mu, \alpha | D) p(\alpha|D) d\alpha
 \end{equation}
 
+Computing the integrals by hand can be tedious.
+The inference can be approximated with a fine discretization of the continuous space of parameter.
+It starts with a grid $\{\mu_i, \alpha_j\}_{i,j}$, fine enough, covering the space of possible values of the parameters.
 
-
-Computing the integral by hand can be tedious.
-The simple method proposed allow to avoid it.
-
-Start with a grid, fine enough, going through the possible values. $\mu_i, \alpha_j$.
+Then we can compute the likelihood
 \begin{equation}
-    p(\mu_i, \alpha_j | x) = \frac{p(x|\mu_i, \alpha_j) p(\mu_i, \alpha_j)}{p(x)}
+	p(D|\mu_i, \alpha_j) = \prod_{x_k\in D} p(x_k|\mu_i, \alpha_j)
+\end{equation}
+Dealing with products of probabilities leads to numerical instability.
+The number of samples can easily be big enough to obtain numbers too small to be precisely stored in a 64 bits float.
+The usual trick is to work with log probabilities which gives the following tensor 
+\begin{equation}
+	L_{ij} = \log (p(D|\mu_i, \alpha_j)) = \sum_{x_k\in D} \log (p(x_k|\mu_i, \alpha_j))
+\end{equation}
+Combining it with a prior tensor $K_{ij} = \log(p(\mu_i, \alpha_j))$ the tensor $ R_{ij} = \log(p(D|\mu_i, \alpha_j)) + \log(p(\mu_i, \alpha_j) )$ gives access to the posterior $p(\mu_i, \alpha_j | D)$ through renormalization with $p(D)$.
+Recall that :
+\begin{equation}
+    p(D) = \int_{\alpha, \mu} p(D|\alpha, \mu) p(\mu, \alpha) d\alpha d\mu
+\end{equation}
+Which gives after discretization
+\begin{equation}
+    p(D) = \sum_{\alpha_j, \mu_i} p(D|\alpha_j, \mu_i) p(\mu_i, \alpha_j)
+\end{equation}
+\begin{equation}
+	T_{ij} = p(\mu_i, \alpha_j | x) = softmax(R_{ij}) = \frac{ e^{ R_{ij} }  }{ \sum_{ij} e^{ R_{ij} } }
 \end{equation}
 
-
-The 2 following tensor can be computed from the simulator.
-\begin{itemize}
-  \item likelihood : $L_{ij} = p(x|\mu_i, \alpha_j)$
-  \item prior : $K_{ij} = p(\mu_i, \alpha_j)$ 
-\end{itemize}
-
-giving the tensor $ R_{ij} = p(x|\mu_i, \alpha_j) p(\mu_i, \alpha_j) $ 
-which after renormalization gives the posterior tensor $ T_{ij} = p(\mu_i, \alpha_j | x)$.
-
 The marginal probabilities are computed from $T_{ij}$ :
-\begin{itemize}
-  \item $p(\mu_i | x) = \sum_j T_{ij} = Y_i$
-  \item $p(\alpha_j | x) = \sum_i T_{ij} = A_j$
-\end{itemize}
+\begin{equation}
+	p(\mu_i | D) = \sum_j T_{ij} = M_i
+\end{equation}
+\begin{equation}
+  p(\alpha_j | D) = \sum_i T_{ij} = A_j
+\end{equation}
+The method presented here is quite simple but leads to very accurate estimation on the toy problems.
 
-the neural network should compute : $p(\mu_i | x, \alpha_j) = \frac{p(\mu_i, \alpha_j | x)}{p(\alpha_j | x)} = \frac{T_{ij}}{A_j} = N_{ij}$
 
-We then obtain the quantities we are interested in :
-\begin{itemize}
-  \item $ \VV(\mu|x) = \VV(\mu_i, Y_i) $
-  \item $ \EE_{\alpha \sim p(\alpha|x)}[ \VV(\mu|x, \alpha) ] = \sum_j \VV(\mu|x, \alpha_j) p(\alpha_j | x) = \sum_j \VV_i(\mu_i, N_{ij}) A_j$
-  \item $\EE_{\alpha \sim p(\alpha|x)} \left ((\EE [\mu|x, \alpha]  - \EE[\mu|x])^2\right ) = \VV(\mu|x) - \EE_{\alpha \sim p(\alpha|x)}[ \VV(\mu|x, \alpha) ] = \VV(\mu_i, Y_i) - \sum_j \VV_i(\mu_i, T_{ij}) A_j$
-\end{itemize}
+\subsection{Extract quantities from discretized marginal posterior} % (fold)
+\label{sub:extract_quantities_from_discretized_marginal_posterior}
 
+A plot of $p(\mu | D)$ is not the best way of comparing the bayesian inference to the other methods.
+
+If the distribution $p(\mu | D)$ is well behaving the expectation of $\mu$ will be close to the maximum.
+\begin{equation}
+	\hat\mu = \EE[\mu|D] = \sum_i \mu_i M_i
+\end{equation}
+The confidence interval is then the variance
+\begin{equation}
+	\VV(\mu|D) = \sum_i \mu_i^2 M_i - (\sum_i \mu_i M_i)^2
+\end{equation}
+
+This variance can be splitted into two contribution : the statistical variance $\EE_{\alpha \sim p(\alpha|x)}[ \VV(\mu|x, \alpha) ]$ and the systematic variance $\EE_{\alpha \sim p(\alpha|D)} \left ((\EE [\mu|D, \alpha]  - \EE[\mu|D])^2\right )$
+
+\begin{align}
+	\EE_{\alpha \sim p(\alpha|D)}[ \VV(\mu|D, \alpha) ] 
+			&= \sum_j \VV(\mu|D, \alpha_j) p(\alpha_j | x) \\
+			&= \sum_j \VV_i(\mu_i, \frac{T_{ij}}{A_j}) A_j
+\end{align}
+\begin{align}
+	\EE_{\alpha \sim p(\alpha|D)} \left ((\EE [\mu|D, \alpha]  - \EE[\mu|D])^2\right ) 
+			&= \VV(\mu|D) - \EE_{\alpha \sim p(\alpha|D)}[ \VV(\mu|D, \alpha) ] \\
+			&= \VV(\mu_i, M_i) - \sum_j \VV_i(\mu_i, T_{ij}) A_j
+\end{align}
 
 \subsubsection{Note 1}
 
-For the computations it is necessary to remember that the tensors contain probabilities !
-Meaning $<\mu|x>= \EE[\mu|x] = \sum_i y_i Y_i$ because $Y_i$ only contains probability densities, not values of $y$ !
-
-Same applies for $\VV(\mu|x) = \sum_i \mu_i^2 Y_i - <\mu|x>^2 = \VV(\mu_i, Y_i)$
+The neural network regressor is learning to compute either $p(\mu_i |D, \alpha_j) = \frac{p(\mu_i, \alpha_j | D)}{p(\alpha_j | D)} = \frac{T_{ij}}{A_j} = N_{ij}$ or $p(p(\mu_i |D) = = \sum_j T_{ij} = M_i$
+Meaning that it is possible to compare the MDN regressor output to the true distribution.
 
 
 \subsubsection{Note 2}
 
-For numerical stability it is best to work with log probabilities.
-
-Indeed $x$ is a dataset so $p(x | \mu_i, \alpha_j) = \prod_k^N p(x_k | \mu_i, \alpha_j)$ for N big enough to obtain too small number to be stored in 64 bits.
-
-It is smarter to compute : $\log p(x | \mu_i, \alpha_j) = \sum_k^N log p(x_k | \mu_i, \alpha_j) = \ell(x | \mu_i, \alpha_j)$
-Then $\ell(\mu_i, \alpha_j| x) = \log p(x|\mu_i, \alpha_j) + \log p(\mu_i, \alpha_j)$
-
-And renormalizing using a softmax :
-$$ 
-    T_{ij} = p(\mu_i, \alpha_j | x) = \frac{e^{\ell(\mu_i, \alpha_j| x)} }{\sum_{n,m} e^{\ell(\mu_n, \alpha_m| x)} }
-$$
-
-
-\subsubsection{Note 3}
-
 If there is multiple nuisance parameters $\alpha$, $\beta$, etc the tensor are simply n-dimensional : $L_{ijk...}$, $T_{ijk...}$, $K_{ijk...}$, etc.
-And all sums over $j$ become summs over $j,k, ...$ which is easily handle with broadcasting in modern numeric libraries.
+And all sums over $j$ become summs over $j,k, ...$ which is easy to handle with broadcasting in modern numeric libraries.
 
 
 
