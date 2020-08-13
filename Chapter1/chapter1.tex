@@ -492,6 +492,7 @@ $\VV(Y) = \EE[(Y - \EE[Y])^2] = \EE(Y^2) - [\EE(Y)]^2$
 Law of total variance \needcite :
 
 \begin{eqnarray}
+\label{eq:total_variance_law}
     \VV[Y] =& \EE_X \left (\VV[Y|X] \right ) &+ \VV_X \left (\EE[Y|X]\right ) \\
     \VV[Y] =& \EE_X \left (\VV[Y|X] \right ) &+ \EE_X \left ( (\EE [Y|X]  - \EE[Y])^2\right )
 \end{eqnarray}
@@ -499,9 +500,12 @@ Law of total variance \needcite :
 
 Substituing with our problem the estimator $Y = \mu|x$ and the nuisance parameter $X = \alpha$ :
 
-$$
-\mathbb{V}[\mu|x] = \underbrace{\mathbb{E}_{\alpha \sim p(\alpha|x)} \left (\mathbb{V}[\mu|x, \alpha] \right )}_{V_{stat}} + \underbrace{\mathbb{E}_{\alpha \sim p(\alpha|x)} \left ( (\mathbb{E} [\mu|x, \alpha]  - \mathbb{E}[\mu|x])^2\right )}_{V_{syst}}
-$$
+\begin{equation}
+\label{eq:stat_and_syst_variance_definition}
+\mathbb{V}[\mu|x] 
+	= \underbrace{\mathbb{E}_{\alpha \sim p(\alpha|x)} \left (\mathbb{V}[\mu|x, \alpha] \right )}_{V_{stat}} 
+	+ \underbrace{\mathbb{E}_{\alpha \sim p(\alpha|x)} \left ( (\mathbb{E} [\mu|x, \alpha]  - \mathbb{E}[\mu|x])^2\right )}_{V_{syst}}
+\end{equation}
 
 The variance of our estimator is splitted into :
 the average of the variances of our estimator and the deviation from the average estimator induced by the nuisance parameter.

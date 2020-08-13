@@ -17,7 +17,6 @@
 \label{sec:performances_on_toys}
 
 \topic{On toy problems all methods achieve good or perfect inference}
-\content{}
 
 A complex link bounds the observables $\xx$ and the parameters (nuisance and interest).
 It is impossible to completely reduce the dependency between $y|x$ et $\alpha$.
@@ -26,15 +25,13 @@ Hence impossible to reduce the systematic uncertainty to zero.
 Here methods are compared to the best possible inference.
 
 
-\subsection{Remarks} % (fold)
-\label{sub:remarks}
 
-Then the best way to reduce the systematic uncertainty is to improve calibration !
+\subsection{Performance according to sample size} % (fold)
+\label{sub:performance_according_to_sample_size}
 
 
-\subsection{1D toy} % (fold)
-\label{sub:1d_toy}
-
+Performance en fonction du nombre d'events dans le dataset de test ?
+Evolution de la variance stat et syst en fonction de N\_samples.
 
 
 \begin{figure}[htb]
@@ -63,11 +60,6 @@ Du coup j'ai vraiment du mal avec le concepte de l'erreur systématique qui ne d
 
 Si l'effet est invisible sur les données alors on a pas de problème.
 Si l'effet est visible alors on peut contraindre + les paramètres de nuisance puisqu'on peut le mesurer !
-
-
-\subsection{3D toy} % (fold)
-\label{sub:3d_toy}
-
 
 
 \begin{figure}[htb]
@@ -99,13 +91,58 @@ Si l'effet est visible alors on peut contraindre + les paramètres de nuisance p
 
 
 
-\section{Ill suited for domain adaptation} % (fold)
-\label{sec:ill_suited_for_domain_adaptation}
+
+
+\subsection{Performances according to the number of nuisance parameters} % (fold)
+\label{sub:performances_according_to_the_number_of_nuisance_parameters}
+
+\content{Show how the nuisance parameters are degrading the performances}
+
+Le nombre de param de nuisance n'est pas important. 
+Mais l'intrication de l'influence des params de nuisance et du param d'intéret sur les observables l'est.
+
+
+
+
+
+
+
+
+
+\subsection{Performances of robustness to systematic effect} % (fold)
+\label{sub:performances_of_robustness_to_systematic_effect}
+
+
+\content{Section specifique aux méthodes du chapitre 2}
+
+
+
+
+
+
+
+
+\subsection{Calibration influence} % (fold)
+\label{sub:calibration_influence}
+
+Then the best way to reduce the systematic uncertainty is to improve calibration !
+
+
+
+
+
+
+
+
+\section{Real data} % (fold)
+\label{sec:real_data}
+
 
 \victor{Find out why this is does not work : \url{https://arxiv.org/pdf/1909.03081.pdf} ??}
-
-
 \victor{La simulation est trop précise. cf resultat sur l'impossibilité de séparer les domaines créé}
+
+
+
 
 
 
@@ -115,6 +152,8 @@ Si l'effet est visible alors on peut contraindre + les paramètres de nuisance p
 \label{sub:nothing_beats_the_baseline}
 
 \content{Show results on Higgs}
+
+
 
 
 
@@ -131,24 +170,6 @@ Si l'effet est visible alors on peut contraindre + les paramètres de nuisance p
 
 
 
-\section{Calibration} % (fold)
-\label{sec:calibration}
-
-
-
-
-
-
-\subsection{Prior vs posterior} % (fold)
-\label{sub:prior_vs_posterior}
-
-\content{Show the difference between the 2 formulas}
-\content{The posterior of one is the prior of others}
-
-
-
-
-
 
 
 \subsection{Results with or without calibration} % (fold)
@@ -158,6 +179,17 @@ Si l'effet est visible alors on peut contraindre + les paramètres de nuisance p
 
 
 
+
+
+
+
+\subsection{Too rare signals} % (fold)
+\label{sub:too_rare_signals}
+
+
+\content{Explain and show that the issue comes from the imbalance between signals and backgrounds}
+
+The scatter plot properties is much more dependent to noise or nuisance parameters than to the parameter of interest.
 
 
 

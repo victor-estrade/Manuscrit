@@ -137,6 +137,10 @@ Although DER\_Mass\_MMC is the a relevant feature (\textbf{see missing figure}) 
 \victor{TODO : figure top 5 or top 10 feature importances}
 
 
+\subsubsection{The cut at 22GeV} % (fold)
+\label{ssub:the_cut}
+
+
 
 
 \subsubsection{Bootstraping} % (fold)
@@ -342,15 +346,25 @@ And all sums over $j$ become summs over $j,k, ...$ which is easy to handle with 
 
 
 
+
+
+
+
+
 \section{Evaluation metric} % (fold)
 \label{sec:evaluation_metric}
 
 \topic{The evaluation metric is the empirical mean squared error on the estimated parameters including variances}
 
 Many methods to estimate the parameter of interest and its variance are available.
-If changing the set of hyper parameter for the learning procedure is considered as changing the method then countless methods are to be evaluated.
+Changing the set of hyper parameter for the learning procedure is considered as changing the method so many methods are to be evaluated.
 Automating the measure of the performances of a proposed method is crucial to select the best method.
 In this section is described a simple but general procedure to measure the performances of a given method.
+
+
+\subsection{Mean squared error} % (fold)
+\label{sub:mean_squared_error}
+
 
 The usual criterions to evaluate an estimator $\htheta$ are the bias, the variance and the mean squared error defined as follow :
 \begin{equation}
@@ -367,8 +381,11 @@ To evaluate these criterion we need to repeat the experiement $N$ times leading 
 Repeating the experiment can be done through cross-validation methods.
 
 
-\subsection{Evaluation of the parameter of interest estimator} % (fold)
-\label{sub:evaluation_of_the_parameter_of_interest_estimator}
+
+
+
+\subsubsection{Evaluation of the parameter of interest estimator} % (fold)
+\label{ssub:evaluation_of_the_parameter_of_interest_estimator}
 
 First, let's focus on evaluating the estimator of the parameter of insterest $\hmu$.
 The true value of $\mu$, noted $\mus$, is available during tests since it is an input of the simulator.
@@ -393,8 +410,9 @@ it is possible to estimated the criterions
 
 
 
-\subsection{Evaluation of the variance estimator} % (fold)
-\label{sub:evaluation_of_the_variance_estimator}
+
+\subsubsection{Evaluation of the variance estimator} % (fold)
+\label{ssub:evaluation_of_the_variance_estimator}
 
 The evaluation of the variance estimator $\hshmu$ could be done in the same way if the true variance $Var(\hmu)$ can be computed.
 If this is not the case an approximation is available using \autoref{eq:var_hmu}.
@@ -412,17 +430,68 @@ If this is not the case an approximation is available using \autoref{eq:var_hmu}
 
 
 
-\subsection{Evaluation with nuisance parameter} % (fold)
-\label{sub:evaluation_with_nuisance_parameter}
+
+
+\subsection{Fake real data} % (fold)
+\label{sub:fake_real_data}
+
+
+To avoid the look elswhere effect the experimental data is locked away and should be ideally used only once.
+This requires to have every parts of the analysis fixed before unblinding the experimental data.
+To test our inference methods we have to assume that the simulator is perfect and use it to produce fake experimental data.
+
+The true data is produced from the simulator with the chosen true parameter values.
+Object related to the true data are marked with a $\star$ (eg. $D^\star = G(\mu^\star, \alpha^\star) $ )
+This allow to study the properties of the candidates analysis pipelines according to different senario of real experiment and compare them to keep the best one.
 
 
 
-The nuisance params are absent in the previous subsections...
-It is marginalized already !
-We want more !
-We want to measure variance of $\mu$ depending on the true value of $\mu$ marginalized on the possible true value of $\alpha$
 
-Make sure to distinguish the true parameter from the estimator of the parameter.
+\subsection{Statistical and systematic variance} % (fold)
+\label{sub:statistical_and_systematic_variance}
+
+
+The previous section gives a method to compute the total variance.
+But separating the statistical and systematic variance is critical for understanding the results.
+The notations are heavier to avoid confusion between different variables.
+
+Our estimator $\hat \mu$ depends on $D^\star, \mu^\star, \alpha^\star$ where $\mu^\star$ and $\alpha^\star$ are fixed and $D^\star$ is a finite sampling of the the true distribution;
+$D^\star$ is a random variable hence our estimator $\hat \mu$ is also a random variable.
+The objective is to measure the 2 parts of the variance $\mathbb{V}_{D\sim p(D)}[\hat \mu | D^\star, \mu^\star, \alpha^\star]$.
+
+Recall (see \autoref{eq:total_variance_law} and \autoref{eq:stat_and_syst_variance_definition} in \autoref{sub:variance_estimations}) that :
+\begin{align}
+\mathbb{V}_{D\sim p(D)}[\hat \mu | D^\star, \mu^\star, \alpha^\star] 
+ & = \underbrace{\mathbb{E}_{\alpha \sim p(\alpha|D)} \left (\mathbb{V}_{D\sim p(D)}[\hat \mu | D^\star, \mu^\star, \alpha^\star, \alpha] \right )}_{V_{stat}} \\
+ & ~ + \underbrace{\mathbb{E}_{\alpha \sim p(\alpha|D)} \left ( (\mathbb{E}_{D\sim p(D)} [\hat \mu | D^\star, \mu^\star, \alpha^\star, \alpha]  - \mathbb{E}_{D\sim p(D)}[\hat \mu | D^\star, \mu^\star, \alpha^\star])^2\right )}_{V_{syst}}
+\end{align}
+
+To separate the statistical and systematic variance we need to compute the moments of $\hat \mu | D^\star, \mu^\star, \alpha^\star, \tilde \alpha$.
+$\alpha$ is here only noted $\tilde \alpha$ to avoid confusion between the variable $\alpha$ in the maximization and the sampled $\tilde \alpha$ observation. 
+\begin{align}
+\hat \mu | D^\star, \mu^\star, \alpha^\star & = \argmax_{\mu, \alpha} p(\mu, \alpha| D^\star, \mu^\star, \alpha^\star) \\
+\hat \mu | D^\star, \mu^\star, \alpha^\star, \tilde \alpha & = \left[ \argmax_{\mu, \alpha} p(\mu, \alpha| D^\star, \mu^\star, \alpha^\star) \right] | \tilde \alpha \\
+	& = \argmax_{\mu, \alpha=\tilde \alpha} p(\mu, \alpha| D^\star, \mu^\star, \alpha^\star, \alpha = \tilde \alpha) \\
+	& = \argmax_{\mu} p(\mu | D^\star, \mu^\star, \alpha^\star, \tilde \alpha) \\
+\end{align}
+So we need to compute the inference assuming the values of the nuisance parameter $\alpha$ sampled from $p(\alpha|D)$ is known and fixed.
+Which is simply doing inference without nuisance parameter.
+
+
+
+
+
+
+
+\subsection{Choosing the true parameters} % (fold)
+\label{sub:choosing_the_true_parameters}
+
+The estimators $\hmu$ and $\hshmu$ are random variable because of the limited size of the dataset.
+They depends on the true values of the parameters $\mu^\star$ and $\alpha^\star$.
+In the benchmark multiple values of $\mu^\star$ and $\alpha^\star$ have to be tested to evaluate the performances of a given method.
+
+
+
 
 
 \subsection{Evaluation algorithm} % (fold)
@@ -434,4 +503,7 @@ Cross-validation, range of parameter values (combinatorial explosion), etc
 
 Total variance, statistical variance, systematic variance.
 
+
+
+Cross-validation = change the seed of generators for toys and change the seed of data splitting for higgs.
 
