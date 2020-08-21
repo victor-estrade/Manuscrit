@@ -274,6 +274,7 @@ The second possibility is to use machine learning to reduce the dimension of the
 Parzen windows can estimate densities !
 So we can use it on the simulated data to define the likelihood function.
 
+\victor{Mot clé : "méthode des coupures" (cécile) comme méthode à la main pour trouver une région riche en signal}
 
 
 
@@ -410,6 +411,13 @@ Leading to a binned likelihood :
 
 
 
+\subsection{Asimov dataset} % (fold)
+\label{sub:asimov_dataset}
+
+
+\victor{TODO : Est-ce qu'on doit introduire ce concept ? Parce que au final les estimations du nombre attendu de signal et bruit de fond sont fait avec des datasets provenant de la simulation (c'est ça l'asimov dataset ?).}
+
+
 
 
 
@@ -476,6 +484,23 @@ Now $h_\alpha(x)$ does not depends only in $x$.
 
 
 
+
+\subsection{Recipies to reduce systematic unceratinties} % (fold)
+\label{sub:recipies_to_reduce_systematic_unceratinties}
+
+
+Petite listes des choses faisables pour réduire les biais systématiques. 
+
+
+Example : Calibrant interne en chimie (mesure supplémentaire dont la valeur attendu est connu). Calibrant externe (échantillon dont la valeur attendu est connu).
+
+
+
+
+
+
+
+
 \subsection{Variance estimations} % (fold)
 \label{sub:variance_estimations}
 
@@ -532,6 +557,22 @@ references :
 	\item \url{https://arxiv.org/abs/physics/0408039} coverage study of marginalization of nuisance params
 \end{itemize}
 
+\content{Expliquer pourquoi on a pas de formule close form pour}
+
+
+
+Il s'agit de produire $\mu$ et de l'encadrer.
+Version simple : Monte Carlo pour avoir p(x) et chercher le maximum.
+
+Puis pour l'encadrement on navigue autour du maximum pour obtenir à droite et à gauche la valeure qui corespond à l'encadrement.
+On veut un interval de confiance à X\%.
+On va faire des petits calculs + petites approximations pour mesurer la valeur de $\mu + \smu$ et de $\mu - \smu$.
+
+
+\content{Faire un petit examle à la main end-to-end}
+\content{Lister clairement les approximations faites pour obtenir cet intervalle de confiance. + citer les papiers qui ont challengé ces apprixmation }
+
+
 
 
 
@@ -551,7 +592,7 @@ All the domain knowledge is concentrated in the simulator and the hand crafted d
 
 \begin{figure}[htb]
     \centering
-    \includegraphics[width=0.3\linewidth]{workflow}
+    \includegraphics[width=0.5\linewidth]{workflow}
     \caption{The workflow of maximum likelihood inference using an optimizer}
     \label{fig:workflow}
 \end{figure}

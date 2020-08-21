@@ -365,3 +365,57 @@ Vulgarization on atlas simulation :
 	\item \url{https://atlas.cern/updates/atlas-blog/defending-your-life-part-3}
 \end{itemize}
 
+
+
+
+\section{Math} % (fold)
+\label{sec:math}
+
+
+
+\subsection{Estimateur de mu dans un cas simple} % (fold)
+\label{sub:estimateur_de_mu_dans_un_cas_simple}
+
+
+On va mettre de coté les paramères de nuisance dans ce problème.
+Même si on va quand même leur affecter des symboles.
+
+Notation :
+\begin{itemize}
+	\item $\alpha$ = paramètre de nuisance
+	\item $\beta$ = paramètre de la loi de Poisson des bruits de fond
+	\item $\gamma$ = paramètre de la loi de Poisson des signaux
+	\item $n$ = le nombre d'event
+	\item $s$ = nombre de signaux
+	\item $b$ = nombre de bruit de fond
+	\item $\mu$ = déviation de l'espérance du nombre de signaux
+\end{itemize}
+
+
+\begin{equation}
+	n = s + b
+\end{equation}
+\begin{equation}
+	s \sim Poisson(\mu \gamma)
+\end{equation}
+\begin{equation}
+	b \sim Poisson(\beta)
+\end{equation}
+\begin{equation}
+	alpha \sim Normal(\rho, \epsilon)
+\end{equation}
+
+
+
+\section{Discussion sur modern ML and deep learning} % (fold)
+\label{sec:discussion_sur_modern_ml_and_deep_learning}
+
+
+\url{https://arxiv.org/abs/1812.11118} and 
+\url{https://openai.com/blog/deep-double-descent/}
+
+il manque neural tangeant kernel.
+
+
+
+
