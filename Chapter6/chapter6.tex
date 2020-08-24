@@ -19,6 +19,9 @@
 \victor{Neural network as Estimator \& estimate its variance}
 
 
+
+
+
 \section{Calibration} % (fold)
 \label{sec:calibration}
 
@@ -26,7 +29,31 @@
 \label{sub:common_calibration}
 
 
-Multiple study using data comming from the same experiment should have the same nuisance parameter estimation.
+Multiple studies using data from the same experiment should have the same nuisance parameter estimation.
+
+La version très conservatrice de la calibration est de prendre une région de controle où le signal est inexistant pour mesurer les paramètres de nuisance.
+Puis on garde cette estimation pour toutes les études qui utilisent les données de cette expérimence.
+On peut critiquer le fait que la version conservatrice rejette les données hors région de controle pour l'estimation des paramètres de nuisance.
+Donc rejette eventuellement beaucoup d'information.
+La meilleur inférence est celle qui utilise toutes les données disponnibles.
+
+Une version plus puissante serait d'utiliser toutes les données disponnibles.
+Cependant cela augmente de beaucoup les paramètres en jeu puisque tous les paramètres des diverses annalyses doivent être pris en compte.
+En effet on ne se limite plus à une région de controle.
+Donc même si cette méthode est probablement la meilleur il reste qu'écrire l'algorithme voir simplement écrire la laikelihood pour l'appliquer promet de violents maux de tête.
+
+Une version plus relaxée serait d'utiliser l'estimation dans la région de controle comme prior puis chaque annalyse recalibre sur ses données.
+Cela donne autant d'estimation des paramètres de nuisance que d'annalyse.
+J'ai du mal à faire confiance à une méthode scientifique où Jean-Paul affirme que $\alpha = 3 \pm 1$ et Jeane-Pauline affirme que $\alpha = 3.3 \pm 1.1$ pour la même expérimentation et que ça ne pose pas de problème.
+De plus l'argument anti-conservateur est toujours applicable : on rejette beaucoup d'information en rejettant les données des autres annalyses.
+
+Enfin concernant notre cas la likelihood inclu déjà l'influence des paramètres de nuisance au travers du re-simulateur.
+La question est donc : est-ce que cette likelihood est un bon modèle ?
+J'ai quelques résultats expérimentaux qui montre que mesurer indépendement les paramètres de nuisance puis utiliser cette estimation dans le workflow donne un estimateur avec moins de variance et apparement moins de biais aussi.
+Mais est-ce qu'on utilise pas 2 fois les données pour l'inférence des paramètres de nuisance ?
+Est-ce que c'est grave ? Est-ce que c'est un peu de l'overfitting quelque part ?
+J'ai envie de dire que c'est juste un changement de modèle ie un changement de likelihood.
+Mais est-ce que ce nouveau modèle est mieux ?
 
 
 
