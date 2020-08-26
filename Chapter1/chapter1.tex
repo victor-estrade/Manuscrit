@@ -665,7 +665,7 @@ The alternative hypothesis is tha there is some signal $p(S) > 0$ and $p(B) < 1$
 	p(D | H_1) = \prod_{x\in D} p(x|S) p(S) + p(x|B) p(B)
 \end{equation}
 
-According to neyman-Pearson the likelihood ratio between the 2 hypothesis is a sufficient summary statistic for the hypothesis test.
+According to Neyman-Pearson lemma \cite{neyman_pearson_1933} the likelihood ratio between the 2 hypothesis is a sufficient summary statistic for the hypothesis test (or the most powerfull quantity one can compute).
 \begin{align}
 	\lambda & = \frac{p(D | H_1)}{p(D |H_0)} = \frac{\prod_{x\in D} p(x|S) p(S) + p(x|B) p(B)}{\prod_{x\in D} p(x|B)} \\
 	\lambda & = \prod_{x\in D} \frac{ p(x|S) p(S) + p(x|B) p(B)}{p(x|B)} \\
@@ -690,12 +690,12 @@ Papers I still need to master :
 About Bayesian vs Frequentist stupid war.
 The section 2 of Neal's paper is criticising Feldman and Cousins' paper on the Unified approach.
 So according to those folks if you want a Bayesian approach to confidence interval you do marginalization like Neal.
-But if you ant a Frequentist approach you use the profiled likelihood ratio method.
+But if you want a Frequentist approach you use the profiled likelihood ratio method.
 
 A scientist may consider that we need experimental evidence to choose between one or another.
 Then you can read : \url{https://arxiv.org/pdf/physics/0403059.pdf} for coverage experiment of the Unified method.
-And read \url{https://arxiv.org/pdf/physics/0408039.pdf} for coverage of teh Bayesiand approach.
-I read only introduction and conclusion of these paper and they state tha Frequentist method leads to a small under-coverage and the Bayesian approach leads to a small over-coverage.
+And read \url{https://arxiv.org/pdf/physics/0408039.pdf} for coverage of the Bayesiand approach.
+I read only introduction and conclusion of these papers and they state that Frequentist method leads to a small under-coverage and the Bayesian approach leads to a small over-coverage.
 
 My conclusion is that the only way of doing good statistics is to understand and master both methods.
 Test them on a problem and finally be at peace because both are giving bassically the same numbers at the end...

@@ -390,6 +390,9 @@ Notation :
 	\item $n$ = number of event
 	\item $s$ = number of signals
 	\item $b$ = number of backgrounds
+	\item p(x) = probability density of an event $x$
+	\item p(x|S) = conditional probability density of an event $x$ knowing it is a signal ie signal likelihood
+	\item p(x|B) = conditional probability density of an event $x$ knowing it is a background ie background likelihood
 \end{itemize}
 
 Let's consider a counting exepriment in a collider.
@@ -410,7 +413,7 @@ The data can be modeled by counting iid Bernouilli rare process which is well ap
 \end{equation}
 
 
-The events are splitted into 2 categories the signal events and the background events.
+The events are splitted into 2 categories the background events and the background events.
 The signal events are events generated with a peculiar process (e.g. $H\to \tau^+ \tau^-$) that we want to study.
 The backgroud events gather all the other processes.
 The expected amount of background events $\beta$ is known (with high precision) thanks previous studies/experiments and to measurements made in the data space where few or no signals can be found.
@@ -451,6 +454,51 @@ The objective of this document is to clarify a few questions :
 	\end{itemize}
 \end{itemize}
 
+
+
+Let's start with the link between the number of events ($s$, $b$, $n$) and the number of events in a bin ($s_i$, $b_i$, $n_i$).
+A bin is a subspace of the data space where the event can appear.
+We define $\Omega_i$ the subspace of the i-th bin and $\Omega_{tot} = \bigcup_i^K \Omega_i $ the full data space as the union of my $K$ bins.
+Let's start with the obvious quantities :
+\begin{equation}
+	n = n \times 1 = n \times \int_{x \in \Omega_{tot}} p(x) dx
+\end{equation}
+The number of events in a bin is simply the fraction of events that falls inside a bin.
+An event fall inside the i-th bin with probability $p(x \in \Omega_i)$ defined as:
+\begin{equation}
+	p(x \in \Omega_i) = \int_{x \in \Omega_i} p(x) dx
+\end{equation}
+\begin{equation}
+	\label{eq:nb_events_in_bin}
+	n_i = n \times p(x \in \Omega_i)  = n \times \int_{x \in \Omega_i} p(x) dx
+\end{equation}
+The same applies to $s$ and $b$.
+But let's keep pushing open doors for clarity.
+An event is either a signal event $S$ or a background event $B$.
+Therefor we can decompose the density into two parts :
+\begin{equation}
+	p(x) = p(x|S) p(S) + p(x|B) p(B)
+\end{equation}
+Injecting this into \autoref{eq:nb_events_in_bin}
+\begin{align}
+	n_i &= n \times \int_{x \in \Omega_i} p(x) dx \\
+	n_i &= n \times \int_{x \in \Omega_i} p(x|S) p(S) + p(x|B) p(B) dx \\
+	n_i &= n \times \left ( \int_{x \in \Omega_i} p(x|S) p(S) dx + \int_{x \in \Omega_i}  p(x|B) p(B) dx \right )\\
+	n_i &= n \times \int_{x \in \Omega_i} p(x|S) p(S) dx + n \times \int_{x \in \Omega_i}  p(x|B) p(B) dx \\
+	n_i &= n \times p(S) \int_{x \in \Omega_i} p(x|S) dx + n \times p(B) \int_{x \in \Omega_i}  p(x|B) p(B) dx \\
+	n_i &= s \int_{x \in \Omega_i} p(x|S) dx + b \int_{x \in \Omega_i}  p(x|B) p(B) dx \\
+\end{align}
+We find that $s = n \times p(S)$ and $b = n \times p(B)$ which is again obvious statement since the number of signal events is the total number of event times the probability of an event to be a signal.
+\begin{equation}
+	s_i = s \times \int_{x \in \Omega_i} p(x|S) p(S) dx
+\end{equation}
+\begin{equation}
+	b_i = b \times \int_{x \in \Omega_i} p(x|B) p(B) dx
+\end{equation}
+
+See where is the mistake here ? 
+
+We should be using expected number everywhere !!!!
 
 
 
