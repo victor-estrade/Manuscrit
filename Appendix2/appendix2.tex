@@ -371,39 +371,89 @@ Vulgarization on atlas simulation :
 \section{Math} % (fold)
 \label{sec:math}
 
+This section develops what I understand so far about the theory.
+It is also an opportunity to gather all the quantities at the same place to give them unique names and notations.
 
+For now I skip the latent variables that describes what happen between the collision and the measurement.
+For now I also skip the trigger because it only add more complexity to the problem without fundamental changes.
 
-\subsection{Estimateur de mu dans un cas simple} % (fold)
-\label{sub:estimateur_de_mu_dans_un_cas_simple}
-
-
-On va mettre de coté les paramères de nuisance dans ce problème.
-Même si on va quand même leur affecter des symboles.
+\subsection{Notation and context} % (fold)
+\label{sub:notation_and_context}
 
 Notation :
 \begin{itemize}
-	\item $\alpha$ = paramètre de nuisance
-	\item $\beta$ = paramètre de la loi de Poisson des bruits de fond
-	\item $\gamma$ = paramètre de la loi de Poisson des signaux
-	\item $n$ = le nombre d'event
-	\item $s$ = nombre de signaux
-	\item $b$ = nombre de bruit de fond
-	\item $\mu$ = déviation de l'espérance du nombre de signaux
+	\item $\alpha$ = nuisance parameter
+	\item $\beta$ = poisson law parameter for the number of backgrounds
+	\item $\gamma$ = Poisson law parameter for the number of signals according to current theory
+	\item $\mu$ = deviation from the expected number of signals from theory
+	\item $z$ or $z_i$ = latent variables describing 
+	\item $n$ = number of event
+	\item $s$ = number of signals
+	\item $b$ = number of backgrounds
 \end{itemize}
 
+Let's consider a counting exepriment in a collider.
+Inside the collider two bunch of particles are meeting at some point.
+From this meeting two types of collisions are possible :
+\begin{itemize}
+	\item Soft collision which does not produce interesting physics
+	\item Hard collision which produces interesting physics called \textbf{event}
+\end{itemize}
 
+The hard collisions (events) are way rarer than the soft one.
+The process creating the high energy particles is fundamentally stochastic.
+Meaning that the nature and properties (eg. kinematics) of the process producing particles are not fully predictable but follow probability distributions whose shapes and properties are deterministics.
+
+The data can be modeled by counting iid Bernouilli rare process which is well approximated by a Poisson distribution \needcite (cf wikipedia) when the number of samples is large.
+\begin{equation}
+	n \sim Poisson(\text{some parameter})
+\end{equation}
+
+
+The events are splitted into 2 categories the signal events and the background events.
+The signal events are events generated with a peculiar process (e.g. $H\to \tau^+ \tau^-$) that we want to study.
+The backgroud events gather all the other processes.
+The expected amount of background events $\beta$ is known (with high precision) thanks previous studies/experiments and to measurements made in the data space where few or no signals can be found.
+
+
+
+\subsection{Estimate mu in a simple case} % (fold)
+\label{sub:estimate_mu_in_a_simple_case}
+
+Let's first write everything without nuisance parameters.
+
+The total number of events is the sum of signal events and background events.
 \begin{equation}
 	n = s + b
 \end{equation}
+The number of signal events is following a poisson distribution of parameter $\mu \gamma$.
 \begin{equation}
 	s \sim Poisson(\mu \gamma)
 \end{equation}
+The number of background events is following a poisson distribution of parameter $\beta$.
 \begin{equation}
 	b \sim Poisson(\beta)
 \end{equation}
+Since the sum of Poisson random variables is also Poisson distributed \needcite (cf wikipedia) :
 \begin{equation}
-	alpha \sim Normal(\rho, \epsilon)
+	n \sim Poisson(\mu \gamma + \beta)
 \end{equation}
+
+The objective of the study is to infer $\mu$ from data.
+The objective of this document is to clarify a few questions :
+\begin{itemize}
+	\item What is the link between the probability density of an event $p(x)$ and the number of events $n$ ?
+	\item Why is it better to divide the data space into bins ?
+	\begin{itemize}
+		\item What is the link between signal purity (ie maximum $s/b$) and the variance of the estimator of $\mu$ ?
+		\item Is it better to keep only the bin with maximum signal purity (ie maximum $s/b$) ?
+		\item Is signal purity $s/b$ or $\gamma / \beta$ ? Are those definition equivalent ?
+	\end{itemize}
+\end{itemize}
+
+
+
+
 
 
 
