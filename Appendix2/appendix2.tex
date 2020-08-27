@@ -386,7 +386,7 @@ Notation :
 	\item $\beta$ = poisson law parameter for the number of backgrounds
 	\item $\gamma$ = Poisson law parameter for the number of signals according to current theory
 	\item $\mu$ = deviation from the expected number of signals from theory
-	\item $z$ or $z_i$ = latent variables describing 
+	\item $z$ or $z_i$ = latent variables 
 	\item $n$ = number of event
 	\item $s$ = number of signals
 	\item $b$ = number of backgrounds
@@ -413,7 +413,7 @@ The data can be modeled by counting iid Bernouilli rare process which is well ap
 \end{equation}
 
 
-The events are splitted into 2 categories the background events and the background events.
+The events are splitted into 2 categories : the signal events and the background events.
 The signal events are events generated with a peculiar process (e.g. $H\to \tau^+ \tau^-$) that we want to study.
 The backgroud events gather all the other processes.
 The expected amount of background events $\beta$ is known (with high precision) thanks previous studies/experiments and to measurements made in the data space where few or no signals can be found.
@@ -443,6 +443,25 @@ Since the sum of Poisson random variables is also Poisson distributed \needcite 
 \end{equation}
 
 The objective of the study is to infer $\mu$ from data.
+We are using the maximum likelihood estimator.
+\begin{equation}
+    \hat \mu = \argmax_\mu p(n|\mu) =  \argmax_\mu Poisson(n|\mu)
+\end{equation}
+This can be done by hand. Assuming that we know $\gamma$ and  $\beta$.
+\begin{equation}
+    \frac{\partial \log p(n|\mu)}{\partial \mu} =  \mu \frac{n}{\mu\gamma + \beta} - \gamma
+\end{equation}
+\begin{equation}
+    \frac{\partial \log p(n|\mu)}{\partial \mu} = 0 \iff \mu = \frac{n-\beta}{\gamma}
+\end{equation}
+Note $\EE[n] = \mu\gamma + \beta$ and $\max Poisson = \EE[Poisson]$ so maybe there is a simpler way to find this ?
+
+
+
+
+\subsection{Binning} % (fold)
+\label{sub:binning}
+
 The objective of this document is to clarify a few questions :
 \begin{itemize}
 	\item What is the link between the probability density of an event $p(x)$ and the number of events $n$ ?
@@ -494,7 +513,7 @@ Injecting this into \autoref{eq:nb_events_in_bin}
 	\EE [n_i] &= \EE[n] \times p(S) \int_{x \in \Omega_i} p(x|S) dx \quad+\quad \EE[n] \times p(B) \int_{x \in \Omega_i}  p(x|B) dx \\
 	\EE [n_i] &= \EE[s] \int_{x \in \Omega_i} p(x|S) dx \quad+\quad \EE[b] \int_{x \in \Omega_i}  p(x|B) p(B) dx \\
 \end{align}
-We find that $\EE[s] = \EE[n] \times p(S)$ and $\EE[b] = \EE[n] \times p(B)$ which is again obvious statement since the expected number of signal events is the expected total number of event times the probability of an event to be a signal.
+We use $\EE[s] = \EE[n] \times p(S)$ and $\EE[b] = \EE[n] \times p(B)$ which is again obvious statement since the expected number of signal events is the expected total number of event times the probability of an event to be a signal.
 Replacing expenctancies of the number of events with their values according to our Poisson parameter
 \begin{equation}
 	\EE[n_i] = (\mu\gamma + \beta) \times \int_{x \in \Omega_i} p(x) dx
@@ -507,6 +526,98 @@ Replacing expenctancies of the number of events with their values according to o
 \end{equation}
 
 The answer to the question : what is the link between $p(x)$ and $n$ is \autoref{eq:nb_events_in_bin}.
+
+
+
+
+
+\subsection{Link between bins and classifier and variance of MLE} % (fold)
+\label{sub:link_between_bins_and_classifier_and_variance_of_mle}
+
+Here we explore the reasons for dividing the data space into bins and also for the use of classifer to produce space region very rich in signal events.
+
+
+\subsubsection{Why making the estimation in a signal richer region is better ?}
+
+There is 2 arguments.
+The first one is that we want the likelihood to be narrow near the maximum.
+The likelihood function $L(\mu) : \mu \to p(n|\mu) = Poisson(n|\mu\gamma + \beta)$ is narrow near the maximum if the second derivative is large in absolute value near the maximum (or the second derivative of the log).
+\begin{equation}
+    \frac{\partial^2 \log L(\mu)}{\partial \mu^2} = -\frac{n \gamma^2}{(\mu\gamma + \beta)^2}
+\end{equation}
+\begin{equation}
+    \left . \frac{\partial^2 \log L(\mu)}{\partial \mu^2}  \right |_{\mu=\hat \mu = \frac{n-\beta}{\gamma}} = -\frac{\gamma^2}{n}
+\end{equation}
+
+So maximizing the second derivative requires to maximize $\gamma^2 / n$ ie maximize the ratio between expected number of signals and the total number of event.
+
+The second argument is from the Cramer-Rao bound\needcite.
+\begin{equation}
+    \VV[\hat \mu] \geq \frac{1}{I(\mu)}
+\end{equation}
+With $N$ the number of independent observation (is $N$ the number of bins ?) and $I(\mu)$ the Fisher information.
+
+\begin{equation}
+    I(\mu) = - N \times \EE\left [\frac{\partial^2 \log L(\mu)}{\partial \mu^2} \right ]
+\end{equation}
+giving 
+\begin{equation}
+    I(\mu) = - N \times \EE\left [-\frac{n \gamma^2}{(\mu\gamma + \beta)^2} \right ] = N \times \frac{\gamma^2}{\mu\gamma + \beta}
+\end{equation}
+\begin{equation}
+    \VV[\hat \mu] \geq  \frac{\mu\gamma + \beta}{N\gamma^2} = \frac{\EE[n]}{N\gamma^2}
+\end{equation}
+Again minimizing the variance requires to either increase the number of independent observation or maximizing the extected number of signals.
+
+This observation motivates the use of a signal vs background classifier to select a richer region of signals. 
+
+
+
+
+\subsubsection{Why dividing the data space into smaller regions ?}
+
+
+The intuition is that there is more knowledge in knowing that $n_1 = 10$, $n_2 = 7$ and $n_3 = 3$ than knowing that $\sum_i n_i = 20$.
+As long as the bins contains enough samples to keep the Poisson approximation then it is better to have more (smaller) bins.
+
+The objective is to get a narrow likelihood.
+\begin{equation}
+    p(n | \mu) = Poisson(n | \mu (\sum_i \gamma_i) + (\sum_i \beta_i))
+\end{equation}
+\begin{equation}
+    p({n_i} | \mu) = \prod_i Poisson(n_i | \mu \gamma_i + \beta_i)
+\end{equation}
+
+The second one is getting narrower as we increase the number of bins (multiply numbers $ 1 \leq $).
+
+Also from discussion :
+\begin{equation}
+    p({n_i} | \mu) = \prod_i \int_{\gamma_i, \beta_i} Poisson(n_i | \mu \gamma_i + \beta_i) p(\gamma_i, \beta_i)
+\end{equation}
+But this is assuming $\gamma$ and $\beta$ are nuisance parameter.
+We can be more precise with $\gamma(\alpha)$ and $\beta(\alpha)$.
+
+
+
+\subsection{Other questions and remarks} % (fold)
+\label{sub:other_questions_and_remarks}
+
+\subsubsection{Is Poisson approximation still accurate in small bins ?} % (fold)
+
+% subsection subsection_name (end)
+We assume that the number of events is following a Poisson distribution.
+This is very accurate in the large sample limit which is the case at the LHC (huge amount of events).
+
+The same goes for the number of signal events.
+But I recall that when taking into account the nuisance parameters and only selecting one very pure bin there is only a few dozen events.
+We are far from the large sample limit !
+
+The same argument applies for selecting many bins and using the Poisson likelihood in each one.
+
+First answer : the Poisson counting is not on the signal but on the signal + background.
+
+So the relevant question is : is there enough events (signal + background) in each bin to consider the Poisson approximation accurate ?
+
 
 
 
