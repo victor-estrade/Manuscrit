@@ -8,12 +8,114 @@
 
 \chapter{Experimental details} 
 
+List of main experiments : 
+\begin{itemize}
+	\item Measure \emph{performances} for each \emph{method}
+	\item Compare performances between \emph{robust} method
+	\item Show that the balancing of S and B is important
+	\item Reproduce the impossibility of separating \emph{domains} on Higgs
+\end{itemize}
 
-\section{Section 1}
+
+
+\section{What distinguish runs} % (fold)
+\label{sec:what_distinguish_runs}
+
+There is several way of estimating the parameter of interest.
+These ways may differ from each other because of the pipeline, classifier training, architecture, hyper-parameters and cross-validation.
+The experiments are organized as follow.
+
+A \textbf{run} is a combinason of a \emph{problem}, a \emph{method}, a \emph{calibration}, a set of \emph{hyper-parameters}, a \emph{cross-validation} ID, a set of \emph{true parameter}.
+
+A \textbf{problem} is a generative process with a mixture coefficient to be infered.
+List :
+\begin{itemize}
+	\item Gamma-Gauss [GG] : a 1D toy
+	\item Synthetic 3D data [S3D2] : a replication of the 3D toy in the inferno paper
+	\item Higgs ML data [HIGGS] : the data from higgsML challenge + the re-simulator
+\end{itemize}
+
+
+A \textbf{method} is represented by a training algorithm and a pipeline.
+Actually once the training algorithm is chosen there is only one pipeline that fit the produced model.
+Indeed classifiers can only use the classic worklow with maximum likelihood.
+
+List of every methods :
+\begin{itemize}
+	\item Gradient Boosting [GB] : a gradient boosting classifier from scikit-learn trained on the nominal data.
+	\item Neural Network Classifier [NN] : a neural network trained as a classifier trained on the nominal data.
+	\item Data augmentation [DA] : a neural network classifier trained on a mixture of simulated data with 1000 differents input parameters.
+	\item Tangent Propagation [TP] : a neural network classifier with the tangent propagation regularization.
+	\item Pivotal neural network [Pivot] : a neural network classifier with adversarial training.
+	\item Inferno [INFERNO] : a neural network summary computer trained with inferno method.
+	\item Regressor [REG] : a dataset wise mixture density neural network regressor taking both the data and nuisance parameter as input.
+	\item Marginal Regressor [REG-Marginal] : a dataset wise mixture density neural network regressor taking only the data as input.
+\end{itemize}
+
+On a second level is the \textbf{calibration} restriction.
+All method at some points requires information about the nuisance parameters.
+The regressor requires to sample the nuisance parameters from a distribution for marginalization.
+The optimizer requires initial values and uncertainty for all parameters and the likelihood also include constrains on the nuisance parameters.
+The experiments test two calibration : the given prior knowledge and the estimation of the nuisance parameters on the test data using previously trained regressors.
+Method names are decorated with "-Prior" or "-Calib" (exm : GB-Prior, REG-Calib). The marginal regressor is not concerned since it is not using calibration at all.
+More realistic calibrations are left for future work.
+
+On a third level is the \textbf{hyper-parameters} and \textbf{architecture} of the models.
+The hyper-parameter setting is quite straitforward : a grid search on the most relevant hyper-parameters is done.
+The resolution of the grid is quite low to avoid the need of expensive computing ressources.
+The architecture choice is more complicated since there is an infinite way of desining one
+It is devellopped in a later section\needcite.
+
+The experiments are reapeated several times to accuratelly measure the variance of the performances according to the data sampling.
+This is called \textbf{cross-validation} in this document although it is not allways a crossing of bunches of the same dataset.
+Three datasets are used in the process.
+The \emph{training} set is the data used to train our model.
+The \emph{validation} set is the data used to produce summary statistics (the azimov dataset ?).
+The \emph{test} set is the data on which inference is done.
+
+On the toy problems the generative process is cheap.
+Toy datasets are generated as required and a change of the \emph{seed} is creating new train, valid and test sets.
+On the higgsML data the data is first randomly splited into 3 sets see \autoref{sub:fast_re_simulator} for the details.
+
+The final level is the choice of the \textbf{true parameters} used to generate the test set.
+A combinatorial grid of possible parameters is the simplest choice to study their influence on the performances.
+Again to avoid too expensive computation due to combinatorial explosion the true values of the nuisance parameters takes only 3 values :
+the nominal - deviation, nominal and nominal + deviation.
+The parameter of interest may be given more values.
+Finally the number of samples in the test set is also evolving to measure its impact on the quality of the inference.
+
+
+
+\section{Measured quantities for performance evaluation} % (fold)
+\label{sec:measured_quantities_for_performance_evaluation}
+
+
+Here is given more details than in \autoref{sec:evaluation_metric}.
+\victor{Donc il faudra probablement en injecter une bonne partie dans \autoref{sec:evaluation_metric} à terme.}
+For each set of \emph{true parameters} several performances metrics are measured.
+
+The main performance evaluation is the \emph{mean squared error} on the two estimated quantities : the parameter of interest and its confidence interval.
+
+
+
+\content{Var stat and Var systs.}
+
+\content{Number of call for MLE but also for the network at inference.}
+
+\content{}
+
+
 
 
 \section{Details} % (fold)
 \label{sec:details}
+
+Here are given the details to be able to reproduce the experiments.
+
+The chosen global seed is 42.
+This number has become famous ammong the computer science community as H2G2\needcite became more popular.
+I've seen it used quite often in codes as an easter egg.
+
 
 
 
@@ -24,10 +126,16 @@
 
 
 
+
 \subsection{Neural network architectures} % (fold)
 \label{sub:neural_network_architectures}
 
 \content{How the architectures were chosen}
+\content{One very simple + 3 sizes of Residual network because it can ignore useless parts}
+\content{Equal number of neurons in all layer. Grid. But always many neurons !!}
+
+
+
 
 
 
@@ -37,14 +145,7 @@
 
 \content{Grid search on which HP}
 
-
-
-
-
-\subsection{Cross validation} % (fold)
-\label{sub:cross_validation}
-
-\content{Shuffle split and seeding}
+\content{Donner la grille pour chaque modèle et expliquer pourquoi ces HP sont choisis.}
 
 
 

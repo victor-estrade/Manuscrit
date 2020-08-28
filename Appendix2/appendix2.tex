@@ -416,7 +416,7 @@ The data can be modeled by counting iid Bernouilli rare process which is well ap
 The events are splitted into 2 categories : the signal events and the background events.
 The signal events are events generated with a peculiar process (e.g. $H\to \tau^+ \tau^-$) that we want to study.
 The backgroud events gather all the other processes.
-The expected amount of background events $\beta$ is known (with high precision) thanks previous studies/experiments and to measurements made in the data space where few or no signals can be found.
+The expected amount of background events $\beta$ is known (with high precision) thanks to previous studies/experiments and to measurements made in the data space where few or no signals can be found.
 
 
 
@@ -449,7 +449,7 @@ We are using the maximum likelihood estimator.
 \end{equation}
 This can be done by hand. Assuming that we know $\gamma$ and  $\beta$.
 \begin{equation}
-    \frac{\partial \log p(n|\mu)}{\partial \mu} =  \mu \frac{n}{\mu\gamma + \beta} - \gamma
+    \frac{\partial \log p(n|\mu)}{\partial \mu} =  \gamma \frac{n}{\mu\gamma + \beta} - \gamma
 \end{equation}
 \begin{equation}
     \frac{\partial \log p(n|\mu)}{\partial \mu} = 0 \iff \mu = \frac{n-\beta}{\gamma}
