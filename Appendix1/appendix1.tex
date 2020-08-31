@@ -109,43 +109,25 @@ Altough the given variance/CL $\hshmu$ is assumed to be correct the variance of 
 
 Recall that :
 \begin{eqnarray}
-\label{eq:total_variance_law}
+\label{eq:total_variance_law_2}
     \VV[Y] =& \EE_X \left (\VV[Y|X] \right ) &+ \VV_X \left (\EE[Y|X]\right ) \\
     \VV[Y] =& \EE_X \left (\VV[Y|X] \right ) &+ \EE_X \left ( (\EE [Y|X]  - \EE[Y])^2\right )
 \end{eqnarray}
-
-
+Giving :
 \begin{equation}
 \label{eq:stat_and_syst_variance_definition_2}
 \mathbb{V}[\hat \mu] 
 	= \underbrace{\mathbb{E}_{\alpha \sim p(\alpha)} \left (\mathbb{V}[\hat \mu, \alpha] \right )}_{V_{stat}} 
-	+ \underbrace{\mathbb{E}_{\alpha \sim p(\alpha)} \left ( (\mathbb{E} [\hat \mu, \alpha]  - \mathbb{E}[\hat \mu])^2\right )}_{V_{syst}}
+	+ \underbrace{\mathbb{V}_{\alpha \sim p(\alpha)} \left ( \mathbb{E} [\hat \mu, \alpha] \right )}_{V_{syst}}
 \end{equation}
-Or :
-\begin{equation}
-\label{eq:stat_and_syst_variance_definition_3}
-\mathbb{V}[\mu|x] 
-	= \underbrace{\mathbb{E}_{\alpha \sim p(\alpha|x)} \left (\mathbb{V}[\mu|x, \alpha] \right )}_{V_{stat}} 
-	+ \underbrace{\mathbb{E}_{\alpha \sim p(\alpha|x)} \left ( (\mathbb{E} [\mu|x, \alpha]  - \mathbb{E}[\mu|x])^2\right )}_{V_{syst}}
-\end{equation}
+\victor{Voilà c'est là que j'ai un doute. Mon interrogation est sur la distribution de $\alpha$, on prend $p(\alpha | D)$ ou bien $p(\alpha)$ ? }
+The variance can be splitted between the part coming from the nuisance parameter and the part coming from the data sampling.
+The inference done asuming the value of $\alpha$ is known with $\alpha$ varying along a regular grid.
+To see the influence of nuisance parameters on the inference but also to compute $V_{stat}$ and $V_{syst}$ assuming a uniform prior on $\alpha$.
 
-Et puis il y a ça aussi :
-\begin{align}
-\label{eq:stat_and_syst_variance_definition_4}
-\mathbb{V}_{D^\star\sim p(D)}[\hat \mu | D^\star] 
- & = \underbrace{\mathbb{E}_{\alpha \sim p(\alpha|D^\star)} \left (\mathbb{V}_{D^\star\sim p(D)}[\hat \mu | D^\star, \alpha] \right )}_{V_{stat}} \\
- & ~ + \underbrace{\mathbb{E}_{\alpha \sim p(\alpha|D^\star)} \left ( (\mathbb{E}_{D^\star\sim p(D)} [\hat \mu | D^\star, \alpha]  - \mathbb{E}_{D^\star\sim p(D)}[\hat \mu | D^\star])^2\right )}_{V_{syst}}
-\end{align}
+Moreover we expect $V_{stat}$ to decerase in $\mathcal O \frac{1}{\sqrt{\#samples}}$ and $V_{syst}$ to be quite independant from $\#samples$.
 
-\victor{Voilà c'est là que j'ai un doute. Ces 2 equations sont bien évidement correctes.  Mais laquelle correspond à notre problème ?! Du coup j'ai gardé \autoref{eq:stat_and_syst_variance_definition_2}.}
-
-
-\content{Var stat and Var systs.}
-
-\content{Number of call for MLE but also for the network at inference.}
-
-\content{}
-
+The number predictions made by the model is also reported as a proxy of computation cost.
 
 
 
@@ -155,27 +137,92 @@ Et puis il y a ça aussi :
 Here are given the details to be able to reproduce the experiments.
 
 The chosen global seed is 42.
-This number has become famous ammong the computer science community as H2G2\needcite became more popular.
+This number has become famous with the popularity of H2G2\needcite.
 I've seen it used quite often in codes as an easter egg.
-
 
 
 
 \subsection{Baselines} % (fold)
 \label{sub:baselines}
 
+The baselines are the simplest models with the standard pipeline.
+A well tuned classifier trained on the nominal data.
+To avoid weak baselines Gradient Boosting [GB] \needcite from sci-kit learn is used.
+GB is easy to train and easy to tune and very often gives good classification results.
+Wrong training of GB by chance is quite difficult.
 
-
+A neural network classifier is also included in the baseline to compare methods with same or similar architectures when possible.
+Neural networks can be a bit tricky to train.
+If the neural network and gradient boosting performances are not very similar then the worst one is probably wrongly trained.
 
 
 
 \subsection{Neural network architectures} % (fold)
 \label{sub:neural_network_architectures}
 
-\content{How the architectures were chosen}
-\content{One very simple + 3 sizes of Residual network because it can ignore useless parts}
-\content{Equal number of neurons in all layer. Grid. But always many neurons !!}
 
+The choice of neural network architecture is a critical hyper-parameter but also the most difficult to tune because of its complexity.
+Automatization of neural network architecture search is still an open problem \needcite.
+Although better architectures will leads to better performances, neural network architecture is not the focus of this study.
+To give a fair comparison between methods at an affordable computation cost the chosen architectures are splited into 3 classes.
+
+\emph{Small} architectures to give base performances of maybe undersized networks.
+\emph{Large} architectures are expected to provide good if not best performances.
+\emph{Huge} architecture which are deliberately over-sized to make sure that bigger won't be better.
+
+
+Each layers have the exact same amount of neurons which is the only hyper-parameter of the architecture.
+In hope to better limit the inlfuence of the architecture on the performances residual conections are used in large network.
+Networks are built using simple blocs :
+\begin{itemize}
+	\item \textbf{Linear} layers are simple neural networks $o = W.x + b$
+	\item \textbf{Residual} blocs are 2 simple layers with an intermediate space half the size of the input and separated with an activation. $o = x + W_2 . a(W_1.x + b)$
+	\item \textbf{Average} layers are described \autoref{sub:datasetwise_input} $o = U.X+b+V.r(X)$
+	\item \textbf{Residual Average} blocs are 2 average layers with an intermediate space half the size of the input and separated with an activation. $o^\prime = a( U_1.X+b+V_1.r(X) )$ and $o = x + U_2.o^\prime + V_2.r(o^\prime) $
+\end{itemize}
+Making the intermediate space half the size of the input in residual blocs is assumed to encourage the network to learn simpler functions.
+This way the residual blocs are learning a simple corection of the input.
+Chaining these corrections should allow the network to produce arbitrarly complex functions but encourage it toward ones close to a linear function.
+
+All architectures follow a simple code :
+\begin{itemize}
+	\item L = Linear
+	\item R = Residual block
+	\item M = Mean operation (reduction)
+	\item A = Average layer
+	\item AR = Average Residual block
+\end{itemize}
+Followed by a number representing the number of layers.
+Since residual blocs includes 2 layers a single residual bloc is always followed by a even number representing twoce the number of blocs.
+
+The classic architectures is used for classifiers
+\begin{itemize}
+	\item \textbf{L4} [small] : simple feed forward neural network with 4 layers with ReLU activations.
+	\item \textbf{L1R8L1} [large] : a linear layer followed by 4 residual blocs and a final linear layer.
+	\item \textbf{L1R20L1} [huge] : a linear layer followed by 10 residual blocs and a final linear layer.
+\end{itemize}
+
+The averager architectures is an addition to INFERNO.
+INFERNO traning can leverage the datasetwise architecture so additional architectures were included to see what happens.
+\begin{itemize}
+	\item \textbf{L1A2L1} [small] : a linear layer followed by 2 average layers and a final linear layer.
+	\item \textbf{A1AR8L1} [large] : an average layer followed by 4 average residual blocs and a final linear layer.
+	\item \textbf{A1AR20L1} [huge] : an average layer followed by 10 average residual blocs and a final linear layer.
+\end{itemize}
+
+The regressor architectures are a bit bigger because the learned functions are expected to be more complex.
+\begin{itemize}
+	\item \textbf{A3ML3} [small] : 3 average layers an average reduction and 3 linear layers.
+	\item \textbf{A1AR2ML1} [small] : an average layer followed by 1 average residual bloc, an average reduction and a final linear layer.
+	\item \textbf{A1AR8MR8L1} [large] : an average layer followed by 4 average residual blocs then an average reduction followed by 4 residual blocs and a final linear layer.
+	\item \textbf{A1AR18MR4L1} [huge] : an average layer followed by 9 average residual blocs, an average reduction followed by 2 residual blocs and a final linear layer.
+\end{itemize}
+
+Finaly the choice of activation determines the smoothness of a network.
+Only relying on ReLU will likely end in a piecewise linear function while a sigmoid of tanh activation may lead more curves.
+Morover ReLU is never saturating which led to some gradient explosion is preliminary experiments. 
+To avoid having to test many activations the default activation is applying ReLU6 to the first half of the neurons and tanh to the rest of the neurons.
+This is assumed to allow the network to use the best of both world.
 
 
 
@@ -185,10 +232,68 @@ I've seen it used quite often in codes as an easter egg.
 \subsection{Hyper-parameter grid} % (fold)
 \label{sub:hyper_parameter_grid}
 
-\content{Grid search on which HP}
+\content{Donner la grille pour chaque modèle et \textbf{expliquer pourquoi ces HP sont choisis}}
 
-\content{Donner la grille pour chaque modèle et expliquer pourquoi ces HP sont choisis.}
 
+\begin{table}[h!]
+\centering
+\begin{tabular}{||c c c c||} 
+ \hline
+ \multicolumn{4}{|c|}{Gradient boosting}\\
+ \hline
+ Problem & GG & S3D2 & HiggsML \\ [0.5ex] 
+ \hline
+ \# estimators & [100, 300, 1000] & [100, 300, 1000] & [500, 1000, 2000] \\ 
+ max-depth     & [3, 5, 10] & [3, 5, 10] & [3, 5, 10] \\
+ learning-rate & [0.1, 0.05, 0.01] & [0.1, 0.05, 0.01] & [0.1, 0.05, 0.01] \\
+ \hline
+\end{tabular}
+\caption{Table of hyper-parameters for Gradient boosting}
+\label{table:HP_GB}
+\end{table}
+
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{||c c c c||} 
+ \hline
+ \multicolumn{4}{|c|}{Neural network classifier}\\
+ \hline
+ Problem & GG & S3D2 & HiggsML \\ [0.5ex] 
+ \hline
+ \# units & [50, 100, 200, 500] & [50, 100, 200, 500] & [50, 100, 200, 500] \\ 
+ \# steps & [2000, 5000] & [2000, 5000] & [2000, 5000, 10 000] \\
+ learning-rate & [1e-3] & [1e-3] & [1e-3] \\
+ Optimizer & Adam & Adam & Adam \\
+ $\beta_1$ & 0.9 & 0.9 & 0.9 \\
+ $\beta_2$ & 0.999 & 0.999 & 0.999 \\
+ \hline
+\end{tabular}
+\caption{Table of hyper-parameters for Neural network classifier}
+\label{table:HP_NN}
+\end{table}
+
+
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{||c c c c||} 
+ \hline
+ \multicolumn{4}{|c|}{Regressor}\\
+ \hline
+ Problem & GG & S3D2 & HiggsML \\ [0.5ex] 
+ \hline
+ \# units & [50, 100, 200, 500] & [50, 100, 200, 500] & [50, 100, 200, 500] \\ 
+ \# steps & [2000, 5000] & [2000, 5000] & [2000, 5000, 10 000] \\
+ learning-rate & [1e-3] & [1e-3] & [1e-3] \\
+ Optimizer & Adam & Adam & Adam \\
+ $\beta_1$ & 0.5 & 0.5 & 0.5 \\
+ $\beta_2$ & 0.9 & 0.9 & 0.9 \\
+ \hline
+\end{tabular}
+\caption{Table of hyper-parameters for Neural network datasetwise regressor}
+\label{table:HP_REG}
+\end{table}
 
 
 
