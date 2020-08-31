@@ -68,14 +68,14 @@ More realistic calibrations are left for future work.
 On a third level is the \textbf{hyper-parameters} and \textbf{architecture} of the models.
 The hyper-parameter setting is quite straitforward : a grid search on the most relevant hyper-parameters is done.
 The resolution of the grid is quite low to avoid the need of expensive computing ressources.
-The architecture choice is more complicated since there is an infinite way of desining one
+The architecture choice is more complicated since there is an infinite way of desining one.
 It is devellopped in a later section\needcite.
 
-The experiments are reapeated several times to accuratelly measure the variance of the performances according to the data sampling.
-This is called \textbf{cross-validation} in this document although it is not allways a crossing of bunches of the same dataset.
+The experiments are reapeated several times to accuratelly measure the variance of the performances according to data sampling.
+This is called \textbf{cross-validation} in this document although it is not allways a crossing of bunches of the same dataset as in classic cross-validation practices.
 Three datasets are used in the process.
 The \emph{training} set is the data used to train our model.
-The \emph{validation} set is the data used to produce summary statistics (the azimov dataset ?).
+The \emph{validation} set is the data used to produce summary statistics (is it the azimov dataset ?).
 The \emph{test} set is the data on which inference is done.
 
 On the toy problems the generative process is cheap.
@@ -100,7 +100,44 @@ Here is given more details than in \autoref{sec:evaluation_metric}.
 For each set of \emph{true parameters} several performances metrics are measured.
 
 The main performance evaluation is the \emph{mean squared error} on the two estimated quantities : the parameter of interest and its confidence interval.
+There is two sources of randomness in the estimated values.
+The first one is the variance of the nuisance parameters which all methods is supposed to handle and include in its estimated a variance or a confidence interval of the estimated parameter of interest $\hshmu$.
+The second is the data sampling which is empirically measured by repeating the experiment with cross-validation.
+Altough the given variance/CL $\hshmu$ is assumed to be correct the variance of $\hmu$ is measured for comparison.
+\victor{Oui mais du coup ces 2 quantités ne mesure pas vraiment la même chose, si ?}
 
+
+Recall that :
+\begin{eqnarray}
+\label{eq:total_variance_law}
+    \VV[Y] =& \EE_X \left (\VV[Y|X] \right ) &+ \VV_X \left (\EE[Y|X]\right ) \\
+    \VV[Y] =& \EE_X \left (\VV[Y|X] \right ) &+ \EE_X \left ( (\EE [Y|X]  - \EE[Y])^2\right )
+\end{eqnarray}
+
+
+\begin{equation}
+\label{eq:stat_and_syst_variance_definition_2}
+\mathbb{V}[\hat \mu] 
+	= \underbrace{\mathbb{E}_{\alpha \sim p(\alpha)} \left (\mathbb{V}[\hat \mu, \alpha] \right )}_{V_{stat}} 
+	+ \underbrace{\mathbb{E}_{\alpha \sim p(\alpha)} \left ( (\mathbb{E} [\hat \mu, \alpha]  - \mathbb{E}[\hat \mu])^2\right )}_{V_{syst}}
+\end{equation}
+Or :
+\begin{equation}
+\label{eq:stat_and_syst_variance_definition_3}
+\mathbb{V}[\mu|x] 
+	= \underbrace{\mathbb{E}_{\alpha \sim p(\alpha|x)} \left (\mathbb{V}[\mu|x, \alpha] \right )}_{V_{stat}} 
+	+ \underbrace{\mathbb{E}_{\alpha \sim p(\alpha|x)} \left ( (\mathbb{E} [\mu|x, \alpha]  - \mathbb{E}[\mu|x])^2\right )}_{V_{syst}}
+\end{equation}
+
+Et puis il y a ça aussi :
+\begin{align}
+\label{eq:stat_and_syst_variance_definition_4}
+\mathbb{V}_{D^\star\sim p(D)}[\hat \mu | D^\star] 
+ & = \underbrace{\mathbb{E}_{\alpha \sim p(\alpha|D^\star)} \left (\mathbb{V}_{D^\star\sim p(D)}[\hat \mu | D^\star, \alpha] \right )}_{V_{stat}} \\
+ & ~ + \underbrace{\mathbb{E}_{\alpha \sim p(\alpha|D^\star)} \left ( (\mathbb{E}_{D^\star\sim p(D)} [\hat \mu | D^\star, \alpha]  - \mathbb{E}_{D^\star\sim p(D)}[\hat \mu | D^\star])^2\right )}_{V_{syst}}
+\end{align}
+
+\victor{Voilà c'est là que j'ai un doute. Ces 2 equations sont bien évidement correctes.  Mais laquelle correspond à notre problème ?! Du coup j'ai gardé \autoref{eq:stat_and_syst_variance_definition_2}.}
 
 
 \content{Var stat and Var systs.}
@@ -145,8 +182,8 @@ I've seen it used quite often in codes as an easter egg.
 
 
 
-\subsection{Hyper-parameter search} % (fold)
-\label{sub:hyper_parameter_search}
+\subsection{Hyper-parameter grid} % (fold)
+\label{sub:hyper_parameter_grid}
 
 \content{Grid search on which HP}
 
