@@ -12,7 +12,7 @@ List of main experiments :
 \begin{itemize}
 	\item Measure \emph{performances} for each \emph{method}
 	\item Compare performances between \emph{robust} method
-	\item Show that the balancing of S and B is important
+	\item Show that the balancing of S and B is critical
 	\item Reproduce the impossibility of separating \emph{domains} on Higgs
 \end{itemize}
 
@@ -25,15 +25,20 @@ There is several way of estimating the parameter of interest.
 These ways may differ from each other because of the pipeline, classifier training, architecture, hyper-parameters and cross-validation.
 The experiments are organized as follow.
 
-A \textbf{run} is a combinason of a \emph{problem}, a \emph{method}, a \emph{calibration}, a set of \emph{hyper-parameters}, a \emph{cross-validation} ID, a set of \emph{true parameter}.
+A \textbf{run} is a combinason of a \emph{problem}, a \emph{method}, a \emph{calibration}, a set of \emph{hyper-parameters}, a \emph{cross-validation} seed, and a set of \emph{true parameter}.
 
 A \textbf{problem} is a generative process with a mixture coefficient to be infered.
+Problems are assumed to be completelly determined by a set of input parameters including the parameter of interest.
+The parameter of interest is the mixture coefficient or a quantity link to it by a bijective function.
 List :
 \begin{itemize}
 	\item Gamma-Gauss [GG] : a 1D toy
 	\item Synthetic 3D data [S3D2] : a replication of the 3D toy in the inferno paper
 	\item Higgs ML data [HIGGS] : the data from higgsML challenge + the re-simulator
 \end{itemize}
+
+A \textbf{dataset} is a finite sampled realization of problem given some \textbf{input parameters}.
+The \textbf{nominal data} is a dataset produced with the most probable input parameters according to our prior knowledge.
 
 
 A \textbf{method} is represented by a training algorithm and a pipeline.
