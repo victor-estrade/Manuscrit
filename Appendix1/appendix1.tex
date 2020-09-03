@@ -89,7 +89,7 @@ the nominal - deviation, nominal and nominal + deviation.
 The parameter of interest may be given more values.
 Finally the number of samples in the test set is also evolving to measure its impact on the quality of the inference.
 
-
+\victor{Ecrire exactement la variabilité restante : le train set, le test set et l'initialisation des NN}
 
 \section{Measured quantities for performance evaluation} % (fold)
 \label{sec:measured_quantities_for_performance_evaluation}
@@ -98,8 +98,10 @@ Finally the number of samples in the test set is also evolving to measure its im
 Here is given more details than in \autoref{sec:evaluation_metric}.
 \victor{Donc il faudra probablement en injecter une bonne partie dans \autoref{sec:evaluation_metric} à terme.}
 For each set of \emph{true parameters} several performances metrics are measured.
+\victor{True parameters : donner la définition des paramètres ie $\mu$ et $\alpha$}
 
 The main performance evaluation is the \emph{mean squared error} on the two estimated quantities : the parameter of interest and its confidence interval.
+\victor{Définition de confidence interval comme interval centré (50\% à droite et à gauche)}
 There is two sources of randomness in the estimated values.
 The first one is the variance of the nuisance parameters which all methods is supposed to handle and include in its estimated a variance or a confidence interval of the estimated parameter of interest $\hshmu$.
 The second is the data sampling which is empirically measured by repeating the experiment with cross-validation.
