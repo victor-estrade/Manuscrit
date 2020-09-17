@@ -90,19 +90,18 @@ The vast majority of the processes are already well known.
 To produce (very) rare therefore interesting processes the accelerator must produce a collosal number of collisions.
 
 The LHC is an international collaboration, involving thousands of people and housing many HEP experiments.
-The one that is of interest in this work is a measurement of the frequency of a specific process ($H \to \tau \tau$).
+The one that is of interest in this work is a study of a specific process ($H \to \tau \tau$).
 Basically an event produced a Higgs boson which desintegrated into 2 $\tau$ particles.
 Each event following this process is defined as a \emph{signal} event versus the \emph{background} events that gather all the other processes.
-Leading to a counting experiment of the number of signals $s$ and the number of backgrounds $b$ to give access to the quantity of interest $\frac{s}{s + b}$.
+The objective is to measure the frequency, or probability, of this event to occur.
+Leading to a counting experiment of the number of signals $s$ and the number of backgrounds $b$ to give access to the quantity of interest $f = \frac{s}{s + b}$.
+From this frequency and the setup of the experiment (luminosity, etc) it is possible to compute the \emph{cross-section} (or branch factor ?) of the $H \to \tau \tau$ process which is the final goal of the study.
+\victor{Link between cross-section, branch factor, luminosity ?}
 
-In many interesting cases, including ours, the nature of the event (signal / background) are not among the possible measurement that can be made.
-Counting signals and backgrounds requires some extra work.
+In many interesting cases, including ours, the nature of the event (signal / background) are not among the possible measurements that can be made.
+Counting signals and backgrounds requires extra work.
 Especially a very accurate description of the various steps in the experiment which is the role of the model.
 
-
-\content{Introduce cross section estimations / mixture coefficient inference ?}
-$m$ is therefore connected to branch factor (cross section ?) of the Higgs boson which is the parameter we want to measure.
-\victor{Link between cross-section, branch factor, luminosity ?}
 
 
 
@@ -115,17 +114,12 @@ The Standard Model \needcite (SM) is the theory describing quantum physics inclu
 The counting experiment final objective is to improve our knowledge of one of the free parameter of the SM.
 In other word we are fitting the SM parameters to the data of the experiment.
 
-Let's start by defining the quanties describing the process.
-First, the estimated parameter is $\mu$.
-In our case it is the frequency of the signal process.
-The true value of $\mu$, assuming that the model is perfect, is noted $\mu^\star$ as opposed to $\hmu$ the value estimated with the data.
-Of course the objective is to build an estimator $\hmu$ whose value is as close as possible to the true value $\mu^\star$.
-Second, the observables ie the data collected by the apparatus for a single event is $x$.
+Let $x$ be the observables ie the data collected by the apparatus for a single event and $p(x)$ its probability density.
 The LHC produces a large quantity of events while ensuring that the conditions are the same for all events.
 Hence we can assume that the full dataset $D$ contains $N$ independant and identically distributed (iid) events $D = \{x_i\}_{i=1}^N$.
 
 Going from the fundamental parameters to the observables is very complex and not in the direct interest of this study.
-The process can be summaried into four major steps :
+The full process can be summaried into four major steps :
 \begin{enumerate}
 	\item The collision between particles
 	\item The particle production from the collision
@@ -133,25 +127,36 @@ The process can be summaried into four major steps :
 	\item Reaction of the measurement apparatus to the particles going through it.
 \end{enumerate}
 
-Each of these steps requires special care from the community to be accurately described.
+Each of these steps requires special care from the community to be accurately modeled.
 \victor{Maybe a few numbers to show how much it is complicated (nb poeple working on it, time required, nb of paper, etc)}
 
-Although modeling what happens between the particle production and the apparatus is possible it is by definition impossible to get data about what really happened.
+Although modeling what happens between the particle production and the apparatus response is possible it is by definition impossible to get data about what really happened.
 Leading to the necessity to infer what happened before the measurement from the data.
-But also turning the vast majority of the intermediate quantities into latent or hidden variables.
-Latent variables are noted $z$ or $z_i$.
+
+\victor{Quelques mots sur le tracking, l'inférence des features}
+
+Turning the vast majority of the intermediate quantities into latent or hidden variables.
+Latent variables are noted $z$.
 One of this latent variable was already mentioned previously \autoref{sub:the_system} : the \emph{label} of the event indicating the nature of the particule, in our case if it is a \emph{signal} or a \emph{background} event.
 
 \victor{L'objectif est de donner un apperçu de la complexité de la chose. Sans entrer + que ça dans les détails...}
 \victor{TODO : Donner un aperçu de la complexité de chaque étape en 1 ou 2 phrases.}
 
-Finally gathering all the ingredients builds a simplified model of the process as :
+The parameter of interest is noted $\mu$.
+$\mu$ is a fundamental parameter intervening at the particle collision stage (ie step 1).
+
+Finally gathering all the ingredients the full process can be described as :
 \begin{equation}
 	\label{eq:model_simple}
 	p(x, \mu, z) = p(x|z) p(z | \mu) p(\mu)
 \end{equation}
 In other words the fundamental parameter $\mu$ shapes the distribution of the latent variable $z$.
 And the data distribution of $x$ depends on the latent variable $z$.
+
+The true value of $\mu$, assuming that the model is perfect, is noted $\mu^\star$ as opposed to $\hmu$ the estimated value from the data.
+Of course the objective is to build an estimator $\hmu$ whose value is as close as possible to the true value $\mu^\star$.
+
+
 
 
 
@@ -182,7 +187,7 @@ When no prior knowledge on the parameter of interest is available maximum a post
 							&= \argmax_\mu p(x|\mu) p(\mu) \\
 							&= \argmax_\mu p(x|\mu)\\
 \end{align}
-Solving this maximization usually involves either analytical computing of the formulas \victor{Why not givin an example in the appendix ?} or an numerical optimization process (eg. gradient ascent, coordinate ascent)
+Solving this maximization usually involves either analytical computing of the formulas \victor{Why not givin an example in the appendix ?} or a numerical optimization process (eg. gradient ascent, coordinate ascent)
 
 
 
@@ -211,10 +216,9 @@ Moreover sometimes simplifications needs to be made in order to build the model 
 Some other times computable formulas simply do not exist \needcite.
 
 \content{Approximation requiered to build some part of LHC simulation as an example}
-\content{Here or in the previous subsection : 1/2 page on the processes to simulate an event. In order to make clear how complicated it is.}
 
 
-However building a simulator working only in forward mode allowing to sample from $p(x|\mu)$ is easier and possible in cour case.
+However building a simulator working only in forward mode ie allowing to sample from $p(x|\mu)$ is easier and possible in cour case.
 The objective is then to infer causal parameters from observations hence reversing the forward process which goes from causal parameters to observations.
 This is more generaly known as the \emph{inverse problem}.
 There is no general solution yet to this problem altough it occures often in experimental science.
@@ -370,42 +374,83 @@ Note : $c$ is also a sufficient summary statistic
 
 
 
+
+
 \subsection{Poisson count process} % (fold)
 \label{sub:poisson_count_process}
+
+Here is derived the standard method to modelize the problem.
 
 The system allows 2 kind of collisions : soft and hard collisions.
 The hard collisions are very rare compared to the soft collisions.
 The data can be modeled by counting iid Bernouilli rare process which is well approximated by a Poisson distribution \needcite when the number of samples is large.
+
+\victor{Ajouter un petit dessin type arbre de probabilité.}
+
 The hard collision are splitted into 2 categories the signal events and the background events.
-The amount of background event $b$ is known (with high precision) thanks to measurements made in the data space where few or no signals can be found.
+The number of signals is $s$ and the number of backgrounds is $b$.
 
-The total amout of event $n$ follows a Poisson distribution of parameter $s + b$.
-Since usually $s$ is very small the parameter of interest is a deviation $\mu$ from an expected value $s$.
-
+The total number of events $n$ is the sum of signal events and background events.
 \begin{equation}
-	n \sim Poisson(\mu s + b)
+	n = s + b
+\end{equation}
+The number of signal events is following a poisson distribution of parameter $\mu \gamma$.
+\begin{equation}
+	s \sim Poisson(\mu \gamma)
+\end{equation}
+$\gamma$ is the expected number of signals according to current knowledge ie the SM.
+$\mu$ is the parameter of interest, it is the deviation from the SM.
+This way of decomposing the expectancy of the number of signals is mainly here for convenience (numérical stability and dimensionless $\mu$)
+\victor{dimensionless or unitless ?}
+The number of background events is following a poisson distribution of parameter $\beta$.
+\begin{equation}
+	b \sim Poisson(\beta)
+\end{equation}
+Since the sum of Poisson random variables is also Poisson distributed \needcite (cf wikipedia) :
+\begin{equation}
+	n \sim Poisson(\mu \gamma + \beta)
 \end{equation}
 
 Giving the likelihood :
 \begin{equation}
-	P(n| \mu, s, b) = \frac{(\mu s +b)^n }{n!} e^{-(\mu s + b)}
+	P(n| \mu) = \frac{(\mu \gamma +\beta)^n }{n!} e^{-(\mu \gamma +\beta)}
 \end{equation}
 
 A computable likelihood is now available !
 This allow to use more classic parameter estimation like maximum likelihood.
-The only drawback is that the nature of the event (signal/background) is not available in the data.
-But a classifier can be trained to separate signals and backgrounds from training data extracted from the simulator.
-As seen previously a classifier decision function is a sufficient summary statistic making this method optimal.
-\victor{optimal method = strong claim. Better be sure about it}
+
+\begin{equation}
+    \hat \mu = \argmax_\mu p(n|\mu) =  \argmax_\mu Poisson(n|\mu)
+\end{equation}
+This can be done by hand. Assuming that we know $\gamma$ and  $\beta$.
+\begin{equation}
+    \frac{\partial \log p(n|\mu)}{\partial \mu} =  \gamma \frac{n}{\mu\gamma + \beta} - \gamma
+\end{equation}
+\begin{equation}
+    \frac{\partial \log p(n|\mu)}{\partial \mu} = 0 \iff \mu = \frac{n-\beta}{\gamma}
+\end{equation}
+Note $\EE[n] = \mu\gamma + \beta$ and $\max Poisson = \EE[Poisson]$ so maybe there is a simpler way to find this ?
+
+
+
+
+
+
+\subsection{Binned poisson count process} % (fold)
+\label{sub:binned_poisson_count_process}
 
 To improve inference the classifier is also used to select a bunch of regions rich in signals.
+
 \victor{(yes but how/why !!) Probably a simple result link to signal / noise ratio but I can't find it...}
+
 Leading to a binned likelihood :
 
 \begin{equation}
-	p(D|\mu) = \prod_{i=1}^M Poisson(n_i | \mu, s_i, b_i) = \prod_{i=1}^M \frac{(\mu s_i + b_i)^n }{n!} e^{-(\mu s_i + b_i)}
+	p(D|\mu) = \prod_{i=1}^M Poisson(n_i | \mu, \gamma_i, \beta_i) = \prod_{i=1}^M \frac{(\mu \gamma_i + \beta_i)^n }{n!} e^{-(\mu \gamma_i + \beta_i)}
 \end{equation}
 
+As seen previously a classifier decision function is a sufficient summary statistic making this method optimal.
+\victor{optimal method = strong claim. Better be sure about it}
 
 
 
@@ -462,8 +507,31 @@ Finally to simplify the computation Bob assumed that the heat produced by the ho
 
 \content{Schéma inverse problem with nuisance parameters}
 
+\subsection{Impact on likelihood} % (fold)
+\label{sub:impact_on_likelihood}
 
+\victor{Brouillon pour le moment}
 
+The likelihood is modified with the introduction of the nuisance parameter $\alpha$.
+The expected number of signal $\gamma$ and backgrounds $\beta$ now depends on $\alpha$.
+
+\begin{equation}
+	P(n| \mu, \alpha) = \frac{(\mu \gamma(\alpha) +\beta(\alpha))^n }{n!} e^{-(\mu \gamma(\alpha) +\beta(\alpha))}
+\end{equation}
+
+Which makes it impossible to use closed formulas since these dependencies are not known exactly or incomputable.
+
+Sometimes, but rarely, several set of values of $\mu$ and $\alpha$  can lead to the same value of the likelihood...
+In physics it is almost impossible though.
+
+$\alpha$ is generally known to a certain extent thanks to other measurements is controled region where the signal has low probability of appearing or even no influence at all making these measurement independant from $\mu$.
+
+Including these measurements $D_{calib}$ in the process leads to :
+\begin{align}
+	p(n, D_{calib} | \mu, \alpha) &= p(n | \mu, \alpha) \times p(D_{calib} | \mu, \alpha) \\
+	p(n, D_{calib} | \mu, \alpha) &= p(n | \mu, \alpha) \times p(D_{calib} | \alpha) \\
+	p(n, D_{calib} | \mu, \alpha) &= Poisson(n | \mu \gamma(\alpha) +\beta(\alpha)) \times \mathcal N(D_{calib} | \alpha)
+\end{align}
 
 
 
