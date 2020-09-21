@@ -134,12 +134,12 @@ The full process can be summaried into four major steps :
 \end{enumerate}
 
 Each of these steps requires special care from the community to be accurately modeled.
-\victor{Maybe a few numbers to show how much it is complicated (nb poeple working on it, time required, nb of paper, etc)}
+\victor{TODO : Maybe a few numbers to show how much it is complicated (nb poeple working on it, time required, nb of paper, etc)}
 
 Although modeling what happens between the particle production and the apparatus response is possible it is by definition impossible to get data about what really happened.
 Leading to the necessity to infer what happened before the measurements.
 
-\victor{Quelques mots sur le tracking, l'inférence des features}
+\victor{TODO : Quelques mots sur le tracking, l'inférence des features}
 
 The vast majority of the intermediate quantities are latent or hidden variables, noted $z$.
 One of this latent variable was already mentioned previously \autoref{sub:the_system} : the \emph{label} of the event indicating the nature of the process, in our case if it is a \emph{signal} or a \emph{background} event.
@@ -156,6 +156,8 @@ Finally gathering all the ingredients the generative model can be splited in 3 s
 \end{equation}
 In other words the fundamental parameter $\mu$ shapes the distribution of the latent variable $z$.
 And the data distribution depends on the latent variable $z$.
+$p(\mu)$ is the prior knowledge, it contains all the belief of the community.
+Of course the belief of the community is only based on results the previous experiments
 
 Note : we assume here that $\mu$ is the only fundamental parameter for simplicity.
 In a more realistic model, like the standard model, there are more of fundamental parameters.
@@ -243,6 +245,28 @@ There is no general solution yet to this problem altough it occures often in exp
 
 
 
+\subsection{Special case of inverse problem} % (fold)
+\label{sub:special_case_of_inverse_problem}
+
+Although no general solution to the inverse problem exist yet it is possible to use the characteritics of the setup to get around the problem.
+
+Events are classified into two categories : signals and backgrounds.
+The distribution of events can be rewritten as :
+\begin{equation}
+ 	p(x) = p(x|S) p(S) + p(x|B) p(B)
+\end{equation}
+The objective is to infer the probability of an event to be a signal ie $p(S)$ while $p(x|S)$ and $p(x|B)$ are intracktable.
+Since we are working with very rare events the value of $p(S)$ is very small.
+To avoid numerical issues it is more convenient to deal with a \emph{deviation} from a nominal value.
+\begin{equation}
+	p(S) = \mu p_{SM}(S)
+\end{equation}
+where $p_{SM}(S)$ is the probability of an event to be a signal according to current knowledge ie the Standard Model.
+The parameter of interest $\mu$ is measuring the deviation of the data from the SM.
+If the data are in perfect agreement with the SM then $\mu=1$.
+
+The next section will make use of this setup to tackle the inference.
+
 
 
 
@@ -260,6 +284,13 @@ There is no general solution yet to this problem altough it occures often in exp
 \content{Introduire le problème d'extraction d'un coefficient de mélange(lié à cross-section)}
 
 
+This section show how to solve this specific case of inverse problem.
+\autoref{sub:hand_crafted_dimension_reduction} gives a general solution assuming domain knowledge allow to put all relevant information in a low dimension space.
+\autoref{sub:count_estimation} is using a classifier score as a proxy for maximum likelihood estimation.
+The remaining sections (\autoref{sub:poisson_count_process}, \autoref{sub:binned_poisson_count_process}, \autoref{sub:asimov_dataset}) describe the retained analysis pipeline.
+The reason to retain the last one is given in \autoref{sec:systematic_effects}.
+
+
 
 
 
@@ -269,6 +300,8 @@ There is no general solution yet to this problem altough it occures often in exp
 
 \subsection{Hand crafted dimension reduction} % (fold)
 \label{sub:hand_crafted_dimension_reduction}
+
+\victor{Brouillon}
 
 Since the likelihood cannot be computed directly one solution is to sample many events and apply density estimation methods.
 Examples : histograms, kernel density estimation.
@@ -294,68 +327,66 @@ So we can use it on the simulated data to define the likelihood function.
 
 
 
+
+
 \subsection{Count estimation} % (fold)
 \label{sub:count_estimation}
-
 
 This section borrows many results from \cite{Neal:2007zz}.
 
 The stochastic phenomenon of interest here displays the following generative process :
 \begin{equation}
 	\label{eq:mixture_model}
-	p(x|\mu) = \mu p(x|S) + (1-\mu) p(x|B)
+	p(x|\eta) = \eta p(x|S) + (1-\eta) p(x|B)
 \end{equation}
 where $x$ is the set of observable features of the studied event gathered in a vector.
 Events are split into 2 classes : the signals $S$ and the backgrounds $B$.
 Note that $S$ and $B$ are one of the numerous latent variable $z_i$ in \autoref{eq:intractable_integral}.
-$\mu$ is the mixture coefficient between signals and backgrounds.
+$\eta$ is the mixture coefficient between signals and backgrounds.
 
-$\mu$ can be seen as the probability for an event to be a signal $p(S)$. 
-It naturally follows that $1-\mu$ is the probability for an event to be a background $p(B)=1-p(S)$.
+As stated in \autoref{sub:special_case_of_inverse_problem} $\eta$ can be seen as the probability for an event to be a signal $p(S)$. 
+It naturally follows that $1-\eta$ is the probability for an event to be a background $p(B)=1-p(S)$.
 \autoref{eq:mixture_model} can be re-written as
 \begin{equation}
 	p(x) = p(S)p(x|S) + p(B)p(x|B)
 \end{equation}
 
-As previously explained the likelihoods $p(x|S)$ and $p(x|B)$ are intractable because they involves high dimension integrals.
-However building a simulator working only in forward mode allowing to sample from $p(x|\mu)$ is possible.
-This allow us to build a training dataset for some machine learning later.
+As previously explained \autoref{sub:inverse_problem} the likelihoods $p(x|S)$ and $p(x|B)$ are intractable because they involves high dimension integrals.
+However building a simulator working only in forward mode allowing to sample from $p(x|\eta)$ is possible.
+This allow us to build a training dataset to feed some machine learning algorithm later.
 
 Measurements are made from a large bunch of independent and identically distributed events $D=\{x_i\}_{i=1}^N$.
 
 \begin{align*}
-	p(D|\mu) =& \prod_{i=1}^N \mu p(x|S) + (1-\mu) p(x|B) \\
-	       =& \prod_{i=1}^N p(x|B) \left [(1-\mu) + \mu \frac{p(x|S)}{p(x|B)} \right ]\\
+	p(D|\eta) =& \prod_{i=1}^N \eta p(x|S) + (1-\eta) p(x|B) \\
+	       =& \prod_{i=1}^N p(x|B) \left [(1-\eta) + \eta \frac{p(x|S)}{p(x|B)} \right ]\\
 \label{eq:Fisher-Neyman}
 	       =& \underbrace{\left[ \prod_{i=1}^N p(x|B) \right ]}_{h(x)} \times 
-	       \underbrace{\left [\prod_{i=1}^N (1-\mu) + \mu \frac{p(x|S)}{p(x|B)} \right ]}_{g_\mu(T(x))}
+	       \underbrace{\left [\prod_{i=1}^N (1-\eta) + \eta \frac{p(x|S)}{p(x|B)} \right ]}_{g_\eta(T(x))}
 \end{align*}
 with $T(x) = \frac{p(x|S)}{p(x|B)} $
 
-The Fisher-Neyman factorization theorem \needcite states that $T(x)$ is a sufficient summary statistic to obtain $\mu$
+The Fisher-Neyman factorization theorem \needcite states that $T(x)$ is a sufficient summary statistic to obtain $\eta$
 
 The maximum likelihood estimator, noted $\hat \mu$, is commonly used to estimate the parameter of interest.
 This is a reasonable choice when we do not have prior knowledge as in this example.
 
 \begin{equation}
-	\hat \mu = \argmax_\mu p(\mu | D)
+	\hat \eta = \argmax_\eta p(\eta | D)
 \end{equation}
 
 It is more convenient (numerical stability) to express the result as a deviation from the prediction of the Standard Model.
 The deviation is defined as :
 
 \begin{equation}
-	\mu = \frac{p(S)}{p_{SM}(S)} = \frac{\mu_0}{p_{SM}(S)}
+	\mu = \frac{p(S)}{p_{SM}(S)} = \frac{\eta}{p_{SM}(S)}
 \end{equation}
 $p_{SM}(S)$ is the expected probability to get a signal following the Standard Model.
-Recovering the frequency $\mu_0$ from $\mu$ is trivially done with $\mu_0 = \mu p_{SM}(S)$.
+Recovering the frequency $\eta$ from $\mu$ is trivially done with $\eta = \mu p_{SM}(S)$.
 
 The estimator is now :
 \begin{align}
-	\hmu =& \argmax_\mu p(\mu | D) \\
-	     =& \argmax_\mu \frac{p(\mu)}{p(D)} p(D | \mu) \\
-	     =& \argmax_\mu p(\mu) p(D | \mu) \\
-	     =& \argmax_\mu  p(D | \mu) \\
+	\hmu =& \argmax_\mu  p(D | \mu) \\
 	     =& \argmax_\mu  \prod_{i=1}^N g_\mu(T(x)) \\
 \end{align}
 
@@ -372,13 +403,18 @@ where $n_s$ is the fraction of signals used in the training dataset.
 \end{equation}
 
 
-Note : $c$ is also a sufficient summary statistic
+Note that $c$ is also a sufficient summary statistic
 \begin{equation}
 	g_\mu(T(x)) = 1 - \mu p_{SM}(S) + \mu p_{SM}(S) \times \frac{c(x)}{(1-c(x))} \frac{(1-n_s)}{n_s} = f_\mu(c(x))
 \end{equation}
 
 \content{Limitation : what happens if the classifier is not (Bayes) optimal ? Can we detect it ?}
 \content{Physicists also uses the Neyman-Pearson theorem on statistical test to justify maximum likelihood estimator usage. Should I include it here ?}
+
+\victor{TODO : C'est ici que je devrais parler des travaux de Kyle Cranmer et al sur Calibrated classifier ! \cite{Cranmer2015}}
+
+
+
 
 
 
@@ -389,7 +425,8 @@ Note : $c$ is also a sufficient summary statistic
 \subsection{Poisson count process} % (fold)
 \label{sub:poisson_count_process}
 
-Here is derived the standard method to model the problem.
+Here is derived the standard method to solve the problem.
+The modeling of events is replaced by a model at a dataset level which is tractable.
 
 The system allows 2 kind of collisions : soft and hard collisions.
 The hard collisions are very rare compared to the soft collisions.
@@ -454,17 +491,17 @@ This section show how to improve this estimator using binning.
 
 The Poisson approximation is allowed because of the small probability of a event to occur and the large number of samples that the LHC can produce.
 Cutting the data space into regions does not break these assumptions as long as the regions contains enough samples.
-Intuitively knowing not only the total number of events but the number of events in each parts of the data space contains more information hence should improve the inference.
+Intuitively knowing not only the total number of events but the number of events in each chunk of the data space contains more information hence should improve the inference.
 
 Let $O$ be the full data space and $K$ regions $\{\Omega_i\}_{i=1}^K$ such that they do not overlap $\forall i\neq j, \Omega_i \cap \Omega_j = \varnothing $ and that their union cover the full space $\bigcup_{i=1}^K \Omega_i = O$.
-Those regions are most commonly called \emph{bins}.
+Those regions are most commonly called \emph{bins} (or histogram bins) as the counting events in regions often rely on building a histogram.
 
 There is an infinite number of ways to cut the space into bins.
 \victor{FIGURE : Dessin de 2 manières de couper l'espace en région}
 Our objective with the binning is to improve the estimation, especially reduce the variance of our estimator.
 
 First let's see how binning improves the variance.
-We compare the two likelihood $L_0$ without binning and $L_K$ with $K$ bins
+We compare the two likelihood functions $L_0$ without binning and $L_K$ with $K$ bins
 \begin{equation}
     L_0 = \frac{(\mu \gamma + \beta)^n }{n!} e^{-(\mu \gamma + \beta)}
 \end{equation}
@@ -492,8 +529,10 @@ The choice of the bin shape remains to be decided.
 Choosing carefully the bins $\Omega_i$ to make this quantity as small as possible requires to have some bins with high purity of signals.
 \victor{I need to prove that ! See \autoref{sec:proof} for details}
 
-To improve inference the classifier is used to select a bunch of regions rich in signals.
+To improve inference a classifier is used to create at least one region as rich in signals as possible.
 As seen in \autoref{sub:count_estimation} a Bayes optimal classifier decision function is a sufficient summary statistic adding to the interest of using a classifier.
+
+
 
 
 
@@ -521,6 +560,7 @@ So I guess that it is not that complicated after all.
 
 
 
+
 \section{Systematic effects} % (fold)
 \label{sec:systematic_effects}
 
@@ -528,7 +568,7 @@ So I guess that it is not that complicated after all.
 
 The parameter of interest is not the only causal parameter in real life experiments.
 Many other parameters are required to explain the observed data.
-Here is described the methods to take into account those additional parameters and the impact on inference. 
+Here is described the methods to take into account those additional parameters and their impact on inference. 
 
 
 
