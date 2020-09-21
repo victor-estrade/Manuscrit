@@ -611,7 +611,19 @@ In the remaining of this manuscript the nuisance parameters are all gathered int
 
 \victor{Brouillon pour le moment}
 
-The poisson count likelihood (see \autoref{sub:poisson_count_process}) is modified with the introduction of the nuisance parameter $\alpha$.
+First, the introduction of nuisance parameters $\alpha$ in \autoref{eq:Fisher-Neyman} makes it impossible to use the Fisher-Neyman theorem.
+\begin{equation}
+	p(D|\mu, \alpha) = \underbrace{\left[ \prod_{i=1}^N p(x|B, \alpha) \right ]}_{h_\alpha(x)} \times 
+       \underbrace{\left [\prod_{i=1}^N (1-\mu) + \mu \frac{p(x|S, \alpha)}{p(x|B, \alpha)} \right ]}_{g_\mu(T_\alpha(x))}
+\end{equation}
+Now $h_\alpha(x)$ does not depends only in $x$.
+One could argue that although the classifier score may not be a sufficient summary statistic anymore it is probable that it still contains most of the information about the parameter of interest.
+
+The use of classifier score is a very good approximated proxy to the likelihood function in practice.
+Moreover \cite{Cranmer2015} shows that if the classifier score is a monotone function of the likelihood it is a sufficient statistic.
+\victor{TODO : vérifier les termes exact du théorème de Cranmer}
+
+Second, the poisson count likelihood (see \autoref{sub:poisson_count_process}) has to be updated with the introduction of the nuisance parameter $\alpha$.
 The expected number of signal $\gamma$ and backgrounds $\beta$ now depends on $\alpha$.
 
 \begin{equation}
@@ -620,6 +632,8 @@ The expected number of signal $\gamma$ and backgrounds $\beta$ now depends on $\
 
 Which makes it impossible to use closed formulas since these dependencies are not known exactly or intractable.
 Moreover taking nuisance parameter into account can introduce local maxima in the likelihood function.
+
+\victor{TODO : C'est là que j'attaque les papiers avec linéarisation de l'impact du paramètre de nuisance}
 
 $\alpha$ is generally known to a certain extent thanks to other measurements is controlled region where the signal has low probability of appearing or even no influence at all making these measurement independent from $\mu$.
 
@@ -645,16 +659,6 @@ Of course this can be extended to the binned poisson likelihood.
 
 \victor{Brouillon}
 
-The introduction of nuisance parameters, noted $\alpha$, in \autoref{eq:Fisher-Neyman} makes it impossible to use the Fisher-Neyman theorem.
-
-\begin{equation}
-	p(D|\mu, \alpha) = \underbrace{\left[ \prod_{i=1}^N p(x|B, \alpha) \right ]}_{h_\alpha(x)} \times 
-       \underbrace{\left [\prod_{i=1}^N (1-\mu) + \mu \frac{p(x|S, \alpha)}{p(x|B, \alpha)} \right ]}_{g_\mu(T_\alpha(x))}
-\end{equation}
-Now $h_\alpha(x)$ does not depends only in $x$.
-
-
-\content{Poisson likelihood is not broken but weakened}
 
 
 
