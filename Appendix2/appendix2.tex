@@ -656,3 +656,95 @@ Proof that $L_0 > L_K$ does not seems to be what we should be looking for.
 \subsection{Pure signals bin is better}
 
 How do I prove that $max \sum_{i=1}^K n_i \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)^2}$ is found when $\gamma_i$ and $n_i$ is big and $\beta_i$ is small in a few bins... Not forgetting that the total number of events is restricted.
+
+
+
+
+\section{More statistics} % (fold)
+\label{sec:more_statistics}
+
+\victor{Il faudra virer cette section après. Mais elle va me servir à explorer les maths}
+
+
+\subsection{Why a classifier} % (fold)
+\label{sub:why_a_classifier}
+
+Aishik asks : Why do we use a classifer to make estimation or hypothesis test ?
+
+The main connection is that for a Bayes optimal classifier \needcite : 
+\begin{equation}
+	c(x) = \frac{f_s p(x|S)}{(1-f_s) p(x|B) + f_s p(x|S)}
+\end{equation}
+The classifier score $c(x)$ is linked to the likelihood of a event $x$ assuming it is signal $ p(x|S)$ or assuming it is a background $p(x|B)$.
+$f_s$ is the fraction of signal events in the training set.
+Usually $f_s = 0.5$ in which can is simplifies itself.
+
+Note that the ratio between signal and event likelihood can easily extracted :
+\begin{equation}
+	\frac{p(x|S)}{p(x|B)} = \frac{c(x)}{(1-c(x))} \frac{(1-n_s)}{n_s} 
+\end{equation}
+
+So if you can connect what you are doing to $\frac{p(x|S)}{p(x|B)}$ then you can use a classifier to do the job.
+
+Neal's paper \cite{Neal:2007zz} is connecting this ratio to parameter estimation.
+
+The connection with hypothesis testing is also possible.
+\textbf{I'll try to give it a shot here but I may do mistakes or forgot to mention required hypothesis or approximation that I am unaware of.}
+
+The probability density of an event is :
+\begin{equation}
+ 	p(x) = p(x|S) p(S) + p(x|B) p(B)
+\end{equation} 
+Where $p(S)$ and $p(B)$ are the probability to be a signal or a background event and can be viewed as mixture coefficients.
+
+Data are \emph{independent and identically distributed}.
+Meaning we can write the density of the full data $D = \{x_i\}_{i=1}^N$
+\begin{equation}
+	p(D) = \prod_{x\in D} p(x) = \prod_{x\in D} p(x|S) p(S) + p(x|B) p(B)
+\end{equation}
+
+We now consider the 2 hypothesis.
+The null hypothesis assumes that there is no signal meaning that $p(S) = 0$ and $p(B) = 1$
+\begin{equation}
+	p(D |H_0) = \prod_{x\in D} p(x|B)
+\end{equation}
+The alternative hypothesis is tha there is some signal $p(S) > 0$ and $p(B) < 1$
+\begin{equation}
+	p(D | H_1) = \prod_{x\in D} p(x|S) p(S) + p(x|B) p(B)
+\end{equation}
+
+According to Neyman-Pearson lemma \cite{neyman_pearson_1933} the likelihood ratio between the 2 hypothesis is a sufficient summary statistic for the hypothesis test (or the most powerfull quantity one can compute).
+\begin{align}
+	\lambda & = \frac{p(D | H_1)}{p(D |H_0)} = \frac{\prod_{x\in D} p(x|S) p(S) + p(x|B) p(B)}{\prod_{x\in D} p(x|B)} \\
+	\lambda & = \prod_{x\in D} \frac{ p(x|S) p(S) + p(x|B) p(B)}{p(x|B)} \\
+	\lambda & = \prod_{x\in D}  \frac{p(x|S)}{p(x|B)}  p(S) + p(B)
+\end{align}
+We find back our ratio $\frac{p(x|S)}{p(x|B)}$ that can be computed with a classifier.
+$p(S)$ and $p(B)$ are constant and does not depend of the data...
+
+This demo skecth is very similar to what is done in Neal's paper.
+But I think that the reason for using a classifier score to do the dimension reduction is conected to this demo sketch if not exactly it. 
+
+
+
+Papers I still need to master :
+\begin{itemize}
+ 	\item \url{https://arxiv.org/pdf/physics/9711021.pdf} The Unified approach to build confidence interval. It explains why the profiled likelihood ratio method is the prefered way to build a confience interval. Note to self : do not get angry at the useless comments about why one should be frequentists or bayesians...
+ 	\item \url{https://arxiv.org/pdf/1007.1727.pdf} Describes in details hypothesis test. It does not tackle the problem of Monte Carlo methods taking ages to converge when the dimensionality of the data is large. SO nothing on classification but still I believe I should know these things.
+ 	\item \url{https://arxiv.org/pdf/1506.02169.pdf} Describes the link between classification and likelihood ratio tests. But it is a recent one (2015) and Higgs discovery (2012) was already using classifier so I guess this is not the original paper on why classification is nice.
+ \end{itemize} 
+
+
+About Bayesian vs Frequentist stupid war.
+The section 2 of Neal's paper is criticising Feldman and Cousins' paper on the Unified approach.
+So according to those folks if you want a Bayesian approach to confidence interval you do marginalization like Neal.
+But if you want a Frequentist approach you use the profiled likelihood ratio method.
+
+A scientist may consider that we need experimental evidence to choose between one or another.
+Then you can read : \url{https://arxiv.org/pdf/physics/0403059.pdf} for coverage experiment of the Unified method.
+And read \url{https://arxiv.org/pdf/physics/0408039.pdf} for coverage of the Bayesiand approach.
+I read only introduction and conclusion of these papers and they state that Frequentist method leads to a small under-coverage and the Bayesian approach leads to a small over-coverage.
+
+My conclusion is that the only way of doing good statistics is to understand and master both methods.
+Test them on a problem and finally be at peace because both are giving bassically the same numbers at the end...
+
