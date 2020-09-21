@@ -183,8 +183,8 @@ Networks are built using simple blocs :
 	\item \textbf{Residual Average} blocs are 2 average layers with an intermediate space half the size of the input and separated with an activation. $o^\prime = a( U_1.X+b+V_1.r(X) )$ and $o = x + U_2.o^\prime + V_2.r(o^\prime) $
 \end{itemize}
 Making the intermediate space half the size of the input in residual blocs is assumed to encourage the network to learn simpler functions.
-This way the residual blocs are learning a simple corection of the input.
-Chaining these corrections should allow the network to produce arbitrarly complex functions but encourage it toward ones close to a linear function.
+This way the residual blocs are learning a simple correction of the input.
+Chaining these corrections should allow the network to produce arbitrarily complex functions but encourage it toward ones close to a linear function.
 
 All architectures follow a simple code :
 \begin{itemize}
@@ -195,7 +195,7 @@ All architectures follow a simple code :
 	\item AR = Average Residual block
 \end{itemize}
 Followed by a number representing the number of layers.
-Since residual blocs includes 2 layers a single residual bloc is always followed by a even number representing twoce the number of blocs.
+Since residual blocs includes 2 layers a single residual bloc is always followed by a even number representing twice the number of blocs.
 
 The classic architectures is used for classifiers
 \begin{itemize}
@@ -204,8 +204,8 @@ The classic architectures is used for classifiers
 	\item \textbf{L1R20L1} [huge] : a linear layer followed by 10 residual blocs and a final linear layer.
 \end{itemize}
 
-The averager architectures is an addition to INFERNO.
-INFERNO traning can leverage the datasetwise architecture so additional architectures were included to see what happens.
+The average architectures is an addition to INFERNO.
+INFERNO training can leverage the datasetwise architecture so additional architectures were included to see what happens.
 \begin{itemize}
 	\item \textbf{L1A2L1} [small] : a linear layer followed by 2 average layers and a final linear layer.
 	\item \textbf{A1AR8L1} [large] : an average layer followed by 4 average residual blocs and a final linear layer.

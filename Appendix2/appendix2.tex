@@ -34,7 +34,7 @@ Est si tout ces problèmes c'était parce que le simulateur ne va pas ? cf p(nui
 
 
 \section{Chap1-old Motivation} % (fold)
-\label{sec:motivation}
+\label{sec:old_motivation}
 
 Limitations des méthodes actuelles
 
@@ -354,8 +354,8 @@ Since the weight of a fruit is stochastic, two bags of fruits with the same numb
 Leading to some uncertainty in the predicted proportion that must be reported.
 
 
-\subsection{Simulation} % (fold)
-\label{sub:simulation}
+\subsection{ATLAS Simulation} % (fold)
+\label{sub:atlas_simulation}
 
 
 Vulgarization on atlas simulation :
@@ -629,8 +629,30 @@ So the relevant question is : is there enough events (signal + background) in ea
 \url{https://arxiv.org/abs/1812.11118} and 
 \url{https://openai.com/blog/deep-double-descent/}
 
-il manque neural tangeant kernel.
+Il manque neural tangent kernel.
 
 
 
+\section{Proof}
+\label{sec:proof}
 
+\subsection{Binned likelihood narrower}
+
+This section gives the details of the proof that the binned likelihood is narrower than the non binned one.
+\begin{equation}
+    L_0 = \frac{(\mu \gamma + \beta)^n }{n!} e^{-(\mu \gamma + \beta)}
+\end{equation}
+with $n = \sum_{i=1}^K n_i $, $\gamma = \sum_{i=1}^K \gamma_i $ and $\beta = \sum_{i=1}^K \beta_i $.
+\begin{equation}
+    L_K = \prod_{i=1}^M \frac{(\mu \gamma_i + \beta_i)^{n_i} }{n_i!} e^{-(\mu \gamma_i + \beta_i)}
+\end{equation}
+Now there is 2 option that I can see :  first prove that $L_0 > L_K$ which seems possible with concavity of the log function and $\log L_0 > \log L_k$;
+second is to use the Cramer-Rao bound of the variance and prove that 
+$\left (\frac{\partial^2 \log L_0}{\partial \mu^2}\right )^{-1} > \left (\frac{\partial^2 \log L_K}{\partial \mu^2}\right )^{-1}$
+which also seems possible with concave or convex argument somewhere.
+
+Proof that $L_0 > L_K$ does not seems to be what we should be looking for.
+
+\subsection{Pure signals bin is better}
+
+How do I prove that $max \sum_{i=1}^K n_i \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)^2}$ is found when $\gamma_i$ and $n_i$ is big and $\beta_i$ is small in a few bins... Not forgetting that the total number of events is restricted.

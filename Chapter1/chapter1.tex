@@ -3,7 +3,7 @@
 %*********************************** First Chapter *****************************
 %*******************************************************************************
 
-\chapter{An exemple of data-driven science}  %Title of the First Chapter
+\chapter{An example of data-driven science}  %Title of the First Chapter
 \label{chap:intro_stat}
 \ifpdf
     \graphicspath{{Chapter1/Figs/Raster/}{Chapter1/Figs/PDF/}{Chapter1/Figs/}}
@@ -25,7 +25,7 @@
 
 \topic{Simulations combined with machine learning make possible to extract knowledge even in highly complex and stochastic process like High Energy Physics}
 
-\content{Objectif : Improving the precision of parameter estimation in a special case of the inverse problem in the presence of systematic effect.}
+\content{Objective : Improving the precision of parameter estimation in a special case of the inverse problem in the presence of systematic effect.}
 
 
 
@@ -46,7 +46,7 @@
 \subsection{The system} % (fold)
 \label{sub:the_system}
 
-The system producing the data studied in this analysis is the famous Large Hardon Collider (LHC).
+The system producing the data studied in this analysis is the famous Large Hadron Collider (LHC).
 Without getting into the details a particle collider is a machine accelerating small bricks of matter, protons in this case, in opposite direction to smash them against each others.
 The resulting collision produces high energy particles whose properties are captured by the various measurement apparatus which is reduced here for simplicity to a "giant camera".
 
@@ -266,10 +266,10 @@ Tackling the inverse problem with density estimation is subject to the curse of 
 Restricting the observables to only one or two dimensions requires those dimension to carry all or most the information about the estimated parameter.
 
 The first idea to achieve such constraint is to use domain knowledge.
-Bassically ask the theorist to find a computable quantity from the possible measurement allowing to infer the parameter.
+Basically ask the theorist to find a computable quantity from the possible measurement allowing to infer the parameter.
 \victor{TODO : Fouiller les années 80 à la recherche d'exemple}
 
-\victor{Discard the less relevants ones (feature selection). Pas sûr que ça soit vraiment utilisé. Demander à David.}
+\victor{Discard the less relevant ones (feature selection). Pas sûr que ça soit vraiment utilisé. Demander à David.}
 
 The second possibility is to use machine learning to reduce the dimension of the data.
 
@@ -290,7 +290,7 @@ So we can use it on the simulated data to define the likelihood function.
 
 This section borrows many results from \cite{Neal:2007zz}.
 
-The stochatic phenomenon of interest here displays the following generative process :
+The stochastic phenomenon of interest here displays the following generative process :
 \begin{equation}
 	\label{eq:mixture_model}
 	p(x|\mu) = \mu p(x|S) + (1-\mu) p(x|B)
@@ -311,7 +311,7 @@ As previously explained the likelihoods $p(x|S)$ and $p(x|B)$ are intractable be
 However building a simulator working only in forward mode allowing to sample from $p(x|\mu)$ is possible.
 This allow us to build a training dataset for some machine learning later.
 
-Measurements are made from a large bunch of independant and identically distributed events $D=\{x_i\}_{i=1}^N$.
+Measurements are made from a large bunch of independent and identically distributed events $D=\{x_i\}_{i=1}^N$.
 
 \begin{align*}
 	p(D|\mu) =& \prod_{i=1}^N \mu p(x|S) + (1-\mu) p(x|B) \\
@@ -368,7 +368,7 @@ Note : $c$ is also a sufficient summary statistic
 \end{equation}
 
 \content{Limitation : what happens if the classifier is not (Bayes) optimal ? Can we detect it ?}
-\content{Physicis alos uses the Neyman-Pearson theorem on statistical test to justify maximum likelihood estimator usage. Should I include it here ? or in \autoref{sub:maximum_likelihood} ?}
+\content{Physicists also uses the Neyman-Pearson theorem on statistical test to justify maximum likelihood estimator usage. Should I include it here ?}
 
 
 
@@ -379,13 +379,13 @@ Note : $c$ is also a sufficient summary statistic
 \subsection{Poisson count process} % (fold)
 \label{sub:poisson_count_process}
 
-Here is derived the standard method to modelize the problem.
+Here is derived the standard method to model the problem.
 
 The system allows 2 kind of collisions : soft and hard collisions.
 The hard collisions are very rare compared to the soft collisions.
-The data can be modeled by counting iid Bernouilli rare process which is well approximated by a Poisson distribution \needcite when the number of samples is large.
+The data can be modeled by counting iid Bernoulli rare process which is well approximated by a Poisson distribution \needcite when the number of samples is large.
 
-\victor{Ajouter un petit dessin type arbre de probabilité.}
+\victor{FIGURE : Ajouter un petit dessin type arbre de probabilité.}
 
 The hard collision are splitted into 2 categories the signal events and the background events.
 The number of signals is $s$ and the number of backgrounds is $b$.
@@ -394,15 +394,15 @@ The total number of events $n$ is the sum of signal events and background events
 \begin{equation}
 	n = s + b
 \end{equation}
-The number of signal events is following a poisson distribution of parameter $\mu \gamma$.
+The number of signal events is following a Poisson distribution of parameter $\mu \gamma$.
 \begin{equation}
 	s \sim Poisson(\mu \gamma)
 \end{equation}
 $\gamma$ is the expected number of signals according to current knowledge ie the SM.
 $\mu$ is the parameter of interest, it is the deviation from the SM.
-This way of decomposing the expectancy of the number of signals is mainly here for convenience (numérical stability and dimensionless $\mu$)
+This way of decomposing the expectancy of the number of signals is mainly here for convenience : numerical stability ($\gamma$ is of the order $10^-6$\needcite; and dimensionless $\mu$.
 \victor{dimensionless or unitless ?}
-The number of background events is following a poisson distribution of parameter $\beta$.
+The number of background events is following a Poisson distribution of parameter $\beta$.
 \begin{equation}
 	b \sim Poisson(\beta)
 \end{equation}
@@ -416,7 +416,7 @@ Giving the likelihood :
 	P(n| \mu) = \frac{(\mu \gamma +\beta)^n }{n!} e^{-(\mu \gamma +\beta)}
 \end{equation}
 
-A computable likelihood is now available !
+A tractable likelihood is now available !
 This allow to use more classic parameter estimation like maximum likelihood.
 
 \begin{equation}
@@ -436,21 +436,55 @@ Note $\EE[n] = \mu\gamma + \beta$ and $\max Poisson = \EE[Poisson]$ so maybe the
 
 
 
-\subsection{Binned poisson count process} % (fold)
+\subsection{Binned Poisson count process} % (fold)
 \label{sub:binned_poisson_count_process}
 
-To improve inference the classifier is also used to select a bunch of regions rich in signals.
+The previous section gives a simple way to derive a maximum likelihood estimator.
+This section show how to improve this estimator using binning.
 
-\victor{(yes but how/why !!) Probably a simple result link to signal / noise ratio but I can't find it...}
+The Poisson approximation is allowed because of the small probability of a event to occur and the large number of samples that the LHC can produce.
+Cutting the data space into regions does not break these assumptions as long as the regions contains enough samples.
+Intuitively knowing not only the total number of events but the number of events in each parts of the data space contains more information hence should improve the inference.
 
-Leading to a binned likelihood :
+Let $O$ be the full data space and $K$ regions $\{\Omega_i\}_{i=1}^K$ such that they do not overlap $\forall i\neq j, \Omega_i \cap \Omega_j = \varnothing $ and that their union cover the full space $\bigcup_{i=1}^K \Omega_i = O$.
+Those regions are most commonly called \emph{bins}.
 
+There is an infinite number of ways to cut the space into bins.
+\victor{FIGURE : Dessin de 2 manières de couper l'espace en région}
+Our objective with the binning is to improve the estimation, especially reduce the variance of our estimator.
+
+First let's see how binning improves the variance.
+We compare the two likelihood $L_0$ without binning and $L_K$ with $K$ bins
 \begin{equation}
-	p(D|\mu) = \prod_{i=1}^M Poisson(n_i | \mu, \gamma_i, \beta_i) = \prod_{i=1}^M \frac{(\mu \gamma_i + \beta_i)^n }{n!} e^{-(\mu \gamma_i + \beta_i)}
+    L_0 = \frac{(\mu \gamma + \beta)^n }{n!} e^{-(\mu \gamma + \beta)}
+\end{equation}
+with $n = \sum_{i=1}^K n_i $, $\gamma = \sum_{i=1}^K \gamma_i $ and $\beta = \sum_{i=1}^K \beta_i $.
+\begin{equation}
+    L_K = \prod_{i=1}^M \frac{(\mu \gamma_i + \beta_i)^{n_i} }{n_i!} e^{-(\mu \gamma_i + \beta_i)}
 \end{equation}
 
-As seen previously a classifier decision function is a sufficient summary statistic making this method optimal.
-\victor{optimal method = strong claim. Better be sure about it}
+$L_0 > L_K$ and 
+$\left (\frac{\partial^2 \log L_0}{\partial \mu^2}\right )^{-1} > \left (\frac{\partial^2 \log L_K}{\partial \mu^2}\right )^{-1}$.
+See \autoref{sec:proof} for details of the proof.
+
+According to the Cramer-Rao bound :
+\begin{equation}
+    \VV(\hmu) \geq \left (\frac{\partial^2 \log L}{\partial \mu^2}\right )^{-1}
+\end{equation}
+
+If the bound is tight the binned likelihood $L_K$ leads to a estimator with lower variance.
+If the bound is not tight well it is still probably better.
+
+The choice of the bin shape remains to be decided.
+\begin{equation}
+    \left (\frac{\partial^2 \log L}{\partial \mu^2}\right )^{-1} = \left ( \sum_{i=1}^K n_i \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)^2} \right )^{-1}
+\end{equation}
+Choosing carefully the bins $\Omega_i$ to make this quantity as small as possible requires to have some bins with high purity of signals.
+\victor{I need to prove that ! See \autoref{sec:proof} for details}
+
+To improve inference the classifier is used to select a bunch of regions rich in signals.
+As seen in \autoref{sub:count_estimation} a Bayes optimal classifier decision function is a sufficient summary statistic adding to the interest of using a classifier.
+
 
 
 
@@ -459,8 +493,18 @@ As seen previously a classifier decision function is a sufficient summary statis
 \subsection{Asimov dataset} % (fold)
 \label{sub:asimov_dataset}
 
+This section deals with the estimation of $\gamma_i$ and $\beta_i$ using the simulator.
 
-\victor{TODO : Est-ce qu'on doit introduire ce concept ? Parce que au final les estimations du nombre attendu de signal et bruit de fond sont fait avec des datasets provenant de la simulation (c'est ça l'asimov dataset ?).}
+\victor{Brouillon}
+
+Basically we want $\gamma_i = \EE [s_i]$ and $\beta_i = \EE [b_i]$.
+We could estimate $\EE [s_i]$ and $\EE [b_i]$ by Monte Carlo.
+And I remember that the Asimov dataset is a dataset whose properties are equals to their expectancy.
+In the code I am estimating $\EE [s_i]$ and $\EE [s_i]$ by putting a simulated dataset through the entire pipeline.
+So I guess that it is not that complicated after all.
+
+\victor{PAPER : trouver les papiers de référence ou les papier tuto pour Asimov dataset}
+
 
 
 
@@ -475,6 +519,8 @@ As seen previously a classifier decision function is a sufficient summary statis
 The parameter of interest is not the only causal parameter in real life experiments.
 Many other parameters are required to explain the observed data.
 Here is described the methods to take into account those additional parameters and the impact on inference. 
+
+
 
 
 
@@ -501,11 +547,12 @@ The impurities concentration in the water is now a nuisance parameter of the pro
 Moreover the thermometer is a cheap one and may be biased toward lower or upper temperature introducing another nuisance parameter (apparatus imperfection).
 Finally to simplify the computation Bob assumed that the heat produced by the hotplate would be mostly transmitted to the water although this approximation is too strong Bob will take it into account as an additionnal nuisance parameter (theory flaws).
 
-
-
-
-
 \content{Schéma inverse problem with nuisance parameters}
+
+
+
+
+
 
 \subsection{Impact on likelihood} % (fold)
 \label{sub:impact_on_likelihood}
@@ -519,12 +566,12 @@ The expected number of signal $\gamma$ and backgrounds $\beta$ now depends on $\
 	P(n| \mu, \alpha) = \frac{(\mu \gamma(\alpha) +\beta(\alpha))^n }{n!} e^{-(\mu \gamma(\alpha) +\beta(\alpha))}
 \end{equation}
 
-Which makes it impossible to use closed formulas since these dependencies are not known exactly or incomputable.
+Which makes it impossible to use closed formulas since these dependencies are not known exactly or intractable.
 
 Sometimes, but rarely, several set of values of $\mu$ and $\alpha$  can lead to the same value of the likelihood...
 In physics it is almost impossible though.
 
-$\alpha$ is generally known to a certain extent thanks to other measurements is controled region where the signal has low probability of appearing or even no influence at all making these measurement independant from $\mu$.
+$\alpha$ is generally known to a certain extent thanks to other measurements is controlled region where the signal has low probability of appearing or even no influence at all making these measurement independent from $\mu$.
 
 Including these measurements $D_{calib}$ in the process leads to :
 \begin{align}
@@ -553,8 +600,8 @@ Now $h_\alpha(x)$ does not depends only in $x$.
 
 
 
-\subsection{Recipies to reduce systematic unceratinties} % (fold)
-\label{sub:recipies_to_reduce_systematic_unceratinties}
+\subsection{Recipes to reduce systematic uncertainties} % (fold)
+\label{sub:recipes_to_reduce_systematic_unceratinties}
 
 
 Petite listes des choses faisables pour réduire les biais systématiques. 
@@ -699,7 +746,7 @@ The classifier score $c(x)$ is linked to the likelihood of a event $x$ assuming 
 $f_s$ is the fraction of signal events in the training set.
 Usually $f_s = 0.5$ in which can is simplifies itself.
 
-Note that the ratio between signal and event likelihood can easily exctracted :
+Note that the ratio between signal and event likelihood can easily extracted :
 \begin{equation}
 	\frac{p(x|S)}{p(x|B)} = \frac{c(x)}{(1-c(x))} \frac{(1-n_s)}{n_s} 
 \end{equation}
