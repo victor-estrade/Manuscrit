@@ -29,9 +29,9 @@
 
 
 The first section (\autoref{sec:inverse_problem_at_lhc}) of this chapter describes the system and specific features of the analysis.
-Then \autoref{sec:inference_through_simulation} provides methods to conduct the analysis in a ideal setup.
+Then \autoref{sec:inference_through_simulation} provides methods to conduct the analysis in an ideal setup.
 Finally the last parts of the analysis pipeline handling known biases and uncertainties are given in \autoref{sec:systematic_effects}.
-\autoref{sec:summary} is gathering it all and emphasizes the part of the pipeline this work is trying to improve.
+\autoref{sec:summary} is gathering it all and emphasizes the part of the pipeline this work focus on.
 
 
 
@@ -95,7 +95,7 @@ The vast majority of the processes are already well known.
 To produce (very) rare therefore interesting processes the accelerator must produce a collosal number of collisions.
 
 The LHC is an international collaboration, involving thousands of people and housing many HEP experiments.
-The one that is of interest in this work is a study of a specific process ($H \to \tau \tau$).
+The one that motivates this work is a study of a specific process ($H \to \tau \tau$).
 Basically an event produced a Higgs boson which desintegrated into 2 $\tau$ particles.
 Each event following this process is defined as a \emph{signal} event versus the \emph{background} events that gather all the other processes.
 The objective is to measure the frequency, or probability, of this event to occur.
@@ -104,9 +104,9 @@ From this frequency and the setup of the experiment (luminosity, etc) it is poss
 \victor{Link between cross-section, branch factor, luminosity ?}
 
 In many interesting cases, including ours, the nature of the event (signal / background) are not among the possible measurements that can be made.
-Counting signals and backgrounds requires extra work which is describes in the chapter.
+Counting signals and backgrounds requires extra work which is described in this chapter.
 
-The first step is to provide a very accurate description of the various steps in the experiment which is the role of the model.
+The first step is to provide a very accurate description of the various steps in the experiment \ie the model.
 
 
 
@@ -118,9 +118,9 @@ The first step is to provide a very accurate description of the various steps in
 
 The Standard Model \needcite (SM) is the theory describing quantum physics including particle collisions and productions.
 The counting experiment final objective is to improve our knowledge of one of the free parameter of the SM.
-In other word we are fitting the SM parameters to the data of the experiment.
+In other words we are fitting the SM parameters to the data of the experiment.
 
-Let $x$ be the observables ie the data collected by the apparatus for a single event and $p(x)$ its probability density.
+Let $x$ be the observables \ie the data collected by the apparatus for a single event and $p(x)$ its probability density.
 The LHC produces a large quantity of events while ensuring that the conditions are the same for all events.
 Hence we can assume that the full dataset $D$ contains $N$ independant and identically distributed (iid) events $D = \{x_i\}_{i=1}^N$.
 
@@ -142,7 +142,7 @@ Leading to the necessity to infer what happened before the measurements.
 \victor{TODO : Quelques mots sur le tracking, l'inférence des features}
 
 The vast majority of the intermediate quantities are latent or hidden variables, noted $z$.
-One of this latent variable was already mentioned previously \autoref{sub:the_system} : the \emph{label} of the event indicating the nature of the process, in our case if it is a \emph{signal} or a \emph{background} event.
+One of this latent variable was already mentioned previously : the \emph{label} of the event indicating the nature of the process, in our case if it is a \emph{signal} or a \emph{background} event.
 
 \victor{L'objectif est de donner un apperçu de la complexité de la chose. Sans entrer + que ça dans les détails...}
 \victor{TODO : Donner un aperçu de la complexité de chaque étape en 1 ou 2 phrases.}
@@ -157,12 +157,12 @@ Finally gathering all the ingredients the generative model can be splited in 3 s
 In other words the fundamental parameter $\mu$ shapes the distribution of the latent variable $z$.
 And the data distribution depends on the latent variable $z$.
 $p(\mu)$ is the prior knowledge, it contains all the belief of the community.
-Of course the belief of the community is only based on results the previous experiments
+Of course the belief of the community is only based on results of previous experiments or non-informative if there is no previous experiments.
 
 Note : we assume here that $\mu$ is the only fundamental parameter for simplicity.
-In a more realistic model, like the standard model, there are more of fundamental parameters.
+In a more realistic model, like the standard model, there are more fundamental parameters.
 To these fundamental parameters one should also take into account the parameters intervening in the apparatus response modeling.
-Some required model simplifications introduce again some parameters, etc.
+Additionally some required model simplifications introduce again some parameters, etc.
 How to take care of these additional parameters is the subject of \autoref{sec:systematic_effects}.
 
 The true value of $\mu$, assuming that the model is perfectly describing Nature's behaviour, is noted $\mu^\star$ as opposed to $\hmu$ the estimated value from the data.
