@@ -206,6 +206,7 @@ When no prior knowledge on the parameter of interest is available maximum a post
 \autoref{eq:map_mle_1} $ \to$ \autoref{eq:map_mle_2} Bayes theorem ;
 \autoref{eq:map_mle_2} $ \to$ \autoref{eq:map_mle_3} $p(x)$ does not depends on $\mu$ ;
 \autoref{eq:map_mle_3} $ \to$ \autoref{eq:map_mle_4} $p(x)$ non-informative prior.
+\victor{TODO : trop de étails. Mettre ça dans l'appendix B avec les preuves.}
 
 Solving this maximization usually involves either analytical computing of the formulas or a numerical optimization process (eg. gradient ascent, coordinate ascent).
 See \autoref{sub:poisson_count_process} for an example.
@@ -297,7 +298,7 @@ The next section makes use of this setup to tackle the inference.
 This section show three independant ways to solve this specific case of inverse problem.
 \autoref{sub:hand_crafted_dimension_reduction} gives a general solution assuming domain knowledge allow to put all relevant information in a low dimension space.
 \autoref{sub:count_estimation} is using a classifier score as a proxy for maximum likelihood estimation.
-The remaining sections (\autoref{sub:poisson_count_process}, \autoref{sub:binned_poisson_count_process}, \autoref{sub:asimov_dataset}) describe the retained analysis pipeline.
+The remaining sections (\autoref{sub:poisson_count_process}, \autoref{sub:binned_poisson_count_process}, \autoref{sub:simulator_as_estimator}) describe the retained analysis pipeline.
 The reasons to retain the last one is given in \autoref{sec:systematic_effects}.
 
 
@@ -527,7 +528,7 @@ See \autoref{sec:proof} for details of the proof.
 
 According to the Cramer-Rao bound :
 \begin{equation}
-    \VV(\hmu) \geq \left (\frac{\partial^2 \log L}{\partial \mu^2}\right )^{-1}
+    \VV(\hmu) \geq \left (\EE \left [ \frac{\partial^2 \log L_K}{\partial \mu^2}\right ] \right )^{-1}
 \end{equation}
 
 If the bound is tight the binned likelihood $L_K$ leads to a estimator with lower variance.
@@ -535,9 +536,9 @@ If the bound is not tight well it is still probably better.
 
 The choice of the bin shape remains to be decided.
 \begin{equation}
-    \left (\frac{\partial^2 \log L}{\partial \mu^2}\right )^{-1} 
-    	= \left ( \sum_{i=1}^K n_i \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)^2} \right )^{-1}
-    	= \left ( \sum_{i=1}^K n_i \frac{\gamma_i^2}{\EE[n_i]^2} \right )^{-1}
+    \left (\EE \left [ \frac{\partial^2 \log L_K}{\partial \mu^2}\right ] \right )^{-1} 
+    	= \left ( \EE \left [ \sum_{i=1}^K n_i \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)^2} \right ] \right )^{-1}
+    	= \left ( \sum_{i=1}^K \EE [n_i] \frac{\gamma_i^2}{\EE[n_i]^2} \right )^{-1}
 \end{equation}
 Choosing carefully the bins $\Omega_i$ to make this quantity as small as possible requires to have some bins with high purity of signals.
 \victor{I need to prove that ! See \autoref{sec:proof} for details}
@@ -550,22 +551,22 @@ As seen in \autoref{sub:count_estimation} a Bayes optimal classifier decision fu
 
 
 
-
-
-\subsection{Asimov dataset} % (fold)
-\label{sub:asimov_dataset}
+\subsection{Simulator as estimator} % (fold)
+\label{sub:simulator_as_estimator}
 
 This section deals with the estimation of $\gamma_i$ and $\beta_i$ using the simulator.
 
 \victor{Brouillon}
 
-Basically we want $\gamma_i = \EE [s_i]$ and $\beta_i = \EE [b_i]$.
-We could estimate $\EE [s_i]$ and $\EE [b_i]$ by Monte Carlo.
-And I remember reading that the Asimov dataset is a dataset whose properties are equals to their expectancy.
-In the code I am estimating $\EE [s_i]$ and $\EE [s_i]$ by putting a simulated dataset through the entire pipeline.
-So I guess that it is not that complicated after all.
+The current knowledge about the mixture of signal and backgrounds events $\gamma$ and $\beta$ is trivial to extract from the model.
+But if the data spaced is binned in a non-trivial way, e.g. with a histogram on the score of a classifier, the valeus of $\gamma_i$ and $\beta_i$ requires to be estimated.
 
-\victor{PAPER : trouver les papiers de référence ou les papier tuto pour Asimov dataset}
+Basically $\gamma_i = \EE [s_i]$ and $\beta_i = \EE [b_i]$ which can be estimated by Monte Carlo.
+Running the simulation to produce many signal events and putting them through the same computation used to measure $n_i$ will give an estimate of $\EE [s_i]$.
+The same can be done for $\EE [b_i]$ by producing background events.
+
+
+\victor{PAPER : trouver les papiers de référence pour ce processus.}
 
 
 
@@ -638,7 +639,7 @@ First, the introduction of nuisance parameters $\alpha$ in \autoref{eq:Fisher-Ne
 \end{equation}
 Now $h_\alpha(x)$ does not depends only in $x$.
 
-One could argue that although the classifier score may not be a sufficient summary statistic anymore it is probable that it still contains most of the information about the parameter of interest.
+One could argue that although the classifier score may not be a sufficient summary statistic anymore it is likely to still contains most of the information about the parameter of interest.
 The use of classifier score is a very good approximated proxy to the likelihood function in practice.
 Moreover \cite{Cranmer2015} shows that if the classifier score is a monotone function of the likelihood it is a sufficient statistic.
 \victor{TODO : vérifier les termes exact du théorème de Cranmer}
@@ -648,7 +649,7 @@ Second, the poisson count likelihood (see \autoref{sub:poisson_count_process}) h
 The expected number of signal $\gamma$ and backgrounds $\beta$ now depends on $\alpha$.
 
 \begin{equation}
-	P(n| \mu, \alpha) = \frac{(\mu \gamma(\alpha) +\beta(\alpha))^n }{n!} e^{-(\mu \gamma(\alpha) +\beta(\alpha))}
+	p(n| \mu, \alpha) = \frac{(\mu \gamma(\alpha) +\beta(\alpha))^n }{n!} e^{-(\mu \gamma(\alpha) +\beta(\alpha))}
 \end{equation}
 
 Which makes it impossible to use closed formulas since these dependencies are not known exactly or intractable.
@@ -706,7 +707,7 @@ But this is only half the answer.
 In science every estimation must comes with its uncertainty.
 The other half of the answer is the measurement of the uncertainty of parameter of interest's estimator.
 
-\victor{Uncertainty = Variance of confidence interval or credible interval ? Je dois dire lequel pourquoi ici je traite la variance. Et ajouter qu'on a toujours pas de définition claire de systematic uncertainty dans la littérature...}
+\victor{Uncertainty = Variance or confidence interval or credible interval ? Je dois dire lequel pourquoi ici je traite la variance. Et ajouter qu'on a toujours pas de définition claire de systematic uncertainty dans la littérature...}
 The origin of the variance of our estimator can be divided into 2 parts.
 The one comming mostly from the lack of data is called \emph{statistical variance} and the other origniates from the sensitivity of the inference to nuisance parameter and is named \emph{systematic variance}.
 
@@ -759,27 +760,25 @@ If the likelihood already includes calibration then it simply should represent t
 \content{Introduce Fisher information matrix and Cramer Rao bound (since we will use it later for INFERNO)}
 
 
-references : 
+References : 
 \begin{itemize}
 	\item \url{https://arxiv.org/abs/physics/0403059}
 	\item \url{https://arxiv.org/abs/1007.1727}
 	\item \url{https://arxiv.org/abs/physics/0408039} coverage study of marginalization of nuisance params
 \end{itemize}
-
-\content{Expliquer pourquoi on a pas de formule close form pour}
-
+\victor{Papier de référence pour la construction d'interval de confiance en HEP = \url{https://arxiv.org/pdf/physics/9711021.pdf} G. J. Feldman and R. D. Cousins, Phys. Rev. D 57, 3873 (1998) ?}
 
 
 Il s'agit de produire $\mu$ et de l'encadrer.
-Version simple : Monte Carlo pour avoir p(x) et chercher le maximum.
+Version simple : Monte Carlo pour avoir $p(x)$ et chercher le maximum.
 
 Puis pour l'encadrement on navigue autour du maximum pour obtenir à droite et à gauche la valeure qui corespond à l'encadrement.
 On veut un interval de confiance à X\%.
 On va faire des petits calculs + petites approximations pour mesurer la valeur de $\mu + \smu$ et de $\mu - \smu$.
 
 
-\content{Faire un petit examle à la main end-to-end}
-\content{Lister clairement les approximations faites pour obtenir cet intervalle de confiance. + citer les papiers qui ont challengé ces apprixmation }
+\content{Faire un petit example à la main end-to-end. Ou pas car ça pique ! cf chap 9 section 6 du livre de Glen}
+\content{Lister clairement les approximations faites pour obtenir cet intervalle de confiance. + citer les papiers qui ont challengé ces approximations }
 
 
 
@@ -794,7 +793,8 @@ On va faire des petits calculs + petites approximations pour mesurer la valeur d
 
 \victor{En fait qu'est-ce que je veux dire ici ?}
 
-In practice the data go through many processes like trigger selection, tracking, event reconstructions, etc computing hand crafted features to reduce the dimensionality from $\RR^{100,000}$ to $\RR^{40}$ then using machine learning to reduce to $\RR$.
+In practice the data go through many processes like trigger selection, tracking, event reconstructions, etc.
+Computing hand crafted features to reduce the dimensionality from $\RR^{100,000}$ to $\RR^{40}$ then using machine learning to reduce to $\RR$.
 Although machine learning is slowly becoming part of these steps \needcite.
 All the domain knowledge is concentrated in the simulator and the hand crafted data processing.
 
@@ -807,7 +807,6 @@ All the domain knowledge is concentrated in the simulator and the hand crafted d
 \end{figure}
 
 
-\victor{Papier de référence pour la construction d'interval de confiance en HEP = \url{https://arxiv.org/pdf/physics/9711021.pdf} G. J. Feldman and R. D. Cousins, Phys. Rev. D 57, 3873 (1998) ?}
 
 
 
