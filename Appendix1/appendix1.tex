@@ -415,22 +415,48 @@ This is assumed to allow the network to use the best of both world.
 
 \begin{table}[ht!]
 \centering
+\begin{tabular}{||c c||} 
+ \hline
+ \multicolumn{2}{|c|}{1D Toy GG true parameter grid}\\
+ \hline
+ $\mu$ & [0.1, 0.3, 0.5, 0.7, 0.9] \\ 
+ $\alpha$ & [0.8, 1. , 1.2] \\ 
+ \hline
+\end{tabular}
+\caption{Table of true parameter grid for the 1D Toy GG}
+\label{table:GG_true_grid}
+\end{table}
+
+The fine range of $\alpha$ for systematic/statistical variance estimation is 31 equidistant values in $[0.5, 1.5]$ . 
+
+
+\subsection{Prior distributions} % (fold)
+\label{sub:prior_distributions}
+
+
+\victor{TODO !}
+
+
+
+\subsection{Data size} % (fold)
+\label{sub:data_size}
+
+
+\begin{table}[ht!]
+\centering
 \begin{tabular}{||c c c c||} 
  \hline
- \multicolumn{4}{|c|}{Toy 1D GG}\\
+ \multicolumn{4}{|c|}{Data size}\\
  \hline
  Problem & GG & S3D2 & HiggsML \\ [0.5ex] 
  \hline
- \# units & [50, 100, 200, 500] & [50, 100, 200, 500] & [50, 100, 200, 500] \\ 
- \# steps & [2000, 5000] & [2000, 5000] & [2000, 5000, 10 000] \\
- learning-rate & [1e-3] & [1e-3] & [1e-3] \\
- Optimizer & Adam & Adam & Adam \\
- $\beta_1$ & 0.5 & 0.5 & 0.5 \\
- $\beta_2$ & 0.9 & 0.9 & 0.9 \\
+ \# training samples & 10 000 & 30 000 & ?? \\ 
+ \# validation samples & 5 000 & 30 000 & ?? \\
+ \# test samples & [50, 100, 300, 500, 2000] & [??] & [??] \\
  \hline
 \end{tabular}
-\caption{Table of hyper-parameters for Neural network datasetwise regressor}
-\label{table:HP_REG}
+\caption{Table of the base number of samples in training, validation or testing datasets. }
+\label{table:data_sizes}
 \end{table}
 
 
