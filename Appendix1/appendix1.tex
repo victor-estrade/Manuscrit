@@ -133,29 +133,50 @@ The number predictions made by the model is also reported as a proxy of computat
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 \section{Details} % (fold)
 \label{sec:details}
 
 Here are given the details to be able to reproduce the experiments.
+
+\subsection{Global constants} % (fold)
+\label{sub:global_constants}
 
 The chosen global seed is 42.
 This number has become famous with the popularity of H2G2\needcite.
 I've seen it used quite often in codes as an easter egg.
 
 
+The number of cross-validation is always 30.
 
-\subsection{Baselines} % (fold)
-\label{sub:baselines}
 
-The baselines are the simplest models with the standard pipeline.
-A well tuned classifier trained on the nominal data.
-To avoid weak baselines Gradient Boosting [GB] \needcite from sci-kit learn is used.
-GB is easy to train and easy to tune and very often gives good classification results.
-Wrong training of GB by chance is quite difficult.
 
-A neural network classifier is also included in the baseline to compare methods with same or similar architectures when possible.
-Neural networks can be a bit tricky to train.
-If the neural network and gradient boosting performances are not very similar then the worst one is probably wrongly trained.
+\subsection{List of methods} % (fold)
+\label{sub:list_of_methods}
+
+
+Here is the list of all methods with a short description and their short names.
+\begin{itemize}
+	\item Gradient Boosting [GB] : a gradient boosting classifier from scikit-learn trained on the nominal data.
+	\item Neural Network Classifier [NN] : a neural network trained as a classifier trained on the nominal data.
+	\item Data augmentation [DA] : a neural network classifier trained on a mixture of simulated data with 1000 differents input parameters.
+	\item Tangent Propagation [TP] : a neural network classifier with the tangent propagation regularization.
+	\item Pivotal neural network [Pivot] : a neural network classifier with adversarial training.
+	\item Inferno [INFERNO] : a neural network summary computer trained with inferno method.
+	\item Regressor [REG] : a dataset wise mixture density neural network regressor taking both the data and nuisance parameter as input.
+	\item Marginal Regressor [REG-Marginal] : a dataset wise mixture density neural network regressor taking only the data as input.
+\end{itemize}
 
 
 
@@ -276,6 +297,93 @@ This is assumed to allow the network to use the best of both world.
 \end{table}
 
 
+\begin{table}[ht!]
+\centering
+\begin{tabular}{||c c c c||} 
+ \hline
+ \multicolumn{4}{|c|}{Data Augmentation}\\
+ \hline
+ Problem & GG & S3D2 & HiggsML \\ [0.5ex] 
+ \hline
+ \# units & [50, 100, 200, 500] & [50, 100, 200, 500] & [50, 100, 200, 500] \\ 
+ \# steps & [2000, 5000] & [2000, 5000] & [2000, 5000, 10 000] \\
+ learning-rate & [1e-3] & [1e-3] & [1e-3] \\
+ Optimizer & Adam & Adam & Adam \\
+ $\beta_1$ & 0.9 & 0.9 & 0.9 \\
+ $\beta_2$ & 0.999 & 0.999 & 0.999 \\
+ \hline
+\end{tabular}
+\caption{Table of hyper-parameters for Data Augmentation}
+\label{table:HP_DA}
+\end{table}
+
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{||c c c c||} 
+ \hline
+ \multicolumn{4}{|c|}{Tangent propagation}\\
+ \hline
+ Problem & GG & S3D2 & HiggsML \\ [0.5ex] 
+ \hline
+ \# units & [50, 100, 200, 500] & [50, 100, 200, 500] & [50, 100, 200, 500] \\ 
+ \# steps & [2000, 5000] & [2000, 5000] & [2000, 5000, 10 000] \\
+ learning-rate & [1e-3] & [1e-3] & [1e-3] \\
+ Optimizer & Adam & Adam & Adam \\
+ $\beta_1$ & 0.9 & 0.9 & 0.9 \\
+ $\beta_2$ & 0.999 & 0.999 & 0.999 \\
+ trade-off & [1, 0.1, 1e-2, 1e-3] & [1, 0.1, 1e-2, 1e-3] & [1, 0.1, 1e-2, 1e-3] \\
+ \hline
+\end{tabular}
+\caption{Table of hyper-parameters for Tangent Propagation}
+\label{table:HP_TP}
+\end{table}
+
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{||c c c c||} 
+ \hline
+ \multicolumn{4}{|c|}{Pivot}\\
+ \hline
+ Problem & GG & S3D2 & HiggsML \\ [0.5ex] 
+ \hline
+ \# units & [50, 100, 200, 500] & [50, 100, 200, 500] & [50, 100, 200, 500] \\ 
+ \# steps & [2000, 5000] & [2000, 5000] & [2000, 5000, 10 000] \\
+ learning-rate & [1e-3] & [1e-3] & [1e-3] \\
+ Optimizer & Adam & Adam & Adam \\
+ $\beta_1$ & 0.9 & 0.9 & 0.9 \\
+ $\beta_2$ & 0.999 & 0.999 & 0.999 \\
+ trade-off & [1, 0.1, 1e-2, 1e-3] & [1, 0.1, 1e-2, 1e-3] & [1, 0.1, 1e-2, 1e-3] \\
+ \hline
+\end{tabular}
+\caption{Table of hyper-parameters for Pivot}
+\label{table:HP_PIVOT}
+\end{table}
+
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{||c c c c||} 
+ \hline
+ \multicolumn{4}{|c|}{INFERNO}\\
+ \hline
+ Problem & GG & S3D2 & HiggsML \\ [0.5ex] 
+ \hline
+ \# units & [50, 100, 200, 500] & [50, 100, 200, 500] & [50, 100, 200, 500] \\ 
+ \# steps & [2000, 5000] & [2000, 5000] & [2000, 5000, 10 000] \\
+ learning-rate & [1e-3] & [1e-3] & [1e-3] \\
+ Optimizer & Adam & Adam & Adam \\
+ $\beta_1$ & 0.5 & 0.5 & 0.5 \\
+ $\beta_2$ & 0.9 & 0.9 & 0.9 \\
+ temperature & 1 & 1 & 1 \\
+ \hline
+\end{tabular}
+\caption{Table of hyper-parameters for INFERNO}
+\label{table:HP_INF}
+\end{table}
+
+
 
 \begin{table}[ht!]
 \centering
@@ -297,6 +405,33 @@ This is assumed to allow the network to use the best of both world.
 \label{table:HP_REG}
 \end{table}
 
+
+
+
+
+\subsection{True parameter grid} % (fold)
+\label{sub:true_parameter_grid}
+
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{||c c c c||} 
+ \hline
+ \multicolumn{4}{|c|}{Toy 1D GG}\\
+ \hline
+ Problem & GG & S3D2 & HiggsML \\ [0.5ex] 
+ \hline
+ \# units & [50, 100, 200, 500] & [50, 100, 200, 500] & [50, 100, 200, 500] \\ 
+ \# steps & [2000, 5000] & [2000, 5000] & [2000, 5000, 10 000] \\
+ learning-rate & [1e-3] & [1e-3] & [1e-3] \\
+ Optimizer & Adam & Adam & Adam \\
+ $\beta_1$ & 0.5 & 0.5 & 0.5 \\
+ $\beta_2$ & 0.9 & 0.9 & 0.9 \\
+ \hline
+\end{tabular}
+\caption{Table of hyper-parameters for Neural network datasetwise regressor}
+\label{table:HP_REG}
+\end{table}
 
 
 

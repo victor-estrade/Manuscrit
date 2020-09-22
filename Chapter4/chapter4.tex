@@ -13,18 +13,13 @@
 
 \topic{Il faut un benchmark solide pour comparer les méthodes}
 
-\section{Constitution du benchmark} % (fold)
-\label{sec:constitution_du_benchmark}
-
-\content{Weak baselines, too many (too complex or specific) objective functions and other problems in presenting ML results.}
-
-\victor{Ce que j'essaie de faire c'est mettre un peu d'ordre. Donc je doit décrire les métriques utilisée par les autres papier. Décrire ce que je veux ranger}
-
 
 
 
 \section{Higgs data} % (fold)
 \label{sec:higgs_data}
+
+
 
 
 
@@ -61,6 +56,9 @@ Then the data are gathered with importance weights reprensenting their relative 
 
 
 
+
+
+
 \subsection{HiggsML challenge} % (fold)
 \label{sub:higgsml_challenge}
 
@@ -76,6 +74,9 @@ The cooked features help getting good classification perfomances\needcite in som
 The label designing if the event is a signal ($H\to \tau \tau$) or a backgroud (any other process) is of course available in the dataset as well.
 
 Sample weights used for the kaggle challenge is not the same ... why again ?
+
+
+
 
 
 
@@ -98,6 +99,8 @@ This is already enough to build a complete workflow of the inference without nui
 
 5 nuisance parameters are considered : tau energy scale, lepton energy scale, jet energy scale, soft term, nasty backgrounds.
 
+
+
 \subsubsection{Energy scales} % (fold)
 \label{ssub:energy_scales}
 
@@ -107,12 +110,16 @@ The 3 energy scales are independant from each other leading to 3 nuisance parame
 This nuisance parameter is basically a proportional factor on one or several primary features (eg. PRI\_tau\_pt) stained with non negligeable uncertainty.
 Recomputing the events for a different value of the energy scale requires not only to multiply the primary features with the updated value but also all the features derived from this primaries.
 
+
+
 \subsubsection{Soft term} % (fold)
 \label{ssub:soft_term}
 
 The missing energy transverse (met) is perturbated by a random vector sampled from a normal distribution which standard deviation is our nuisance parameter $\alpha_{st}$.
 This is a more difficult systematic effect to infer from the data.
 Just like the parameter of interest it isby definition impossible to infer the soft term from one example.
+
+
 
 
 \subsubsection{Nasty background} % (fold)
@@ -127,6 +134,7 @@ Indeed a larger number of events in a bin can now be explained by an increase of
 
 
 
+
 \subsubsection{Mass MMC} % (fold)
 \label{ssub:mass_mmc}
 
@@ -137,8 +145,12 @@ Although DER\_Mass\_MMC is the a relevant feature (\textbf{see missing figure}) 
 \victor{TODO : figure top 5 or top 10 feature importances}
 
 
+
+
 \subsubsection{The cut at 22GeV} % (fold)
 \label{ssub:the_cut}
+
+
 
 
 
@@ -152,6 +164,9 @@ Re-generating the data is not the same as re-running the simulation.
 
 Training the direct regression method requires way more data than training a classifier since a sample for a regressor is composed of thousands of events.
 With boostrapping and considering the re-generation as data augmentation the finite HiggsML dataset can be turned into an almost infinite generator of events.
+
+
+
 
 
 
@@ -351,6 +366,8 @@ And all sums over $j$ become summs over $j,k, ...$ which is easy to handle with 
 
 
 
+
+
 \section{Evaluation metric} % (fold)
 \label{sec:evaluation_metric}
 
@@ -384,6 +401,8 @@ Repeating the experiment can be done through cross-validation methods.
 
 
 
+
+
 \subsubsection{Evaluation of the parameter of interest estimator} % (fold)
 \label{ssub:evaluation_of_the_parameter_of_interest_estimator}
 
@@ -411,6 +430,7 @@ it is possible to estimated the criterions
 
 
 
+
 \subsubsection{Evaluation of the variance estimator} % (fold)
 \label{ssub:evaluation_of_the_variance_estimator}
 
@@ -432,6 +452,7 @@ If this is not the case an approximation is available using \autoref{eq:var_hmu}
 
 
 
+
 \subsection{Fake real data} % (fold)
 \label{sub:fake_real_data}
 
@@ -447,9 +468,16 @@ This allow to study the properties of the candidates analysis pipelines accordin
 
 
 
+
+
+
+
+
+
 \subsection{Statistical and systematic variance} % (fold)
 \label{sub:statistical_and_systematic_variance}
 
+\victor{TODO : à refaire. Les formules sont lourdes pour rien.}
 
 The previous section gives a method to compute the total variance.
 But separating the statistical and systematic variance is critical for understanding the results.
@@ -483,8 +511,140 @@ Which is simply doing inference without nuisance parameter.
 
 
 
-\subsection{Choosing the true parameters} % (fold)
-\label{sub:choosing_the_true_parameters}
+
+
+
+
+
+\section{Experimental details} % (fold)
+\label{sec:experimental_details}
+
+
+
+\victor{Ici je veux ecrire les algo, les détails (sans les chiffres, chiffres réservés à Appendix A) de comment je mène mes XP.}
+
+
+There is several ways of estimating the parameter of interest.
+Two workflows have been identified : the classic one with a histogram and poissont count likelihood estimator and the direct one with a regression using a dataset wise neural network.
+
+The experimental plan to evaluate the methods is described in this section.
+
+\victor{TODO : plan des subsections}
+
+
+
+
+
+
+
+
+\subsection{Training details} % (fold)
+\label{sub:training_details}
+
+
+At first training all methods with the same number of training samples has been considered.
+But evaluating each methods at the best of their performances while emphasizing which method is more data intensive gives better indications to which one is more suited to a given problem.
+
+
+\subsubsection{Baseline : classifier} % (fold)
+\label{ssub:baseline_classifier}
+
+The baseline is a standard classifier trained on the nominal dataset.
+The nominal dataset is a dataset generated with parameter values corresponding to current knowledge.
+In other words the maximum of the prior distribution for $\mu$ and the maximum of the calibrated distribution for $\alpha$.
+
+The baseline gather two classifiers : Gradient Boosting from sklearn \needcite and a neural network trained with cross-entropy loss.
+
+Gradient Boosting is a powerfull classifier, easy to train and delivers very good classification performances for almost no effort.
+Although more recent variants like XGBoost \needcite and NGBoost \needcite are likely to outperfom Gradient Boosting, XGBoost requires effort to avoid over-fitting and NGBoost was unknown to me until recently.
+
+Systematic aware methods (Data Augmentation, Tangent Prop, Pivot) are using regularization on a standard classifier.
+A baseline using the same architecture is required to provide a fair comparison.
+
+
+
+
+\subsubsection{Data augmentation} % (fold)
+\label{ssub:data_augmentation}
+
+
+The simpler method to inforce robustness to the systematic effet is to train the classifier on a mixture of data generated with various values of the nuisance parameter.
+Data augmentation is a neural network trained with cross-entropy on a dataset formed from 1000 sub-datasets.
+Every sub-dataset is generated with the nominal value of $\mu$ and an $\alpha$ sampled from the prior of $\alpha$.
+The full training dataset is 5 times bigger than the nominal one.
+
+
+
+\subsubsection{Tangent propagation} % (fold)
+\label{ssub:tangent_propagation}
+
+Tangent propagation is trained using a differentiable generator.
+Tangent propagation virtually has acess to a infinite number of samples.
+On the toy datasets the generative process is written using \emph{torch.dictribution} .
+On the higgs dataset the generator is differentiable only to the nuisance parameters using trick described in \autoref{sub:fast_re_simulator} 
+
+
+
+
+\subsubsection{Pivot} % (fold)
+\label{ssub:pivot}
+
+
+The data used to train Pivot is the same as Data Augmentation.
+
+Pivot is trained with 3 steps.
+First the pretraining of the classifier, then the pretraining of the adversarial part.
+Finally a loop of adversarial correction step and a few recovery steps.
+
+
+
+
+\subsubsection{Inferno} % (fold)
+\label{ssub:inferno}
+
+Inferno is trained with the same generator as tangent propagation
+
+
+
+
+\subsubsection{Regressor} % (fold)
+\label{ssub:regressor}
+
+The regressor is trained using a similar generator than Inferno of Tangent Propagation without the need to be differentiable.
+The regressor is simply taking the value of $\alpha$ used to generate of each sampleset as input while the marginal regressor ignores it.
+
+
+
+
+
+
+\subsection{Computing the estimator} % (fold)
+\label{sub:computing_the_estimator}
+
+
+
+
+
+
+
+\subsection{Calibration} % (fold)
+\label{sub:calibration}
+
+
+Not in training.
+Calibrated distributions are narrower than the Prior ones.
+So it is safer to train robust method on the larger ones to ensure robustness on more values.
+Also calibration failure would break robust method otherwise. 
+
+
+
+
+
+
+
+\subsection{Computing evaluation metric} % (fold)
+\label{sub:computing_evaluation_metric}
+
 
 The estimators $\hmu$ and $\hshmu$ are random variable because of the limited size of the dataset.
 They depends on the true values of the parameters $\mu^\star$ and $\alpha^\star$.
@@ -494,16 +654,16 @@ In the benchmark multiple values of $\mu^\star$ and $\alpha^\star$ have to be te
 
 
 
-\subsection{Evaluation algorithm} % (fold)
-\label{sub:evaluation_algorithm}
-
-
-How I do it in practice !
-Cross-validation, range of parameter values (combinatorial explosion), etc
-
-Total variance, statistical variance, systematic variance.
 
 
 
-Cross-validation = change the seed of generators for toys and change the seed of data splitting for higgs.
+
+
+
+
+
+
+
+
+
 
