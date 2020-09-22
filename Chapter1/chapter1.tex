@@ -194,12 +194,20 @@ The integral on the denominator can either be computed by hand or approximated w
 Often the full posterior is not required and only the most probable value of the parameter is infered.
 When no prior knowledge on the parameter of interest is available maximum a posteriori and maximum likelihood estimators are strickly equivalent.
 \begin{align}
+	\label{eq:map_mle_1}
 	\hmu &= \argmax_\mu p(\mu | x) \\
-							&= \argmax_\mu \frac{p(x|\mu) p(\mu)}{p(x)} \\
-							&= \argmax_\mu p(x|\mu) p(\mu) \\
-							&= \argmax_\mu p(x|\mu)\\
+	\label{eq:map_mle_2}
+		&= \argmax_\mu \frac{p(x|\mu) p(\mu)}{p(x)} \\
+	\label{eq:map_mle_3}
+		&= \argmax_\mu p(x|\mu) p(\mu) \\
+	\label{eq:map_mle_4}
+		&= \argmax_\mu p(x|\mu)\\
 \end{align}
-Solving this maximization usually involves either analytical computing of the formulas \victor{Why not givin an example in the appendix ?} or a numerical optimization process (eg. gradient ascent, coordinate ascent).
+\autoref{eq:map_mle_1} $ \to$ \autoref{eq:map_mle_2} Bayes theorem ;
+\autoref{eq:map_mle_2} $ \to$ \autoref{eq:map_mle_3} $p(x)$ does not depends on $\mu$ ;
+\autoref{eq:map_mle_3} $ \to$ \autoref{eq:map_mle_4} $p(x)$ non-informative prior.
+
+Solving this maximization usually involves either analytical computing of the formulas or a numerical optimization process (eg. gradient ascent, coordinate ascent).
 See \autoref{sub:poisson_count_process} for an example.
 
 
@@ -359,13 +367,13 @@ This allow us to build a training dataset to feed some machine learning algorith
 
 Measurements are made from a large bunch of independent and identically distributed events $D=\{x_i\}_{i=1}^N$.
 
-\begin{align*}
+\begin{align}
 	p(D|\eta) =& \prod_{i=1}^N \eta p(x|S) + (1-\eta) p(x|B) \\
 	       =& \prod_{i=1}^N p(x|B) \left [(1-\eta) + \eta \frac{p(x|S)}{p(x|B)} \right ]\\
-\label{eq:Fisher-Neyman}
 	       =& \underbrace{\left[ \prod_{i=1}^N p(x|B) \right ]}_{h(x)} \times 
 	       \underbrace{\left [\prod_{i=1}^N (1-\eta) + \eta \frac{p(x|S)}{p(x|B)} \right ]}_{g_\eta(T(x))}
-\end{align*}
+\label{eq:Fisher-Neyman}
+\end{align}
 with $T(x) = \frac{p(x|S)}{p(x|B)} $
 
 The Fisher-Neyman factorization theorem \needcite states that $T(x)$ is a sufficient summary statistic to obtain $\eta$
@@ -598,6 +606,7 @@ Here is an example to
 Bob wants to estimate the efficiency of its hotplate by measuring the time required to heat 1L of water in a saucepan to boiling temperature.
 Each time Bob need boiling water to cook he will run this little experiment.
 Bob measured the temperature of the water and the air and the air pressure and know the electric power of his hotplate.
+
 Unfortunatelly Bob is using tap water and cannot measure the amount of impurities in the water which have a influence on the boiling temperature.
 The impurities concentration in the water is now a nuisance parameter of the problem (fundamental uncertainty).
 Moreover the thermometer is a cheap one and may be biased toward lower or upper temperature introducing another nuisance parameter (apparatus imperfection).
@@ -616,17 +625,24 @@ In the remaining of this manuscript the nuisance parameters are all gathered int
 
 \victor{Brouillon pour le moment}
 
+The likelihood now depends on several parameters :
+\begin{equation}
+	p(D | \mu, \alpha) = \prod_{i=1}^N p(x | \mu, \alpha) 
+		= \prod_{i=1}^N \mu p_{SM}(S) p(x | \mu, \alpha, S) + (1-\mu p_{SM}(S)) p(x | \mu, \alpha, S)
+\end{equation}
+
 First, the introduction of nuisance parameters $\alpha$ in \autoref{eq:Fisher-Neyman} makes it impossible to use the Fisher-Neyman theorem.
 \begin{equation}
 	p(D|\mu, \alpha) = \underbrace{\left[ \prod_{i=1}^N p(x|B, \alpha) \right ]}_{h_\alpha(x)} \times 
-       \underbrace{\left [\prod_{i=1}^N (1-\mu) + \mu \frac{p(x|S, \alpha)}{p(x|B, \alpha)} \right ]}_{g_\mu(T_\alpha(x))}
+       \underbrace{\left [\prod_{i=1}^N (1-\mu p_{SM}(S)) + \mu p_{SM}(S) \frac{p(x|S, \alpha)}{p(x|B, \alpha)} \right ]}_{g_\mu(T_\alpha(x))}
 \end{equation}
 Now $h_\alpha(x)$ does not depends only in $x$.
-One could argue that although the classifier score may not be a sufficient summary statistic anymore it is probable that it still contains most of the information about the parameter of interest.
 
+One could argue that although the classifier score may not be a sufficient summary statistic anymore it is probable that it still contains most of the information about the parameter of interest.
 The use of classifier score is a very good approximated proxy to the likelihood function in practice.
 Moreover \cite{Cranmer2015} shows that if the classifier score is a monotone function of the likelihood it is a sufficient statistic.
 \victor{TODO : vérifier les termes exact du théorème de Cranmer}
+
 
 Second, the poisson count likelihood (see \autoref{sub:poisson_count_process}) has to be updated with the introduction of the nuisance parameter $\alpha$.
 The expected number of signal $\gamma$ and backgrounds $\beta$ now depends on $\alpha$.
@@ -640,12 +656,15 @@ Moreover taking nuisance parameter into account can introduce local maxima in th
 
 \victor{TODO : C'est là que j'attaque les papiers avec linéarisation de l'impact du paramètre de nuisance}
 
-$\alpha$ is generally known to a certain extent thanks to other measurements is controlled region where the signal has low probability of appearing or even no influence at all making these measurement independent from $\mu$.
+$\alpha$ is generally known to a certain extent thanks to other measurements is controlled region where the signal has low probability of appearing or even no influence at all making these measurement independent from $\mu$ (\autoref{eq:calib_integration_1} $\to$ \autoref{eq:calib_integration_2}).
 
-These measurements $D_{calib}$ very often constrains the values of $\alpha$ with a gaussian distribution :
+These measurements $D_{calib}$ very often constrains the values of $\alpha$ with a gaussian distribution (\autoref{eq:calib_integration_2} $\to$ \autoref{eq:calib_integration_3}).
 \begin{align}
+	\label{eq:calib_integration_1}
 	p(n, D_{calib} | \mu, \alpha) &= p(n | \mu, \alpha) \times p(D_{calib} | \mu, \alpha) \\
+	\label{eq:calib_integration_2}
 	p(n, D_{calib} | \mu, \alpha) &= p(n | \mu, \alpha) \times p(D_{calib} | \alpha) \\
+	\label{eq:calib_integration_3}
 	p(n, D_{calib} | \mu, \alpha) &= Poisson(n | \mu \gamma(\alpha) +\beta(\alpha)) \times \mathcal N(D_{calib} | \alpha)
 \end{align}
 
@@ -653,16 +672,6 @@ Of course this can be extended to the binned poisson likelihood.
 \begin{equation}
 	p(n_1, .., n_K, D_{calib} | \mu, \alpha) = \mathcal N(D_{calib} | \alpha) \times \prod_{i=1}^K Poisson(n_i | \mu \gamma_i(\alpha) +\beta_i(\alpha))
 \end{equation}
-
-
-
-
-
-\subsection{Classifier optimality} % (fold)
-\label{sub:classifier_optimality}
-
-
-\victor{Brouillon}
 
 
 
@@ -695,8 +704,9 @@ Example : Calibrant interne en chimie (mesure supplémentaire dont la valeur att
 For now the concerns were mostly focused the inference of the parameter.
 But this is only half the answer.
 In science every estimation must comes with its uncertainty.
-The other half is the measurement of the uncertainty of parameter of interest's estimator.
+The other half of the answer is the measurement of the uncertainty of parameter of interest's estimator.
 
+\victor{Uncertainty = Variance of confidence interval or credible interval ? Je dois dire lequel pourquoi ici je traite la variance. Et ajouter qu'on a toujours pas de définition claire de systematic uncertainty dans la littérature...}
 The origin of the variance of our estimator can be divided into 2 parts.
 The one comming mostly from the lack of data is called \emph{statistical variance} and the other origniates from the sensitivity of the inference to nuisance parameter and is named \emph{systematic variance}.
 
