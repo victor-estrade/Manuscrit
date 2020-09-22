@@ -188,18 +188,19 @@ Assuming that the model provides a likelihood $p(x | \mu)$ the Bayes theorem ind
 The prior $p(\mu)$ contains all the current knowledge about the parameter. 
 If no knowledge is available a non informative prior is chosen, usually a uniform distribution over the domain of $\mu$.
 The inference is then straitforward.
-Computing $p(\mu | x)$ for the possible values $\mu$ \ie where the prior probability is not zero.
+Computing $p(\mu | x)$ for the possible values of $\mu$ \ie where the prior probability is not zero.
 The integral on the denominator can either be computed by hand or approximated with Monte Carlo.
 
 Often the full posterior is not required and only the most probable value of the parameter is infered.
 When no prior knowledge on the parameter of interest is available maximum a posteriori and maximum likelihood estimators are strickly equivalent.
 \begin{align}
-	\argmax_\mu p(\mu | x) &= \argmax_\mu p(\mu | x) \\
+	\hmu &= \argmax_\mu p(\mu | x) \\
 							&= \argmax_\mu \frac{p(x|\mu) p(\mu)}{p(x)} \\
 							&= \argmax_\mu p(x|\mu) p(\mu) \\
 							&= \argmax_\mu p(x|\mu)\\
 \end{align}
-Solving this maximization usually involves either analytical computing of the formulas \victor{Why not givin an example in the appendix ?} or a numerical optimization process (eg. gradient ascent, coordinate ascent)
+Solving this maximization usually involves either analytical computing of the formulas \victor{Why not givin an example in the appendix ?} or a numerical optimization process (eg. gradient ascent, coordinate ascent).
+See \autoref{sub:poisson_count_process} for an example.
 
 
 
@@ -224,13 +225,13 @@ Making the marginal likelihood intraclable because of high dimensional integrals
 \victor{What do we know about numerical stability of high dimensional integral ?}
 \content{Maybe a "simple" example that shows how often in real life this setting may happen}
 
-Moreover sometimes simplifications needs to be made in order to build the model \needcite making the computed likelihood only a approximation of the true likelihood.
-Some other times computable formulas simply do not exist \needcite.
+Moreover sometimes simplifications needs to be made in order to build the model \needcite making the computed likelihood only an approximation of the true likelihood.
+Some other times exact computable formulas or programs simply do not exist \needcite.
 
 \content{Approximation requiered to build some part of LHC simulation as an example}
 
 
-However building a simulator working only in forward mode ie allowing to sample from $p(x|\mu)$ is easier and possible in cour case.
+However building a simulator working only in forward mode, \ie allowing to sample from $p(x|\mu)$, is easier and possible in cour case.
 The objective is then to infer causal parameters from observations hence reversing the forward process which goes from causal parameters to observations.
 This is more generaly known as the \emph{inverse problem}.
 There is no general solution yet to this problem altough it occures often in experimental science.
@@ -257,15 +258,16 @@ The distribution of events can be rewritten as :
 \end{equation}
 The objective is to infer the probability of an event to be a signal ie $p(S)$ while $p(x|S)$ and $p(x|B)$ are intracktable.
 Since we are working with very rare events the value of $p(S)$ is very small.
-To avoid numerical issues it is more convenient to deal with a \emph{deviation} from a nominal value.
+To avoid numerical stability issues it is more convenient to deal with a \emph{deviation} from a nominal value.
 \begin{equation}
+\label{eq:mu_definition}
 	p(S) = \mu p_{SM}(S)
 \end{equation}
-where $p_{SM}(S)$ is the probability of an event to be a signal according to current knowledge ie the Standard Model.
+where $p_{SM}(S)$ is the probability of an event to be a signal according to current knowledge \ie the Standard Model.
 The parameter of interest $\mu$ is measuring the deviation of the data from the SM.
 If the data are in perfect agreement with the SM then $\mu=1$.
 
-The next section will make use of this setup to tackle the inference.
+The next section makes use of this setup to tackle the inference.
 
 
 
@@ -284,11 +286,11 @@ The next section will make use of this setup to tackle the inference.
 \content{Introduire le problème d'extraction d'un coefficient de mélange(lié à cross-section)}
 
 
-This section show how to solve this specific case of inverse problem.
+This section show three independant ways to solve this specific case of inverse problem.
 \autoref{sub:hand_crafted_dimension_reduction} gives a general solution assuming domain knowledge allow to put all relevant information in a low dimension space.
 \autoref{sub:count_estimation} is using a classifier score as a proxy for maximum likelihood estimation.
 The remaining sections (\autoref{sub:poisson_count_process}, \autoref{sub:binned_poisson_count_process}, \autoref{sub:asimov_dataset}) describe the retained analysis pipeline.
-The reason to retain the last one is given in \autoref{sec:systematic_effects}.
+The reasons to retain the last one is given in \autoref{sec:systematic_effects}.
 
 
 
@@ -309,7 +311,7 @@ Tackling the inverse problem with density estimation is subject to the curse of 
 Restricting the observables to only one or two dimensions requires those dimension to carry all or most the information about the estimated parameter.
 
 The first idea to achieve such constraint is to use domain knowledge.
-Basically ask the theorist to find a computable quantity from the possible measurement allowing to infer the parameter.
+Basically ask the theorists to find one or two computable quantities from the possible measurement allowing to infer the parameter.
 \victor{TODO : Fouiller les années 80 à la recherche d'exemple}
 
 \victor{Discard the less relevant ones (feature selection). Pas sûr que ça soit vraiment utilisé. Demander à David.}
@@ -324,7 +326,7 @@ So we can use it on the simulated data to define the likelihood function.
 \victor{Mot clé : "méthode des coupures" (cécile) comme méthode à la main pour trouver une région riche en signal}
 
 
-
+\victor{TODO : quelques remarques sur les limitations de ces methodes}
 
 
 
@@ -405,7 +407,7 @@ where $n_s$ is the fraction of signals used in the training dataset.
 
 Note that $c$ is also a sufficient summary statistic
 \begin{equation}
-	g_\mu(T(x)) = 1 - \mu p_{SM}(S) + \mu p_{SM}(S) \times \frac{c(x)}{(1-c(x))} \frac{(1-n_s)}{n_s} = f_\mu(c(x))
+	g_\eta(T(x)) = 1 - \mu p_{SM}(S) + \mu p_{SM}(S) \times \frac{c(x)}{(1-c(x))} \frac{(1-n_s)}{n_s} = f_\mu(c(x))
 \end{equation}
 
 \content{Limitation : what happens if the classifier is not (Bayes) optimal ? Can we detect it ?}
@@ -414,6 +416,7 @@ Note that $c$ is also a sufficient summary statistic
 \victor{TODO : C'est ici que je devrais parler des travaux de Kyle Cranmer et al sur Calibrated classifier ! \cite{Cranmer2015}}
 
 
+\victor{TODO : quelques remarques sur les limitations de cette methode}
 
 
 
@@ -430,12 +433,12 @@ The modeling of events is replaced by a model at a dataset level which is tracta
 
 The system allows 2 kind of collisions : soft and hard collisions.
 The hard collisions are very rare compared to the soft collisions.
+The hard collision are splitted into 2 categories the signal events and the background events.
+The number of signals is $s$ and the number of backgrounds is $b$.
 The data can be modeled by counting iid Bernoulli rare process which is well approximated by a Poisson distribution \needcite when the number of samples is large.
 
 \victor{FIGURE : Ajouter un petit dessin type arbre de probabilité.}
 
-The hard collision are splitted into 2 categories the signal events and the background events.
-The number of signals is $s$ and the number of backgrounds is $b$.
 
 The total number of events $n$ is the sum of signal events and background events.
 \begin{equation}
@@ -447,8 +450,8 @@ The number of signal events is following a Poisson distribution of parameter $\m
 \end{equation}
 $\gamma$ is the expected number of signals according to current knowledge ie the SM.
 $\mu$ is the parameter of interest, it is the deviation from the SM.
-This way of decomposing the expectancy of the number of signals is mainly here for convenience : numerical stability ($\gamma$ is of the order $10^-6$\needcite; and dimensionless $\mu$.
-\victor{dimensionless or unitless ?}
+According to \autoref{eq:mu_definition} $\gamma = p_{SM}(S)$.
+Decomposing the expectancy of the number of signals is mainly here for numerical stability ($\gamma$ is of the order $10^-6$\needcite).
 The number of background events is following a Poisson distribution of parameter $\beta$.
 \begin{equation}
 	b \sim Poisson(\beta)
@@ -469,7 +472,7 @@ This allow to use more classic parameter estimation like maximum likelihood.
 \begin{equation}
     \hat \mu = \argmax_\mu p(n|\mu) =  \argmax_\mu Poisson(n|\mu)
 \end{equation}
-This can be done by hand. Assuming that we know $\gamma$ and  $\beta$.
+This one can be done by hand. Assuming that we know $\gamma$ and  $\beta$.
 \begin{equation}
     \frac{\partial \log p(n|\mu)}{\partial \mu} =  \gamma \frac{n}{\mu\gamma + \beta} - \gamma
 \end{equation}
@@ -524,7 +527,9 @@ If the bound is not tight well it is still probably better.
 
 The choice of the bin shape remains to be decided.
 \begin{equation}
-    \left (\frac{\partial^2 \log L}{\partial \mu^2}\right )^{-1} = \left ( \sum_{i=1}^K n_i \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)^2} \right )^{-1}
+    \left (\frac{\partial^2 \log L}{\partial \mu^2}\right )^{-1} 
+    	= \left ( \sum_{i=1}^K n_i \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)^2} \right )^{-1}
+    	= \left ( \sum_{i=1}^K n_i \frac{\gamma_i^2}{\EE[n_i]^2} \right )^{-1}
 \end{equation}
 Choosing carefully the bins $\Omega_i$ to make this quantity as small as possible requires to have some bins with high purity of signals.
 \victor{I need to prove that ! See \autoref{sec:proof} for details}
@@ -548,7 +553,7 @@ This section deals with the estimation of $\gamma_i$ and $\beta_i$ using the sim
 
 Basically we want $\gamma_i = \EE [s_i]$ and $\beta_i = \EE [b_i]$.
 We could estimate $\EE [s_i]$ and $\EE [b_i]$ by Monte Carlo.
-And I remember that the Asimov dataset is a dataset whose properties are equals to their expectancy.
+And I remember reading that the Asimov dataset is a dataset whose properties are equals to their expectancy.
 In the code I am estimating $\EE [s_i]$ and $\EE [s_i]$ by putting a simulated dataset through the entire pipeline.
 So I guess that it is not that complicated after all.
 
