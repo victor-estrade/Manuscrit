@@ -537,6 +537,9 @@ The answer to the question : what is the link between $p(x)$ and $n$ is \autoref
 Here we explore the reasons for dividing the data space into bins and also for the use of classifer to produce space region very rich in signal events.
 
 
+
+
+
 \subsubsection{Why making the estimation in a signal richer region is better ?}
 
 There is 2 arguments.
@@ -574,6 +577,9 @@ This observation motivates the use of a signal vs background classifier to selec
 
 
 
+
+
+
 \subsubsection{Why dividing the data space into smaller regions ?}
 
 
@@ -596,6 +602,10 @@ Also from discussion :
 \end{equation}
 But this is assuming $\gamma$ and $\beta$ are nuisance parameter.
 We can be more precise with $\gamma(\alpha)$ and $\beta(\alpha)$.
+
+
+
+
 
 
 
@@ -632,8 +642,17 @@ So the relevant question is : is there enough events (signal + background) in ea
 Il manque neural tangent kernel.
 
 
+
+
+
+
+
 \section{Proof}
 \label{sec:proof}
+
+
+
+
 
 \subsection{Binned likelihood narrower}
 
@@ -652,9 +671,59 @@ which also seems possible with concave or convex argument somewhere.
 
 Proof that $L_0 > L_K$ does not seems to be what we should be looking for.
 
+
+
+
+
 \subsection{Pure signals bin is better}
 
-How do I prove that $max \sum_{i=1}^K n_i \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)^2}$ is found when $\gamma_i$ and $n_i$ is big and $\beta_i$ is small in a few bins... Not forgetting that the total number of events is restricted.
+
+The question is : how to optimize the choice of space regions $\Omega_i$ in order to improve inference.
+The expected answer is : using a histogram (or something like it) on the score of a classifier trained to separate signals and backgrounds.
+
+\victor{TODO NEED HELP : How do we prove it ? Where are the papers about it ?}
+
+Let $\hmu$ be a unbiased estimator.
+Cramer-Rao bound for a scalar parameter:
+\begin{equation}
+    \VV[\hmu] \geq \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu}  \right ]^{-1}
+\end{equation}
+where $\mathcal L$ is the likelihood function.
+
+In our problem with a binned poisson likelihood
+\begin{equation}
+    \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu}  \right ] = \EE \left[ \sum_{i=1}^K n_i \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)^2}  \right ]
+\end{equation}
+\begin{equation}
+    \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu}  \right ] = \sum_{i=1}^K \EE[n_i] \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)^2}
+\end{equation}
+recall that $\EE[n_i] = \mu \gamma_i + \beta_i$ because $n_i \sim Poisson(\mu \gamma_i + \beta_i)$ 
+\begin{equation}
+    \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu}  \right ] = \sum_{i=1}^K  \gamma_i^2 \frac{\EE[n_i]}{\EE[n_i]^2}
+\end{equation}
+\begin{equation}
+    \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu}  \right ] = \sum_{i=1}^K  \frac{\gamma_i^2}{\EE[n_i]} = \sum_{i=1}^K  \frac{\EE[s_i]^2}{\EE[n_i]}
+\end{equation}
+
+In the one bin case with the old notation using $s$ and $b$ as the expected number of signals ad background we find back :
+\begin{equation}
+    \VV[\hmu] \geq \frac{s^2}{s+b} 
+\end{equation}
+Hence the estimator of the standard deviation 
+\begin{equation}
+    \hshmu = \sqrt{\frac{s^2}{s+b}} = \frac{s}{\sqrt{s+b}} 
+\end{equation}
+So I feel that I am going in the right direction.
+
+Anyway in order to minimize the variance (or its lower bound at least) we need to maximise $\EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu}  \right ]$ \ie 
+\begin{equation}
+    \min \left [ \sum_{i=1}^K  \frac{\gamma_i^2}{\EE[n_i]} \right ] ^{-1} = \max \sum_{i=1}^K  \frac{\gamma_i^2}{\EE[n_i]} = \max \sum_{i=1}^K  \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)}
+\end{equation}
+And here I'm stuck.
+How to prove that a classifier is a good choice ?
+The usefull property of a classifier is to separate signal and background.
+Meaning we can have one or 2 bins with a high value of $\frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)}$ but it will lower this same value in other bins. How do we prove that having one very pure bin is a good idea.
+
 
 
 
