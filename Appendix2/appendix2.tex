@@ -686,23 +686,23 @@ The expected answer is : using a histogram (or something like it) on the score o
 Let $\hmu$ be a unbiased estimator.
 Cramer-Rao bound for a scalar parameter:
 \begin{equation}
-    \VV[\hmu] \geq \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu}  \right ]^{-1}
+    \VV[\hmu] \geq \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu^2}  \right ]^{-1}
 \end{equation}
 where $\mathcal L$ is the likelihood function.
 
 In our problem with a binned poisson likelihood
 \begin{equation}
-    \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu}  \right ] = \EE \left[ \sum_{i=1}^K n_i \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)^2}  \right ]
+    \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu^2}  \right ] = \EE \left[ \sum_{i=1}^K n_i \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)^2}  \right ]
 \end{equation}
 \begin{equation}
-    \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu}  \right ] = \sum_{i=1}^K \EE[n_i] \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)^2}
+    \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu^2}  \right ] = \sum_{i=1}^K \EE[n_i] \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)^2}
 \end{equation}
 recall that $\EE[n_i] = \mu \gamma_i + \beta_i$ because $n_i \sim Poisson(\mu \gamma_i + \beta_i)$ 
 \begin{equation}
-    \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu}  \right ] = \sum_{i=1}^K  \gamma_i^2 \frac{\EE[n_i]}{\EE[n_i]^2}
+    \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu^2}  \right ] = \sum_{i=1}^K  \gamma_i^2 \frac{\EE[n_i]}{\EE[n_i]^2}
 \end{equation}
 \begin{equation}
-    \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu}  \right ] = \sum_{i=1}^K  \frac{\gamma_i^2}{\EE[n_i]} = \sum_{i=1}^K  \frac{\EE[s_i]^2}{\EE[n_i]}
+    \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu^2}  \right ] = \sum_{i=1}^K  \frac{\gamma_i^2}{\EE[n_i]} = \sum_{i=1}^K  \frac{\EE[s_i]^2}{\EE[n_i]}
 \end{equation}
 
 In the one bin case with the old notation using $s$ and $b$ as the expected number of signals ad background we find back :
@@ -719,6 +719,8 @@ Anyway in order to minimize the variance (or its lower bound at least) we need t
 \begin{equation}
     \min \left [ \sum_{i=1}^K  \frac{\gamma_i^2}{\EE[n_i]} \right ] ^{-1} = \max \sum_{i=1}^K  \frac{\gamma_i^2}{\EE[n_i]} = \max \sum_{i=1}^K  \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)}
 \end{equation}
+With $\sum_{i=1}^K \gamma_i = \gamma$ and $\sum_{i=1}^K \beta_i = \beta$ fixed. I mean we cannot increase/decrease the values of $\gamma_i$ or $\beta_i$ as we want. We have a budget $\gamma$ and $\beta$ and we are looking for a good or the best repartition of it in our bins.
+
 And here I'm stuck.
 How to prove that a classifier is a good choice ?
 The usefull property of a classifier is to separate signal and background.
