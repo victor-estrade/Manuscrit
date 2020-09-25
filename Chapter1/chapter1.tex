@@ -559,7 +559,7 @@ This section deals with the estimation of $\gamma_i$ and $\beta_i$ using the sim
 \victor{Brouillon}
 
 The current knowledge about the mixture of signal and backgrounds events $\gamma$ and $\beta$ is trivial to extract from the model.
-But if the data spaced is binned in a non-trivial way, e.g. with a histogram on the score of a classifier, the valeus of $\gamma_i$ and $\beta_i$ requires to be estimated.
+But if the data space is binned in a non-trivial way, e.g. with a histogram on the score of a classifier, the valus of $\gamma_i$ and $\beta_i$ requires to be estimated.
 
 Basically $\gamma_i = \EE [s_i]$ and $\beta_i = \EE [b_i]$ which can be estimated by Monte Carlo.
 Running the simulation to produce many signal events and putting them through the same computation used to measure $n_i$ will give an estimate of $\EE [s_i]$.
@@ -791,12 +791,70 @@ On va faire des petits calculs + petites approximations pour mesurer la valeur d
 \subsection{Workflow} % (fold)
 \label{sub:workflow}
 
-\victor{En fait qu'est-ce que je veux dire ici ?}
+\victor{Brouillon}
 
 In practice the data go through many processes like trigger selection, tracking, event reconstructions, etc.
 Computing hand crafted features to reduce the dimensionality from $\RR^{100,000}$ to $\RR^{40}$ then using machine learning to reduce to $\RR$.
 Although machine learning is slowly becoming part of these steps \needcite.
 All the domain knowledge is concentrated in the simulator and the hand crafted data processing.
+
+To keep it simple we assume here that the simulator produces high level features $x \in \RR^d$ from the model parameters $\mu$ and $\alpha$.
+The trigger and other intermediate steps only reduces the data space or the amount of expected signal a priori $p_{SM}(S)$.
+
+The complete workflow consist of a negative log likelihood minimization according to the model parameter.
+Recall the binned likelihood with calibration :
+\begin{equation}
+  L(\mu, \alpha) =\mathcal N (\alpha) \times \prod_{i=1}^K Poisson(n_i | \mu \gamma_i(\alpha) + \beta_i(\alpha) )
+\end{equation}
+
+Asuming that the bins are defined as a histogram on the score of a classifier $c : x \to c(x)$.
+That the experiment provides a dataset of events $D^\star$.
+And the simulator $G$ provides data for Monte Carlo estimation with signal events only $D_S$ and background only $D_B$.
+Those dataset are using some value for $\mu$ and $\alpha$.
+
+The number of events in a bin is 
+\begin{equation}
+  n_i = \sum_{x \in D^\star} \mathbbm{1} [c(x)\in \Omega_i]
+\end{equation}
+Computing the expected number of backgrounds and signals can be done with Monte Carlo.
+\begin{equation}
+  \gamma_i(\alpha) = \EE[s_i|\alpha]
+\end{equation}
+\begin{equation}
+  \beta_i(\alpha) = \EE[b_i|\alpha]
+\end{equation}
+where 
+\begin{equation}
+  s_i | \alpha = \sum_{x \in D_S(\alpha)} \mathbbm{1} [c(x)\in \Omega_i]
+\end{equation}
+\begin{equation}
+  b_i | \alpha = \sum_{x \in D_B(\alpha)} \mathbbm{1} [c(x)\in \Omega_i]
+\end{equation}
+
+In practice the Monte Carlo simulation is a very fine grid with importance sampling.
+\victor{Now is the time to make formulas even more complex with weights ?}
+Does it mean that a single weighted dataset is enough to estimate expected value ?
+\begin{equation}
+  \gamma_i(\alpha) = \EE[s_i | \alpha] = \sum_{x \in D_S(\alpha)} w_x \mathbbm{1} [c(x)\in \Omega_i]
+\end{equation}
+\begin{equation}
+  \beta_i(\alpha) = \EE[b_i | \alpha] = \sum_{x \in D_S(\alpha)} w_x \mathbbm{1} [c(x)\in \Omega_i]
+\end{equation}
+
+
+\victor{Brouillon d'algo}
+\begin{algorithm}[H]
+ inputs $D$, $\mu$ and $\alpha$ \;
+ $D_S \gets G(\alpha)$ \;
+ $D_B \gets G(\alpha)$ \;
+ $\gamma_i =  \sum_{x \in D_S(\alpha, \mu)} w_x \mathbbm{1} [c(x)\in \Omega_i] $ \;
+ $\beta_i =  \sum_{x \in D_B(\alpha, \mu)} w_x \mathbbm{1} [c(x)\in \Omega_i] $ \;
+ $n_i = \sum_{x \in D^\star} \mathbbm{1} [c(x)\in \Omega_i]$ \;
+ $L = \mathcal N (\alpha) \times \prod_{i=1}^K Poisson(n_i | \mu \gamma_i(\alpha) + \beta_i(\alpha) )$ \;
+\caption{Computing the likelihood}
+\end{algorithm}
+
+\victor{Maintenant je remarque que j'ai pas mentionné les \emph{summary statistics} .... techniquement $n, s, b$ sont des summary statistics. Où est-ce que je vais mettre ça ?}
 
 
 \begin{figure}[htb]
@@ -816,5 +874,14 @@ All the domain knowledge is concentrated in the simulator and the hand crafted d
 \topic{This document is about going further than the "simple" classifier method}
 
 \content{Annonce de la suite / du plan du manuscrit}
+
+The dependency of $\gamma$ and $\beta$ to the nuisance parameter $\alpha$ is the origin of the systematic variance.
+The objective of this work is to find a way to reduce the systematic variance.
+
+The first way is to train a classifier whose score is less influenced by $\alpha$ \autoref{chap:sota}.
+The second way is to rework the pipeline into a more direct approach to inference \autoref{chap:direct_approach}.
+Then all methods are compared using 2 toy problems and 1 reworked real dataset to measure their performances \autoref{chap:benchmark}.
+Finnally the performances are described and analysed in \autoref{chap:xp}.
+\autoref{chap:conclusion} gives insight for future work, discuss calibration and ...
 
 

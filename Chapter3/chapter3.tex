@@ -461,11 +461,13 @@ This puts all the pressure of systematic effect on the training which may be too
 \label{subsub:marginalization}
 
 \topic{Nuisance parameters are marginalized using Monte Carlo integral approximation.}
-
-The other way is to learn the posterior $p(\mu | D, \alpha)$ then to marginlaize the nuisance parameters.
+The other way is to learn the posterior $p(\mu | D, \alpha)$ then to marginalize the nuisance parameters.
 \begin{equation}
     p(\mu | D) = \int d\alpha ~ p(\alpha | D) ~ p(\mu | D, \alpha)
 \end{equation}
+
+\victor{Expliquer que $\alpha$  est en entré du NN }
+\victor{FIGURE : Ajouter un dessin avec l'entré de param de nuisance}
 
 This integral can be approximated with Monte Carlo.
 

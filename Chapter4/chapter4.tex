@@ -541,6 +541,7 @@ The experimental plan to evaluate the methods is described in this section.
 \subsection{Training details} % (fold)
 \label{sub:training_details}
 
+\content{Pour chaque méthode : expliciter sur quelles données elles sont entrainées et comment on verifi que l'entrainement s'est bien passé}
 
 At first training all methods with the same number of training samples has been considered.
 But evaluating each methods at the best of their performances while emphasizing which method is more data intensive gives better indications to which one is more suited to a given problem.
@@ -621,7 +622,7 @@ The regressor is simply taking the value of $\alpha$ used to generate of each sa
 \subsection{Computing the estimator} % (fold)
 \label{sub:computing_the_estimator}
 
-
+\content{Pour les 2.5 workflow expliciter comment sont calculé $\hmu$ et $\hshmu$. Minos too expensive.}
 
 
 
@@ -645,6 +646,9 @@ Also calibration failure would break robust method otherwise.
 \subsection{Computing evaluation metric} % (fold)
 \label{sub:computing_evaluation_metric}
 
+
+\content{Cross validation to estimated MSE (many $\mu^\star$, only 3 $\alpha^\star$)}
+\content{Var stat and Var syst. Details about their computation. Many $\tilde \alpha$. Independant of the calibration.}
 
 The estimators $\hmu$ and $\hshmu$ are random variable because of the limited size of the dataset.
 They depends on the true values of the parameters $\mu^\star$ and $\alpha^\star$.
