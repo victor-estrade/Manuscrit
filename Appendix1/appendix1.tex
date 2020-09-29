@@ -8,14 +8,8 @@
 
 \chapter{Experimental details} 
 
-List of main experiments : 
-\begin{itemize}
-	\item Measure \emph{performances} for each \emph{method}
-	\item Compare performances between \emph{robust} method
-	\item Show that the balancing of S and B is critical
-	\item Reproduce the impossibility of separating \emph{domains} on Higgs
-\end{itemize}
 
+Here is gathered the details of the experiment to help reproduce the esulst prpesented in this document.
 
 
 \section{What distinguish runs} % (fold)
@@ -32,18 +26,19 @@ Problems are assumed to be completelly determined by a set of input parameters i
 The parameter of interest is the mixture coefficient or a quantity link to it by a bijective function.
 List :
 \begin{itemize}
-	\item Gamma-Gauss [GG] : a 1D toy
-	\item Synthetic 3D data [S3D2] : a replication of the 3D toy in the inferno paper
-	\item Higgs ML data [HIGGS] : the data from higgsML challenge + the re-simulator
+	\item Gamma-Gauss [GG] : a 1D toy (see \autoref{sub:toy_1d})
+	\item Synthetic 3D data [S3D2] : a replication of the 3D toy in the inferno paper (see \autoref{sub:toy_3d})
+	\item Higgs ML data [HIGGS] : the data from higgsML challenge + the re-simulator (see \autoref{sec:higgs_data})
 \end{itemize}
 
-A \textbf{dataset} is a finite sampled realization of problem given some \textbf{input parameters}.
-The \textbf{nominal data} is a dataset produced with the most probable input parameters according to our prior knowledge.
+A \textbf{dataset} is a finite sampled realization of a problem given some \textbf{input parameters}.
+The \textbf{nominal dataset} is a dataset produced with the most probable input parameters according to our prior knowledge.
+Our prior knowledge usually consist of the calibration output and previous experiments.
 
 
 A \textbf{method} is represented by a training algorithm and a pipeline.
-Actually once the training algorithm is chosen there is only one pipeline that fit the produced model.
-Indeed classifiers can only use the classic worklow with maximum likelihood.
+Actually once the training algorithm is chosen there is only one pipeline that fits with the produced model.
+Indeed classifiers can only use the classic worklow with maximum likelihood (see \autoref{sub:workflow}) and regressor can only use the direct approach (see \autoref{chap:direct_approach}).
 
 List of every methods :
 \begin{itemize}
