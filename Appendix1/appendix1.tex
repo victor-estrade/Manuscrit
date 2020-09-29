@@ -9,7 +9,7 @@
 \chapter{Experimental details} 
 
 
-Here is gathered the details of the experiment to help reproduce the esulst prpesented in this document.
+Here is gathered the details of the experiment to help reproduce the resulst presented in this document.
 
 
 \section{What distinguish runs} % (fold)
@@ -64,7 +64,7 @@ On a third level is the \textbf{hyper-parameters} and \textbf{architecture} of t
 The hyper-parameter setting is quite straitforward : a grid search on the most relevant hyper-parameters is done.
 The resolution of the grid is quite low to avoid the need of expensive computing ressources.
 The architecture choice is more complicated since there is an infinite way of desining one.
-It is devellopped in a later section\needcite.
+It is devellopped in \autoref{sec:neural_network_architectures}.
 
 The experiments are reapeated several times to accuratelly measure the variance of the performances according to data sampling.
 This is called \textbf{cross-validation} in this document although it is not allways a crossing of bunches of the same dataset as in classic cross-validation practices.
@@ -157,26 +157,9 @@ The number of cross-validation is always 30.
 
 
 
-\subsection{List of methods} % (fold)
-\label{sub:list_of_methods}
 
-
-Here is the list of all methods with a short description and their short names.
-\begin{itemize}
-	\item Gradient Boosting [GB] : a gradient boosting classifier from scikit-learn trained on the nominal data.
-	\item Neural Network Classifier [NN] : a neural network trained as a classifier trained on the nominal data.
-	\item Data augmentation [DA] : a neural network classifier trained on a mixture of simulated data with 1000 differents input parameters.
-	\item Tangent Propagation [TP] : a neural network classifier with the tangent propagation regularization.
-	\item Pivotal neural network [Pivot] : a neural network classifier with adversarial training.
-	\item Inferno [INFERNO] : a neural network summary computer trained with inferno method.
-	\item Regressor [REG] : a dataset wise mixture density neural network regressor taking both the data and nuisance parameter as input.
-	\item Marginal Regressor [REG-Marginal] : a dataset wise mixture density neural network regressor taking only the data as input.
-\end{itemize}
-
-
-
-\subsection{Neural network architectures} % (fold)
-\label{sub:neural_network_architectures}
+\section{Neural network architectures} % (fold)
+\label{sec:neural_network_architectures}
 
 
 The choice of neural network architecture is a critical hyper-parameter but also the most difficult to tune because of its complexity.
@@ -247,8 +230,8 @@ This is assumed to allow the network to use the best of both world.
 
 
 
-\subsection{Hyper-parameter grid} % (fold)
-\label{sub:hyper_parameter_grid}
+\section{Hyper-parameter grid} % (fold)
+\label{sec:hyper_parameter_grid}
 
 \content{Donner la grille pour chaque modèle et \textbf{expliquer pourquoi ces HP sont choisis}}
 
@@ -412,8 +395,8 @@ This is assumed to allow the network to use the best of both world.
 
 
 
-\subsection{True parameter grid} % (fold)
-\label{sub:true_parameter_grid}
+\section{True parameter grid} % (fold)
+\label{sec:true_parameter_grid}
 
 
 \begin{table}[ht!]
@@ -433,16 +416,16 @@ This is assumed to allow the network to use the best of both world.
 The fine range of $\alpha$ for systematic/statistical variance estimation is 31 equidistant values in $[0.5, 1.5]$ . 
 
 
-\subsection{Prior distributions} % (fold)
-\label{sub:prior_distributions}
+\section{Prior distributions} % (fold)
+\label{sec:prior_distributions}
 
 
 \victor{TODO !}
 
 
 
-\subsection{Data size} % (fold)
-\label{sub:data_size}
+\section{Data size} % (fold)
+\label{sec:data_size}
 
 
 \begin{table}[ht!]
