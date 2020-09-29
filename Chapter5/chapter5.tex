@@ -319,66 +319,8 @@ This spreading leads to splitting signal events into 2 bins instead on one (see 
 
 
 
+\victor{TODO : ajouter les méthodes qui utilisent la vrai likelihood et Bayes.}
 
-
-
-
-
-
-\section{Old stuff of chap 5} % (fold)
-\label{sec:old_stuff_of_chap_5}
-
-
-\begin{figure}[ht!]
-  \centering
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{minitoy/marginal_y.png}
-    \caption{$p(y|x)$}
-    \label{fig:marginal_y}
-  \end{subfigure}%
-  \hfill
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{minitoy/marginal_alpha.png}
-    \caption{$p(\alpha|x)$}
-    \label{fig:marginal_alpha}
-  \end{subfigure}
-  \caption{Posterior probabilities for $y$ (left) and $\alpha$ (right)}
-  \label{fig:marginals_gg}
-\end{figure}
-
-\emph{Remarque :}
-L'erreur statistique et l'erreur systématique diminuent ensemble avec l'augmentation du nombre de donnée.
-Plus on a de donnée meilleur est l'inférence sur $\alpha$.
-Donc c'est normal !
-
-Du coup j'ai vraiment du mal avec le concepte de l'erreur systématique qui ne diminue que doucement avec l'augmentation des données.
-
-Si l'effet est invisible sur les données alors on a pas de problème.
-Si l'effet est visible alors on peut contraindre + les paramètres de nuisance puisqu'on peut le mesurer !
-
-
-\begin{figure}[ht!]
-  \centering
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{s3d2/marginal_r.png}
-    \caption{$p(r|x)$}
-    \label{fig:marginal_r}
-  \end{subfigure}%
-  \hfill
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{s3d2/marginal_lam.png}
-    \caption{$p(\lambda|x)$}
-    \label{fig:marginal_lambda}
-  \end{subfigure}
-
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{s3d2/marginal_mu.png}
-    \caption{$p(\mu|x)$}
-    \label{fig:marginal_mu}
-  \end{subfigure}
-  \caption{Posterior probabilities for $y$ (left) and $\alpha$ (right)}
-  \label{fig:marginals_s3d2}
-\end{figure}
 
 
 
@@ -443,12 +385,5 @@ Si l'effet est visible alors on peut contraindre + les paramètres de nuisance p
 
 The scatter plot properties is much more dependent to noise or nuisance parameters than to the parameter of interest.
 
-
-
-
-\section{Forest robustness} % (fold)
-\label{sec:forest_robustness}
-
-\victor{Grad boost is robust because trees disagrees between themselves}
 
 
