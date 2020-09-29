@@ -91,12 +91,17 @@ The first one is the small number of samples to do inference (\autoref{sub:perfo
 
 Here is summaried the performances measured according to the number of sample of the test set.
 
+On the nominal test set the MSE behave as expected \ie decreases fast ($\frac{1}{\sqrt{N}}$) as the size of the test set increase.
+Only direct regression seems to not depend on the test size.
+This is unexpected and cannot only be explained by the fact that the neural network is trained with fixed dataset size and did not learn to improve as the test set size increase...
+
+
 
 
 \victor{Performance en fonction du nombre d'events dans le dataset de test ? Evolution de la variance stat et syst en fonction de N\_samples.}
 
 
-\begin{figure}[htb]
+\begin{figure}[ht!]
   \centering
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-prior/GradientBoostingModel/profusion_nominal_n_samples_mse.png}
@@ -149,47 +154,52 @@ Here is summaried the performances measured according to the number of sample of
 
 
 
-
-
-\subsection{Compare methods} % (fold)
-\label{sub:compare_methods}
-
-
-\begin{figure}[htb]
-  \centering
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-calib/BEST_MSE/GG-calib_best_average_N=2000-boxplot_mse.png}
-    \caption{boxplot of MSE}
-    \label{fig:gg-calib_best_average_boxplot_mse}
-  \end{subfigure}%
-  \hfill
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-calib/BEST_MSE/GG-calib_best_average_N=2000-errplot_mse.png}
-    \caption{average MSE $\pm$ variance}
-    \label{fig:gg-calib_best_average_errplot_mse}
-  \end{subfigure}
-  \caption{Best MSE on GG with 2000 test samples with calibration on data. Distribution according to $\mu^\star$ and $\alpha^\star$.}
-  \label{fig:compare_gg_calib_best_mse}
-\end{figure}
-
-
-
-
-
-
-
-
-
-
-
 \subsection{Calibration influence} % (fold)
 \label{sub:calibration_influence}
 
-Then the best way to reduce the systematic uncertainty is to improve calibration !
+
+In this benchmark two way of calibrating the data is used.
+\begin{enumerate}
+  \item Trust a given prior
+  \item Infer the nuisance parameter distribution using a regressor
+\end{enumerate}
+
+Here we show that the later is a better choice and improves significantly the performances of all methods.
+Indeed using only a poorly informed prior leads the baseline to a biased estimator.
+\autoref{fig:gg_baseline_compare_calib_estimator} shows the estimation of a neural net classifier.
+It is clear that the estimation depends on $\alpha^\star$ and is biased if $\alpha^\star$ is not the nominal value.
+\victor{TODO : GB \& TP \& REG show the same behaviour. INFERNO is not affected. DA is more robust. Waiting for PIVOT results}
+
+Using the given data to improve calibration leads to an unbiased estimator.
+\victor{TODO : Someone may argu that it is because My prior calibration is bad. But my simulator cannot do better...}
 
 
 
-\begin{figure}[htb]
+
+
+
+\begin{figure}[ht!]
+  \centering
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/NeuralNetClassifier/profusion_true_mu_target_mean.png}
+    \caption{Prior calibration}
+    % \label{fig:gg-prior_GB_profusion_nominal_n_samples_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-calib/NeuralNetClassifier/profusion_true_mu_target_mean.png}
+    \caption{Using data in calibration to infer $\alpha$}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+  \caption{Many estimations of neural net classifier. Each point is colored according to the true value of $\alpha$. The x-axis is representing the true value of $\mu$. Each point is the average of the estimated interest parameter ($\hmu$) over cross validation of one neural network classifier (one hyper-parameter set). On the left is the estimations of }
+  \label{fig:gg_baseline_compare_calib_estimator}
+\end{figure}
+
+
+The 1D toy problem is asymetric by definition which leads to an asymetry in performances when using the prior calibration.
+
+
+\begin{figure}[ht!]
   \centering
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-prior/NeuralNetClassifier/profusion_n_samples_mse.png}
@@ -207,24 +217,107 @@ Then the best way to reduce the systematic uncertainty is to improve calibration
 \end{figure}
 
 
-\begin{figure}[htb]
+
+
+
+
+
+
+
+\subsection{Compare methods} % (fold)
+\label{sub:compare_methods}
+
+
+The good news is that systematic aware learning and the direct approach is giving better results that the baseline (\autoref{fig:compare_gg_best_mse}).
+
+\begin{figure}[ht!]
   \centering
   \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-prior/NeuralNetClassifier/profusion_true_mu_estimator.png}
-    \caption{Prior calibration}
-    % \label{fig:gg-prior_GB_profusion_nominal_n_samples_mse}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/BEST_MSE/GG-prior_best_average_N=2000-boxplot_mse.png}
+    \caption{Boxplot of MSE on Prior}
+    \label{fig:gg-prior_best_average_boxplot_mse}
   \end{subfigure}%
   \hfill
   \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-calib/NeuralNetClassifier/profusion_true_mu_estimator.png}
-    \caption{Using data in calibration to infer $\alpha$}
-    % \label{fig:gg-calib_best_average_errplot_mse}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/BEST_MSE/GG-prior_best_average_N=2000-errplot_mse.png}
+    \caption{Average MSE $\pm$ variance on Prior}
+    \label{fig:gg-prior_best_average_errplot_mse}
   \end{subfigure}
-  \caption{Prior calibration leads to biased estimators.}
-  \label{fig:gg_baseline_compare_calib_estimator}
+
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-calib/BEST_MSE/GG-calib_best_average_N=2000-boxplot_mse.png}
+    \caption{Boxplot of MSE on Calibrated GG}
+    \label{fig:gg-prior_best_average_boxplot_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-calib/BEST_MSE/GG-calib_best_average_N=2000-errplot_mse.png}
+    \caption{Average MSE $\pm$ variance on Calibrated GG}
+    \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \caption{Best MSE on GG with 2000 test samples with calibration on data. Distribution according to $\mu^\star$ and $\alpha^\star$.}
+  \label{fig:compare_gg_best_mse}
 \end{figure}
 
-\victor{Biased estimator but I need to check the inference of $\alpha$ because it is a NLL with 2 minima !}
+Reg-Marginal is very good on the 1D toy problem which may be explained by the simplicity of the problem.
+The average of the only observable $x$ is linearly connected to the parameter of interest (see \autoref{fig:gg_mean_link}).
+The only extra work the marginal regressor has to do is to infer $\alpha$ to adjust itsinference which is also very simple in this toy.
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.49\linewidth]{GG/mean_link.png}
+  \caption{link between $\mu^\star$ and the average of $x$ on GG toy problem}
+  \label{fig:gg_mean_link}
+\end{figure}
+
+
+Inferno is doing very well including on the Prior calibration.
+
+Tangent propagation is failing to learn a robust distribution.
+This is expected as the only feature $x$ is both very correlated to the parameter of interest but also to the nuisance parameter.
+Making the classification good and independant from $\alpha$ at the sample level is not possible.
+
+Data augmentation is very good !
+Data augmentation is learning to be less confident about the classification which spread the score distribution of the signals.
+This spreading leads to splitting signal events into 2 bins instead on one (see \autoref{fig:gg_prior_distrib_summaries}).
+\textbf{But how is it helping inference ???}
+
+\begin{figure}[ht!]
+  \centering
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{GG-prior/NN/valid_distrib.png}
+    \caption{NN score distribution}
+    % \label{fig:gg-prior_best_average_boxplot_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{GG-prior/DA/valid_distrib.png}
+    \caption{DA score distribution}
+    % \label{fig:gg-prior_best_average_errplot_mse}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{GG-prior/NN/valid_summaries.png}
+    \caption{NN summaries}
+    % \label{fig:gg-prior_best_average_boxplot_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{GG-prior/DA/valid_summaries.png}
+    \caption{DA summaries}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \caption{Score distribution and bin counts for NN classifier and data augmentation}
+  \label{fig:gg_prior_distrib_summaries}
+\end{figure}
+
+
+
+
+
+
 
 
 
@@ -236,7 +329,7 @@ Then the best way to reduce the systematic uncertainty is to improve calibration
 \label{sec:old_stuff_of_chap_5}
 
 
-\begin{figure}[htb]
+\begin{figure}[ht!]
   \centering
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{minitoy/marginal_y.png}
@@ -264,7 +357,7 @@ Si l'effet est invisible sur les données alors on a pas de problème.
 Si l'effet est visible alors on peut contraindre + les paramètres de nuisance puisqu'on peut le mesurer !
 
 
-\begin{figure}[htb]
+\begin{figure}[ht!]
   \centering
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{s3d2/marginal_r.png}
