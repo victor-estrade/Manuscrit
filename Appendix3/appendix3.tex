@@ -1,0 +1,462 @@
+%!TEX root = ../thesis.tex
+% ******************************* Thesis Appendix B ********************************
+
+\ifpdf
+    \graphicspath{{Appendix2/Figs/Raster/}{Appendix2/Figs/PDF/}{Appendix2/Figs/}}
+\else
+    \graphicspath{{Appendix2/Figs/Vector/}{Appendix2/Figs/}}
+\fi
+
+\chapter{Math proofs and other ideas}
+
+
+\section{Math} % (fold)
+\label{sec:math}
+
+This section develops what I understand so far about the theory.
+It is also an opportunity to gather all the quantities at the same place to give them unique names and notations.
+
+For now I skip the latent variables that describes what happen between the collision and the measurement.
+For now I also skip the trigger because it only add more complexity to the problem without fundamental changes.
+
+\subsection{Notation and context} % (fold)
+\label{sub:notation_and_context}
+
+Notation :
+\begin{itemize}
+	\item $\alpha$ = nuisance parameter
+	\item $\beta$ = poisson law parameter for the number of backgrounds
+	\item $\gamma$ = Poisson law parameter for the number of signals according to current theory
+	\item $\mu$ = deviation from the expected number of signals from theory
+	\item $z$ or $z_i$ = latent variables 
+	\item $n$ = number of event
+	\item $s$ = number of signals
+	\item $b$ = number of backgrounds
+	\item p(x) = probability density of an event $x$
+	\item p(x|S) = conditional probability density of an event $x$ knowing it is a signal ie signal likelihood
+	\item p(x|B) = conditional probability density of an event $x$ knowing it is a background ie background likelihood
+\end{itemize}
+
+Let's consider a counting exepriment in a collider.
+Inside the collider two bunch of particles are meeting at some point.
+From this meeting two types of collisions are possible :
+\begin{itemize}
+	\item Soft collision which does not produce interesting physics
+	\item Hard collision which produces interesting physics called \textbf{event}
+\end{itemize}
+
+The hard collisions (events) are way rarer than the soft one.
+The process creating the high energy particles is fundamentally stochastic.
+Meaning that the nature and properties (eg. kinematics) of the process producing particles are not fully predictable but follow probability distributions whose shapes and properties are deterministics.
+
+The data can be modeled by counting iid Bernouilli rare process which is well approximated by a Poisson distribution \needcite (cf wikipedia) when the number of samples is large.
+\begin{equation}
+	n \sim Poisson(\text{some parameter})
+\end{equation}
+
+
+The events are splitted into 2 categories : the signal events and the background events.
+The signal events are events generated with a peculiar process (e.g. $H\to \tau^+ \tau^-$) that we want to study.
+The backgroud events gather all the other processes.
+The expected amount of background events $\beta$ is known (with high precision) thanks to previous studies/experiments and to measurements made in the data space where few or no signals can be found.
+
+
+
+\subsection{Estimate mu in a simple case} % (fold)
+\label{sub:estimate_mu_in_a_simple_case}
+
+Let's first write everything without nuisance parameters.
+
+The total number of events is the sum of signal events and background events.
+\begin{equation}
+	n = s + b
+\end{equation}
+The number of signal events is following a poisson distribution of parameter $\mu \gamma$.
+\begin{equation}
+	s \sim Poisson(\mu \gamma)
+\end{equation}
+The number of background events is following a poisson distribution of parameter $\beta$.
+\begin{equation}
+	b \sim Poisson(\beta)
+\end{equation}
+Since the sum of Poisson random variables is also Poisson distributed \needcite (cf wikipedia) :
+\begin{equation}
+	n \sim Poisson(\mu \gamma + \beta)
+\end{equation}
+
+The objective of the study is to infer $\mu$ from data.
+We are using the maximum likelihood estimator.
+\begin{equation}
+    \hat \mu = \argmax_\mu p(n|\mu) =  \argmax_\mu Poisson(n|\mu)
+\end{equation}
+This can be done by hand. Assuming that we know $\gamma$ and  $\beta$.
+\begin{equation}
+    \frac{\partial \log p(n|\mu)}{\partial \mu} =  \gamma \frac{n}{\mu\gamma + \beta} - \gamma
+\end{equation}
+\begin{equation}
+    \frac{\partial \log p(n|\mu)}{\partial \mu} = 0 \iff \mu = \frac{n-\beta}{\gamma}
+\end{equation}
+Note $\EE[n] = \mu\gamma + \beta$ and $\max Poisson = \EE[Poisson]$ so maybe there is a simpler way to find this ?
+
+
+
+
+\subsection{Binning} % (fold)
+\label{sub:binning}
+
+The objective of this document is to clarify a few questions :
+\begin{itemize}
+	\item What is the link between the probability density of an event $p(x)$ and the number of events $n$ ?
+	\item Why is it better to divide the data space into bins ?
+	\begin{itemize}
+		\item What is the link between signal purity (ie maximum $s/b$) and the variance of the estimator of $\mu$ ?
+		\item Is it better to keep only the bin with maximum signal purity (ie maximum $s/b$) ?
+		\item Is signal purity $s/b$ or $\gamma / \beta$ ? Are those definition equivalent ?
+	\end{itemize}
+\end{itemize}
+
+
+
+Let's start with the link between the number of events ($s$, $b$, $n$) and the number of events in a bin ($s_i$, $b_i$, $n_i$).
+A bin is a subspace of the data space where the event can appear.
+We define $\Omega_i$ the subspace of the i-th bin and $\Omega_{tot} = \bigcup_i^K \Omega_i $ the full data space as the union of my $K$ bins.
+Begining with the obvious quantity :
+\begin{equation}
+	n = |D| = \sum_{x\in D} 1
+\end{equation}
+The number of events in a bin is simply the fraction of events that falls inside a bin.
+\begin{equation}
+	n_i = \sum_{x\in D} \mathbbm{1} [x\in \Omega_i]
+\end{equation}
+
+
+
+On average (or in the infinite sample case) an event falls inside the i-th bin with probability $p(x \in \Omega_i)$ defined as:
+\begin{equation}
+	p(x \in \Omega_i) = \int_{x \in \Omega_i} p(x) dx
+\end{equation}
+Leading to :
+\begin{equation}
+	\label{eq:nb_events_in_bin}
+	\EE [n_i] = \EE [n] \times p(x \in \Omega_i)  = \EE[n] \times \int_{x \in \Omega_i} p(x) dx
+\end{equation}
+Let's keep pushing open doors for clarity.
+An event is either a signal event $S$ or a background event $B$.
+Therefore we can decompose the density into two parts :
+\begin{equation}
+	p(x) = p(x|S) p(S) + p(x|B) p(B)
+\end{equation}
+Injecting this into \autoref{eq:nb_events_in_bin}
+\begin{align}
+	\EE [n_i] &= \EE[n] \times \int_{x \in \Omega_i} p(x) dx \\
+	\EE [n_i] &= \EE[n] \times \int_{x \in \Omega_i} p(x|S) p(S) + p(x|B) p(B) dx \\
+	\EE [n_i] &= \EE[n] \times \left ( \int_{x \in \Omega_i} p(x|S) p(S) dx + \int_{x \in \Omega_i}  p(x|B) p(B) dx \right )\\
+	\EE [n_i] &= \EE[n] \times \int_{x \in \Omega_i} p(x|S) p(S) dx \quad+\quad \EE[n] \times \int_{x \in \Omega_i}  p(x|B) p(B) dx \\
+	\EE [n_i] &= \EE[n] \times p(S) \int_{x \in \Omega_i} p(x|S) dx \quad+\quad \EE[n] \times p(B) \int_{x \in \Omega_i}  p(x|B) dx \\
+	\EE [n_i] &= \EE[s] \int_{x \in \Omega_i} p(x|S) dx \quad+\quad \EE[b] \int_{x \in \Omega_i}  p(x|B) p(B) dx \\
+\end{align}
+We use $\EE[s] = \EE[n] \times p(S)$ and $\EE[b] = \EE[n] \times p(B)$ which is again obvious statement since the expected number of signal events is the expected total number of event times the probability of an event to be a signal.
+Replacing expenctancies of the number of events with their values according to our Poisson parameter
+\begin{equation}
+	\EE[n_i] = (\mu\gamma + \beta) \times \int_{x \in \Omega_i} p(x) dx
+\end{equation}
+\begin{equation}
+	\EE[s_i] = \mu\gamma \times \int_{x \in \Omega_i} p(x|S) dx
+\end{equation}
+\begin{equation}
+	\EE[b_i] = \beta \times \int_{x \in \Omega_i} p(x|B) dx
+\end{equation}
+
+The answer to the question : what is the link between $p(x)$ and $n$ is \autoref{eq:nb_events_in_bin}.
+
+
+
+
+
+\subsection{Link between bins and classifier and variance of MLE} % (fold)
+\label{sub:link_between_bins_and_classifier_and_variance_of_mle}
+
+Here we explore the reasons for dividing the data space into bins and also for the use of classifer to produce space region very rich in signal events.
+
+
+
+
+
+\subsubsection{Why making the estimation in a signal richer region is better ?}
+
+There is 2 arguments.
+The first one is that we want the likelihood to be narrow near the maximum.
+The likelihood function $L(\mu) : \mu \to p(n|\mu) = Poisson(n|\mu\gamma + \beta)$ is narrow near the maximum if the second derivative is large in absolute value near the maximum (or the second derivative of the log).
+\begin{equation}
+    \frac{\partial^2 \log L(\mu)}{\partial \mu^2} = -\frac{n \gamma^2}{(\mu\gamma + \beta)^2}
+\end{equation}
+\begin{equation}
+    \left . \frac{\partial^2 \log L(\mu)}{\partial \mu^2}  \right |_{\mu=\hat \mu = \frac{n-\beta}{\gamma}} = -\frac{\gamma^2}{n}
+\end{equation}
+
+So maximizing the second derivative requires to maximize $\gamma^2 / n$ ie maximize the ratio between expected number of signals and the total number of event.
+
+The second argument is from the Cramer-Rao bound\needcite.
+\begin{equation}
+    \VV[\hat \mu] \geq \frac{1}{I(\mu)}
+\end{equation}
+With $N$ the number of independent observation (is $N$ the number of bins ?) and $I(\mu)$ the Fisher information.
+
+\begin{equation}
+    I(\mu) = - N \times \EE\left [\frac{\partial^2 \log L(\mu)}{\partial \mu^2} \right ]
+\end{equation}
+giving 
+\begin{equation}
+    I(\mu) = - N \times \EE\left [-\frac{n \gamma^2}{(\mu\gamma + \beta)^2} \right ] = N \times \frac{\gamma^2}{\mu\gamma + \beta}
+\end{equation}
+\begin{equation}
+    \VV[\hat \mu] \geq  \frac{\mu\gamma + \beta}{N\gamma^2} = \frac{\EE[n]}{N\gamma^2}
+\end{equation}
+Again minimizing the variance requires to either increase the number of independent observation or maximizing the extected number of signals.
+
+This observation motivates the use of a signal vs background classifier to select a richer region of signals. 
+
+
+
+
+
+
+
+\subsubsection{Why dividing the data space into smaller regions ?}
+
+
+The intuition is that there is more knowledge in knowing that $n_1 = 10$, $n_2 = 7$ and $n_3 = 3$ than knowing that $\sum_i n_i = 20$.
+As long as the bins contains enough samples to keep the Poisson approximation then it is better to have more (ie smaller) bins.
+
+The objective is to get a narrow likelihood.
+\begin{equation}
+    p(n | \mu) = Poisson(n | \mu (\sum_i \gamma_i) + (\sum_i \beta_i))
+\end{equation}
+\begin{equation}
+    p({n_i} | \mu) = \prod_i Poisson(n_i | \mu \gamma_i + \beta_i)
+\end{equation}
+
+The second one is getting narrower as we increase the number of bins (multiply numbers $ 1 \leq $).
+
+Also from discussion :
+\begin{equation}
+    p({n_i} | \mu) = \prod_i \int_{\gamma_i, \beta_i} Poisson(n_i | \mu \gamma_i + \beta_i) p(\gamma_i, \beta_i)
+\end{equation}
+But this is assuming $\gamma$ and $\beta$ are nuisance parameter.
+We can be more precise with $\gamma(\alpha)$ and $\beta(\alpha)$.
+
+
+
+
+
+
+
+\subsection{Other questions and remarks} % (fold)
+\label{sub:other_questions_and_remarks}
+
+\subsubsection{Is Poisson approximation still accurate in small bins ?} % (fold)
+
+We assume that the number of events is following a Poisson distribution.
+This is very accurate in the large sample limit which is the case at the LHC (huge amount of events).
+
+The same goes for the number of signal events.
+But I recall that when taking into account the nuisance parameters and only selecting one very pure bin there is only a few dozen events.
+We are far from the large sample limit !
+
+The same argument applies for selecting many bins and using the Poisson likelihood in each one.
+
+First answer : the Poisson counting is not on the signal but on the signal + background.
+
+So the relevant question is : is there enough events (signal + background) in each bin to consider the Poisson approximation accurate ?
+
+
+
+
+
+
+\section{Discussion sur modern ML and deep learning} % (fold)
+\label{sec:discussion_sur_modern_ml_and_deep_learning}
+
+
+\url{https://arxiv.org/abs/1812.11118} and 
+\url{https://openai.com/blog/deep-double-descent/}
+
+Il manque neural tangent kernel.
+
+
+
+
+
+
+
+\section{Proof}
+\label{sec:proof}
+
+
+
+
+
+\subsection{Binned likelihood narrower}
+
+This section gives the details of the proof that the binned likelihood is narrower than the non binned one.
+\begin{equation}
+    L_0 = \frac{(\mu \gamma + \beta)^n }{n!} e^{-(\mu \gamma + \beta)}
+\end{equation}
+with $n = \sum_{i=1}^K n_i $, $\gamma = \sum_{i=1}^K \gamma_i $ and $\beta = \sum_{i=1}^K \beta_i $.
+\begin{equation}
+    L_K = \prod_{i=1}^M \frac{(\mu \gamma_i + \beta_i)^{n_i} }{n_i!} e^{-(\mu \gamma_i + \beta_i)}
+\end{equation}
+Now there is 2 option that I can see :  first prove that $L_0 > L_K$ which seems possible with concavity of the log function and $\log L_0 > \log L_k$;
+second is to use the Cramer-Rao bound of the variance and prove that 
+$\left (\frac{\partial^2 \log L_0}{\partial \mu^2}\right )^{-1} > \left (\frac{\partial^2 \log L_K}{\partial \mu^2}\right )^{-1}$
+which also seems possible with concave or convex argument somewhere.
+
+Proof that $L_0 > L_K$ does not seems to be what we should be looking for.
+
+
+
+
+
+\subsection{Pure signals bin is better}
+
+
+The question is : how to optimize the choice of space regions $\Omega_i$ in order to improve inference.
+The expected answer is : using a histogram (or something like it) on the score of a classifier trained to separate signals and backgrounds.
+
+\victor{TODO NEED HELP : How do we prove it ? Where are the papers about it ?}
+
+Let $\hmu$ be a unbiased estimator.
+Cramer-Rao bound for a scalar parameter:
+\begin{equation}
+    \VV[\hmu] \geq \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu^2}  \right ]^{-1}
+\end{equation}
+where $\mathcal L$ is the likelihood function.
+
+In our problem with a binned poisson likelihood
+\begin{equation}
+    \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu^2}  \right ] = \EE \left[ \sum_{i=1}^K n_i \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)^2}  \right ]
+\end{equation}
+\begin{equation}
+    \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu^2}  \right ] = \sum_{i=1}^K \EE[n_i] \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)^2}
+\end{equation}
+recall that $\EE[n_i] = \mu \gamma_i + \beta_i$ because $n_i \sim Poisson(\mu \gamma_i + \beta_i)$ 
+\begin{equation}
+    \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu^2}  \right ] = \sum_{i=1}^K  \gamma_i^2 \frac{\EE[n_i]}{\EE[n_i]^2}
+\end{equation}
+\begin{equation}
+    \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu^2}  \right ] = \sum_{i=1}^K  \frac{\gamma_i^2}{\EE[n_i]} = \sum_{i=1}^K  \frac{\EE[s_i]^2}{\EE[n_i]}
+\end{equation}
+
+In the one bin case with the old notation using $s$ and $b$ as the expected number of signals ad background we find back :
+\begin{equation}
+    \VV[\hmu] \geq \frac{s+b}{s^2} 
+\end{equation}
+Hence the estimator of the standard deviation :
+\begin{equation}
+    \frac{1}{\hshmu} = \sqrt{\frac{s^2}{s+b}} = \frac{s}{\sqrt{s+b}} 
+\end{equation}
+So I feel that I am going in the right direction.
+
+Anyway in order to minimize the variance (or its lower bound at least) we need to maximise $\EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu}  \right ]$ \ie 
+\begin{equation}
+    \min \left [ \sum_{i=1}^K  \frac{\gamma_i^2}{\EE[n_i]} \right ] ^{-1} = \max \sum_{i=1}^K  \frac{\gamma_i^2}{\EE[n_i]} = \max \sum_{i=1}^K  \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)}
+\end{equation}
+With $\sum_{i=1}^K \gamma_i = \gamma$ and $\sum_{i=1}^K \beta_i = \beta$ fixed. I mean we cannot increase/decrease the values of $\gamma_i$ or $\beta_i$ as we want. We have a budget $\gamma$ and $\beta$ and we are looking for a good or the best repartition of it in our bins.
+
+And here I'm stuck.
+How to prove that a classifier is a good choice ?
+The usefull property of a classifier is to separate signal and background.
+Meaning we can have one or 2 bins with a high value of $\frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)}$ but it will lower this same value in other bins. How do we prove that having one very pure bin is a good idea.
+
+
+
+
+
+\section{More statistics} % (fold)
+\label{sec:more_statistics}
+
+\victor{Il faudra virer cette section après. Mais elle va me servir à explorer les maths}
+
+
+\subsection{Why a classifier} % (fold)
+\label{sub:why_a_classifier}
+
+Aishik asks : Why do we use a classifer to make estimation or hypothesis test ?
+
+The main connection is that for a Bayes optimal classifier \needcite : 
+\begin{equation}
+	c(x) = \frac{f_s p(x|S)}{(1-f_s) p(x|B) + f_s p(x|S)}
+\end{equation}
+The classifier score $c(x)$ is linked to the likelihood of a event $x$ assuming it is signal $ p(x|S)$ or assuming it is a background $p(x|B)$.
+$f_s$ is the fraction of signal events in the training set.
+Usually $f_s = 0.5$ in which can is simplifies itself.
+
+Note that the ratio between signal and event likelihood can easily extracted :
+\begin{equation}
+	\frac{p(x|S)}{p(x|B)} = \frac{c(x)}{(1-c(x))} \frac{(1-n_s)}{n_s} 
+\end{equation}
+
+So if you can connect what you are doing to $\frac{p(x|S)}{p(x|B)}$ then you can use a classifier to do the job.
+
+Neal's paper \cite{Neal:2007zz} is connecting this ratio to parameter estimation.
+
+The connection with hypothesis testing is also possible.
+\textbf{I'll try to give it a shot here but I may do mistakes or forgot to mention required hypothesis or approximation that I am unaware of.}
+
+The probability density of an event is :
+\begin{equation}
+ 	p(x) = p(x|S) p(S) + p(x|B) p(B)
+\end{equation} 
+Where $p(S)$ and $p(B)$ are the probability to be a signal or a background event and can be viewed as mixture coefficients.
+
+Data are \emph{independent and identically distributed}.
+Meaning we can write the density of the full data $D = \{x_i\}_{i=1}^N$
+\begin{equation}
+	p(D) = \prod_{x\in D} p(x) = \prod_{x\in D} p(x|S) p(S) + p(x|B) p(B)
+\end{equation}
+
+We now consider the 2 hypothesis.
+The null hypothesis assumes that there is no signal meaning that $p(S) = 0$ and $p(B) = 1$
+\begin{equation}
+	p(D |H_0) = \prod_{x\in D} p(x|B)
+\end{equation}
+The alternative hypothesis is tha there is some signal $p(S) > 0$ and $p(B) < 1$
+\begin{equation}
+	p(D | H_1) = \prod_{x\in D} p(x|S) p(S) + p(x|B) p(B)
+\end{equation}
+
+According to Neyman-Pearson lemma \cite{neyman_pearson_1933} the likelihood ratio between the 2 hypothesis is a sufficient summary statistic for the hypothesis test (or the most powerfull quantity one can compute).
+\begin{align}
+	\lambda & = \frac{p(D | H_1)}{p(D |H_0)} = \frac{\prod_{x\in D} p(x|S) p(S) + p(x|B) p(B)}{\prod_{x\in D} p(x|B)} \\
+	\lambda & = \prod_{x\in D} \frac{ p(x|S) p(S) + p(x|B) p(B)}{p(x|B)} \\
+	\lambda & = \prod_{x\in D}  \frac{p(x|S)}{p(x|B)}  p(S) + p(B)
+\end{align}
+We find back our ratio $\frac{p(x|S)}{p(x|B)}$ that can be computed with a classifier.
+$p(S)$ and $p(B)$ are constant and does not depend of the data...
+
+This demo skecth is very similar to what is done in Neal's paper.
+But I think that the reason for using a classifier score to do the dimension reduction is conected to this demo sketch if not exactly it. 
+
+
+
+Papers I still need to master :
+\begin{itemize}
+ 	\item \url{https://arxiv.org/pdf/physics/9711021.pdf} The Unified approach to build confidence interval. It explains why the profiled likelihood ratio method is the prefered way to build a confience interval. Note to self : do not get angry at the useless comments about why one should be frequentists or bayesians...
+ 	\item \url{https://arxiv.org/pdf/1007.1727.pdf} Describes in details hypothesis test. It does not tackle the problem of Monte Carlo methods taking ages to converge when the dimensionality of the data is large. SO nothing on classification but still I believe I should know these things.
+ 	\item \url{https://arxiv.org/pdf/1506.02169.pdf} Describes the link between classification and likelihood ratio tests. But it is a recent one (2015) and Higgs discovery (2012) was already using classifier so I guess this is not the original paper on why classification is nice.
+ \end{itemize} 
+
+
+About Bayesian vs Frequentist stupid war.
+The section 2 of Neal's paper is criticising Feldman and Cousins' paper on the Unified approach.
+So according to those folks if you want a Bayesian approach to confidence interval you do marginalization like Neal.
+But if you want a Frequentist approach you use the profiled likelihood ratio method.
+
+A scientist may consider that we need experimental evidence to choose between one or another.
+Then you can read : \url{https://arxiv.org/pdf/physics/0403059.pdf} for coverage experiment of the Unified method.
+And read \url{https://arxiv.org/pdf/physics/0408039.pdf} for coverage of the Bayesiand approach.
+I read only introduction and conclusion of these papers and they state that Frequentist method leads to a small under-coverage and the Bayesian approach leads to a small over-coverage.
+
+My conclusion is that the only way of doing good statistics is to understand and master both methods.
+Test them on a problem and finally be at peace because both are giving bassically the same numbers at the end...
+

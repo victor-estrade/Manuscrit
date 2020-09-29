@@ -1,0 +1,384 @@
+%!TEX root = ../thesis.tex
+% ******************************* Thesis Appendix B ********************************
+
+\ifpdf
+    \graphicspath{{Appendix2/Figs/Raster/}{Appendix2/Figs/PDF/}{Appendix2/Figs/}}
+\else
+    \graphicspath{{Appendix2/Figs/Vector/}{Appendix2/Figs/}}
+\fi
+
+\chapter{Lost and found}
+
+\content{Details, sections and parts that do not fit the current plan}
+
+
+\section{Simulator limitation} % (fold)
+\label{sec:simulator_limitation}
+
+Est si tout ces problèmes c'était parce que le simulateur ne va pas ? cf p(nuisance | data) vs p(nuisance) ... ???
+% section simulator_limitation (end)
+
+\section{Chap1-old Background}
+
+
+\subsection{High energy physics} % (fold)
+\label{sub:high_energy_physics}
+
+\subsection{CERN} % (fold)
+\label{sub:cern}
+
+
+\subsection{Systematics} % (fold)
+\label{sub:systematics}
+
+
+
+\section{Chap1-old Motivation} % (fold)
+\label{sec:old_motivation}
+
+Limitations des méthodes actuelles
+
+\subsection{Accuracy} % (fold)
+\label{sub:accuracy}
+
+
+\subsection{computation} % (fold)
+\label{sub:computation}
+
+\subsection{Understanding and methodology} % (fold)
+\label{sub:understanding_and_methodology}
+
+Levée de confusion entre mesure et découverte.
+
+Évaluation quantitative empirique des résultats => test statistique "non parametrique"
+
++ justifications théorique
+
+
+
+
+\section{ TODO Papers }
+
+Found this paper \url{https://arxiv.org/pdf/1903.10563.pdf} which review ML + Physics.
+
+So let's dive into the state of the art of inference in Physics using ML.
+Especially in the inverse problem setting.
+
+\begin{itemize}
+    \item \url{https://arxiv.org/abs/1506.02169} : Approximating Likelihood Ratios with Calibrated Discriminative Classifiers
+    \item \url{https://arxiv.org/abs/1601.07913} : Parameterized Machine Learning for High-Energy Physics
+    \item \url{https://arxiv.org/abs/1610.08328} : Event generator tuning using Bayesian optimization
+    \item \url{https://arxiv.org/abs/1611.01046} : Learning to Pivot with Adversarial Networks
+    \item \url{https://arxiv.org/abs/1706.04008} : Recurrent Inference Machines for Solving Inverse Problems
+    \item \url{https://arxiv.org/abs/1707.07113} : Adversarial Variational Optimization of Non-Differentiable Simulators
+    \item \url{https://arxiv.org/abs/1801.01497} : Massive optimal data compression and density estimation for scalable, likelihood-free inference in cosmology
+    \item \url{https://arxiv.org/abs/1802.03537} : Automatic physical inference with information maximising neural networks
+    https://arxiv.org/abs/1805.03961
+    \item \url{https://arxiv.org/abs/1805.03961} : Study of constraint and impact of a nuisance parameter in maximum likelihood method
+    \item \url{https://arxiv.org/abs/1805.07226} : Sequential Neural Likelihood: Fast Likelihood-free Inference with Autoregressive Flows
+    \item \url{https://arxiv.org/abs/1805.00020} : A Guide to Constraining Effective Field Theories with Machine Learning
+    \item \url{https://arxiv.org/abs/1805.00013} : Constraining Effective Field Theories with Machine Learning
+    \item \url{https://arxiv.org/abs/1805.12244} : Mining gold from implicit models to improve likelihood-free inference
+    \item \url{https://arxiv.org/abs/1806.11484} : Deep Learning and its Application to LHC Physics
+    \item \url{https://arxiv.org/abs/1903.01473} : Nuisance hardened data compression for fast likelihood-free inference
+    \item \url{} : 
+    \item \url{} : 
+    \item \url{} : 
+    \item \url{https://cds.cern.ch/record/1099977/files/p111.pdf} : Computing Likelihood Functions for High-Energy Physics Experiments when Distributions are Defined by Simulators with Nuisance Parameters
+    \item \url{https://arxiv.org/abs/1007.1727} : Asymptotic formulae for likelihood-based tests of new physics
+    \item \url{https://www.pp.rhul.ac.uk/~cowan/stat/aachen/cowan_aachen14_1.pdf} : Cours de Glen 2012 part 1
+    \item \url{https://www.pp.rhul.ac.uk/~cowan/stat/aachen/cowan_aachen14_2.pdf} : Cours de Glen 2012 part 2
+    \item \url{https://www.pp.rhul.ac.uk/~cowan/stat/aachen/cowan_aachen14_3.pdf} : Cours de Glen 2012 part 3
+    \item \url{https://www.pp.rhul.ac.uk/~cowan/stat/aachen/cowan_aachen14_4.pdf} : Cours de Glen 2012 part 4
+    \item \url{https://www.pp.rhul.ac.uk/~cowan/stat/aachen/cowan_aachen14_5.pdf} : Cours de Glen 2012 part 5
+    \item \url{https://arxiv.org/pdf/1503.07622.pdf} : Practical Statistics for the LHC
+    \item \url{} : 
+    \item \url{} : 
+    \item \url{} : 
+    \item \url{} : 
+\end{itemize}
+
+
+\section{ ABC }
+
+Approximate Bayesian Computation is ...
+
+\section{ Inferno }
+\section{ Learning to pivot}
+
+\section{ Mining gold }
+
+\begin{itemize}
+	\item The paper for Machine learner  : https://arxiv.org/abs/1805.12244
+	\item The paper for physicist : https://arxiv.org/abs/1805.00013 and https://arxiv.org/abs/1805.00020
+	\item The ALICES paper : https://arxiv.org/pdf/1808.00973.pdf
+    \item The general paper about simulation base inference ! https://arxiv.org/pdf/1911.01429.pdf
+\end{itemize}
+
+Augment the simulated data with the likelihood ratio ...
+
+
+
+
+
+\section{Disentangling} % (fold)
+\label{sec:disentangling}
+
+
+\begin{itemize}
+    \item \url{https://arxiv.org/pdf/1611.03383.pdf} : Disentangling factors of variation in deep representations using adversarial training
+    \item \url{https://arxiv.org/pdf/1811.12359.pdf} : Challenging Common Assumptions in the Unsupervised Learning of Disentangled Representations
+\end{itemize}
+
+
+
+\section{Variational} % (fold)
+\label{sec:variational}
+
+\begin{itemize}
+    \item \url{https://arxiv.org/pdf/1601.00670.pdf} : Variational Inference: A Review for Statisticians
+    \item \url{} : VAE with a VampPrior
+\end{itemize}
+
+
+\section{Uncertainty} % (fold)
+\label{sec:uncertainty}
+
+\begin{itemize}
+    \item \url{https://arxiv.org/pdf/1906.02530.pdf} : Can You Trust Your Model's Uncertainty? Evaluating Predictive Uncertainty Under Dataset Shift
+\end{itemize}
+
+
+
+
+\section{Introduction} % (fold)
+\label{sec:introduction}
+
+\begin{itemize}
+	\item \url{https://www.osti.gov/servlets/purl/1469751} Nature paper about how much ML help HEP.
+\end{itemize}
+
+
+\section{Plan and structure} % (fold)
+\label{sec:plan_and_structure}
+
+Suivant le conseil de François je commence par le "steak", ie ce dont je veux parler / les sujets principaux du manuscrit.
+
+\textbf{Contributions :}
+\begin{itemize}
+    \item Décrire certaines limites de l'adaptation de domaine pour réduire l'influence des effets systeméatiques
+    \item (Application de la regression directe sur un dataset pondéré à HEP)
+    \begin{itemize}
+        \item inspiration : PointNet, papier de correntin, Neural statistician, papier de Théo (bio-stat en général) ?
+    \end{itemize}
+    \item Décrire certaines limites à l'inférence par régression directe
+\end{itemize}
+
+
+\textbf{Pour pouvoir en parler je dois introduire :}
+\begin{itemize}
+    \item Un tout petit peu de physique
+    \begin{itemize}
+        \item description minimaliste du systeme
+        \item mais quand même insister sur le fait que c'est bien + compliqué
+    \end{itemize}
+    \item Les techniques d'inférence
+    \begin{itemize}
+        \item Inférence bayesienne
+        \item maximum de vraisemblance
+    \end{itemize}
+    \item Le probleme inverse
+    \item Les effets systématiques et leur conséquence
+\end{itemize}
+
+\textbf{Il faut aussi parler des solutions actuelles et autres empreints à la litterature}
+\begin{itemize}
+    \item data augmentation
+    \item tangent propagation
+    \item pivot
+    \item inferno
+\end{itemize}
+
+\textbf{Que je me positionne par rapport à d'autres alternatives non explorées:}
+\begin{itemize}
+    \item Variationnal inference
+    \item ABC methods
+    \item Bayesian networks
+    \item Disentagling
+    \item Fairness
+    \item Mining gold
+\end{itemize}
+
+
+\textbf{Présentation du benchmark ie des données, des XP, etc}
+\begin{itemize}
+    \item Présenter les jeux de données
+    \begin{itemize}
+        \item Toy 1D
+        \item Toy inferno
+        \item HiggsML
+    \end{itemize}
+    \item Workflow pour l'inférence
+    \item Workflow pour la sélection de l'outil ie exp data = simulator($\theta^\star$) (car les données xp ne sont utilisée qu'une fois)
+    \item Présenter la métrique pour comparer les méthodes
+    \item Présenter les résultats sur ces données
+    \begin{itemize}
+        \item Tout marche bien jusqu'à un certain point
+        \item Classement difficile mais : Bayes \& likelihood > classifier and inerno > direct regression
+        \item Rien ne semble battre la baseline sur HiggsML
+    \end{itemize}
+    \item Approfondir l'interprétation de ces résultats avec les XP auxilières
+    \begin{itemize}
+        \item Forest robustness
+        \item Toy trop facile (linear correlation with mu)
+        \item No correlation with higgs
+        \item Signal too weak => regression learning impossible
+        \item Separation between domain in higgs very difficult (at sample size)
+        \item Autres ???
+    \end{itemize}
+    \item Rien ne marche ici mais systematic aware learning ça marche dans d'autre cas.
+\end{itemize}
+
+
+\textbf{Discussion sur les limites et les perspectives}
+\begin{itemize}
+    \item limite minimal pour la réduction de la variance systématique (pas de démêlage parfait possible)
+    \item Amélioration du simulateur
+    \item Probabilistic programming ?
+    \item Calibration commune pour de multiples analyses
+    \item Calibration and Prior vs posterior ? (territoire glissant) 
+    \item j'ai envie de donner un regard critique sur l'obscurantisme autour des statistiques
+    \item j'ai envie de donner un regard critique sur la méthodologie pour mesurer les performances
+\end{itemize}
+
+
+\textbf{Remarques Isabelle : }
+\begin{itemize}
+    \item Introduire le pb du comptage bcp + tôt.
+    \item Pas forcément un ordre chronologique
+    \item Mais plutôt quel est ce que je veux dire et contruire autour 
+    \item Résoudre le comptage et prendre en compte les systématiques
+    \begin{itemize}
+        \item être insensible au systématique
+        \item les évaluer
+        \item Il faut être clair sur ce que l'on fait avec ces systématiques
+    \end{itemize}
+    \item On veut sortir un $\mu$ aussi indépendant de $\alpha$ que possible
+    \item Chercher en background process la punchline de ma thèse.
+\end{itemize}
+
+
+
+\section{Thoughts on calibration} % (fold)
+\label{sec:thoughts_on_calibration}
+
+According to "something-I-have-not-found-anywhere-yet" we should not use the data to infer the nuisance parameters \ie improve the calibration.
+Indeed trying to narrow down the distribution of the nuisance params $p(\alpha|x)$ using the given data $x^\star$ is considered dangerous.
+
+But I do not understand why.
+
+Here is the problem : if the calibration is nearly perfect then $p(\alpha|x)$ is narrow (\ie very small variance) the simulation data $x|\alpha$ is close to the true data used for inference $x^\star$. Then the classifier (or any other method) output is not going to change much according to $\alpha$ because all $\alpha$ are very close to each other.
+
+If the calibration is not perfect $p(\alpha|x)$ is not a narrow distribution. Then the simulation data $x|\alpha$ will vary enough for the classifier/method to change its output. But if the classifier can "feel it" then how the calibration does not ?
+
+
+example : tau energy scale.
+It is quite simple to measure the tau energy scale from the data. Take the tau feature, average it and compare to the simulation. This gives a perfect estimator of the tau enery scale. This is doing calibration on the given data $x^\star$.
+I do not see how it is dangerous to rescale the data... We do it all the time in Machine Learning before doing linear regression or feeding the data to the neural network. Usually it is done sample-wise but here a sample is simply a dataset. One dataset is one $x$.
+
+
+What I do understand is that the data will be used to infer many parameters in different studies. 
+If all these studies uses a home made re-calibration then 2 studies using the same experiment will use different values for the nuisance param which seems foolish and can probably leads to wrong conclusions.
+Example : the tau energy scale has one value (one distrib) for the entire experiment. If Paul finds 1.2 with its method and Jean find 1.1 with another method they may find different conclusion for the exact same study on the exact same data !
+
+To avoid this problem the calibration is done in a controled region where no studies will look because other parameters have little influence there.
+This should makes the calibration as powerfull as possible meaning the proba $p(\alpha|x)$ as narrow as possible.
+
+Now we have a $p(\alpha|x)$ that should not be modified in studies using this experiment.
+Meaning we cannot improve the second part of the variance : 
+$$\EE_{\alpha \sim p(\alpha|x)} \left ((\EE [y|x, \alpha]  - \EE[y|x])^2\right )$$
+which measures the deviation of the estimator according to the average value of the estimator.
+
+
+Unless we improve the estimator itself to be resilient to change in the values of $\alpha$.
+
+My intuition is that it is impossible if the estimator is well built (\ie not broken).
+This seems to lead to the bias-variance trade-off.
+
+$$
+\VV[y|x] = \EE_{\alpha \sim p(\alpha|x)} \left (\VV[y|x, \alpha] \right ) + \EE_{\alpha \sim p(\alpha|x)} \left ( (\EE [y|x, \alpha]  - \EE[y|x])^2\right )
+$$
+
+If I improve the second term the first one (representing the average variance of the estimator) will get bigger.
+In other words what we win in systematic error we will loose it in statistical error.
+
+I get that disantangling the nuisance from the interest param is the goal. 
+But I think a classifier is already doing it (probably not by chance, cross entropy is deeply linked to the objective function) in the higgs dataset.
+
+
+What I still do not understand completly is why we don't improve the frozen calibration ?
+According to Bayes theorem we can (carefully) improve knowledge on a parameter with multiple experiment.
+
+
+If my intuition is wrong and the controled region calibration is the best way of doing calibration. 
+Then all inference aware methods are dangerous since the neural network can learn to calibrate.
+
+This is exactly what I allow my big neural net to do with all the reduction functions inside it.
+And INFERNO-like methods can indeed use one bin to calibrate on the data.
+
+
+Reminder of my thoughts :
+\begin{itemize}
+	\item Rescaling the dataset is like rescaling a feature in ML. It is not dangerous in usual ML. Is it really dangerous here ?
+	\item Multiple home-made calibration on same dataset may lead to wrong conclusions
+	\item Calibration done in a controled region is a workaround to freeze calibration for every study using this data
+	\item Can we improve this frozen calibration ? cf bayes theorem to improve our knowledge in view of new observations
+\end{itemize}
+
+
+
+\section{Toy d'isabelle} % (fold)
+\label{sec:toy_d_isabelle}
+
+MNIST les 1 vs les 0.
+Projection 1D.
+L'observable est le nombre de pixel alumé et la systematique est la luminosité.
+Ça donne une observable affectée par la systématique.
+
+Mais si l'observable est la rondeur le l'image alors on a une observable orthogonale à la systématique.
+
+
+
+
+
+
+\subsection{Apple and pears} % (fold)
+\label{sub:apple_and_pears}
+
+Let's start with a toy problem and make it gradually more complex.
+The study is about finding the proportion $\mu$ of apples and pears in a bag.
+The only information available is the total number of fruits in the bag and the weight of each individual fruit.
+Apples and pears weights are normally distributed and slightly different.
+The dataset is a set of real values $D = \{ x_i \in \RR \} $
+
+From the average weight of the fruits in the bag a linear regression is enough to find the link between $D$ and the parameter of interest $\mu$.
+The model can be trained if enough bags in which the proportion is known is available for training.
+This simplicity is wanted to test the method.
+
+Since the weight of a fruit is stochastic, two bags of fruits with the same number of apples and pears may have a different average weight.
+Leading to some uncertainty in the predicted proportion that must be reported.
+
+
+\subsection{ATLAS Simulation} % (fold)
+\label{sub:atlas_simulation}
+
+
+Vulgarization on atlas simulation :
+\begin{itemize}
+	\item \url{https://atlas.cern/updates/atlas-blog/defending-your-life-part-1}
+	\item \url{https://atlas.cern/updates/atlas-blog/defending-your-life-part-2}
+	\item \url{https://atlas.cern/updates/atlas-blog/defending-your-life-part-3}
+\end{itemize}
+
+
+
