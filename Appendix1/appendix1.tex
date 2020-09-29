@@ -12,6 +12,12 @@
 Here is gathered the details of the experiment to help reproduce the resulst presented in this document.
 
 
+
+
+
+
+
+
 \section{What distinguish runs} % (fold)
 \label{sec:what_distinguish_runs}
 
@@ -86,6 +92,14 @@ Finally the number of samples in the test set is also evolving to measure its im
 
 \victor{Ecrire exactement la variabilité restante : le train set, le test set et l'initialisation des NN}
 
+
+
+
+
+
+
+
+
 \section{Measured quantities for performance evaluation} % (fold)
 \label{sec:measured_quantities_for_performance_evaluation}
 
@@ -101,7 +115,7 @@ There is two sources of randomness in the estimated values.
 The first one is the variance of the nuisance parameters which all methods is supposed to handle and include in its estimated a variance or a confidence interval of the estimated parameter of interest $\hshmu$.
 The second is the data sampling which is empirically measured by repeating the experiment with cross-validation.
 Altough the given variance/CL $\hshmu$ is assumed to be correct the variance of $\hmu$ is measured for comparison.
-\victor{Oui mais du coup ces 2 quantités ne mesure pas vraiment la même chose, si ?}
+\victor{Oui mais du coup ces 2 quantités ne mesurent pas vraiment la même chose, si ?}
 
 
 Recall that :
@@ -145,6 +159,9 @@ The number predictions made by the model is also reported as a proxy of computat
 
 Here are given the details to be able to reproduce the experiments.
 
+
+
+
 \subsection{Global constants} % (fold)
 \label{sub:global_constants}
 
@@ -154,6 +171,9 @@ I've seen it used quite often in codes as an easter egg.
 
 
 The number of cross-validation is always 30.
+
+
+
 
 
 
@@ -224,6 +244,8 @@ Only relying on ReLU will likely end in a piecewise linear function while a sigm
 Morover ReLU is never saturating which led to some gradient explosion is preliminary experiments. 
 To avoid having to test many activations the default activation is applying ReLU6 to the first half of the neurons and tanh to the rest of the neurons.
 This is assumed to allow the network to use the best of both world.
+
+
 
 
 
@@ -395,6 +417,8 @@ This is assumed to allow the network to use the best of both world.
 
 
 
+
+
 \section{True parameter grid} % (fold)
 \label{sec:true_parameter_grid}
 
@@ -416,11 +440,22 @@ This is assumed to allow the network to use the best of both world.
 The fine range of $\alpha$ for systematic/statistical variance estimation is 31 equidistant values in $[0.5, 1.5]$ . 
 
 
+
+
+
+
 \section{Prior distributions} % (fold)
 \label{sec:prior_distributions}
 
 
 \victor{TODO !}
+
+
+
+
+
+
+
 
 
 
