@@ -58,7 +58,7 @@ The idea is to do one subsection for one result
 
 
 Let's start with the results on the two toy problems (see \autoref{sec:toy_datasets} for details).
-Toys provides a fully controled environement on various parameters of the problem to confront the proposed methods against different difficulties.
+Toys provide a fully controled environement on various parameters of the problem to confront the proposed methods against different difficulties.
 The first one is the small number of samples to do inference (\autoref{sub:performance_according_to_sample_size}).
 
 
@@ -141,14 +141,13 @@ This is less obvious on the calibrated data where increasing the number of sampl
 
 The 1D toy problem (named GG) is asymetric in $\alpha$.
 Indeed increasing $\alpha$ will move appart the center of the signal and the background distribution.
-Also when comparing the nominal distribution and the one with a decreased $\alpha$ with a small amount on signal the signal spike could be confused with a flucuation making inference harder.
-This is why blue curves $\alpha=0.8$ are way above the $\alpha=1.2$ curves in most models.
+On the other hand when comparing the nominal distribution and the one with a smaller $\alpha$ the signal spike will go under the background blanquet.
+With a small amount on signal and a small $\alpha$ the signal spike could be confused with a flucuation making inference harder.
+This is why blue curves $\alpha=0.8$ are way above the $\alpha=1.2$ green curves in most models.
 
 Inferno and the marginal Regressor are not affected by this assymetry.
 Maybe those 2 neural networks are measuring $\alpha$ then correcting it ?
 The marginal Regressor is expected to do so at least.
-
-\victor{TODO : Wait for new Pivot runs to comment on it.}
 
 
 \begin{figure}[ht!]
@@ -207,7 +206,7 @@ The marginal Regressor is expected to do so at least.
 
 
 
-\victor{Evolution de la variance stat et syst en fonction de N\_samples.}
+\victor{TODO : Evolution de la variance stat et syst en fonction de N\_samples.}
 
 
 
@@ -219,17 +218,18 @@ The marginal Regressor is expected to do so at least.
 \label{sub:calibration_influence}
 
 
+\victor{TODO : Le terme CALIBRATION est probablement pas cool. Il lui faudrait donner un autre nom. On fait pas ça dans une région de controle. Et on perd l'indépendance de la calibe avec $\mu$ donc c'est pas de la calibration. Mais c'est pas forcément une mauvaise idée !}
+
 In this benchmark two way of calibrating the data is used.
 \begin{enumerate}
   \item Trust a given prior
   \item Infer the nuisance parameter distribution using a regressor
 \end{enumerate}
 
-Here we show that the later is a better choice and improves significantly the performances of all methods.
-Indeed using only a poorly informed prior leads the baseline to a biased estimator.
-\autoref{fig:gg_baseline_compare_calib_estimator} shows the estimation of a neural net classifier.
+Here we show that the later improves significantly the performances of all methods.
+Indeed using only a poorly informed prior leads the baseline to a biased estimator as shown in \autoref{fig:gg_baseline_compare_calib_estimator} for a neural net classifier.
 It is clear that the estimation depends on $\alpha^\star$ and is biased if $\alpha^\star$ is not the nominal value.
-\victor{TODO : GB \& TP \& REG show the same behaviour. INFERNO is not affected. DA is more robust. Waiting for PIVOT results}
+\victor{TODO : GB \&PIVOT \& TP \& REG show the same behaviour. INFERNO is not affected. DA is more robust.}
 
 Using the given data to improve calibration leads to an unbiased estimator.
 \victor{TODO : Someone may argue that it is because my prior calibration is bad. But my simulator cannot do better...}
@@ -262,7 +262,7 @@ This asymetry tends to disapear when the calibration is done on the data (see \a
   \centering
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-prior/NeuralNetClassifier/profusion_n_samples_mse.png}
-    \caption{Prior calibration}
+    \caption{Calibration with a prior on $\alpha$}
     % \label{fig:gg-prior_GB_profusion_nominal_n_samples_mse}
   \end{subfigure}%
   \hfill
@@ -416,7 +416,12 @@ The regressor and data augmentation are very good with small test size \autoref{
 \subsection{V stat and V syst} % (fold)
 \label{sub:v_stat_and_v_syst}
 
-Stuff about v stat and v syst.
+Pivot and Inferno are clearly tradding $V_{stat}$ and $V_{syst}$.
+They show high values of $V_{stat}$ and very low values of $V_{syst}$ compared to the other methods.
+
+It results is very good inference for inferno but pivot is show poor MSE performance ... why ?
+
+
 
 Inferno is bad at v stat but always the best at v syst !
 
@@ -433,7 +438,8 @@ Inferno is bad at v stat but always the best at v syst !
 
 
 
-
+\clearpage
+\victor{TODO remove temporary clearpage}
 
 \section{Real data} % (fold)
 \label{sec:real_data}
@@ -491,6 +497,18 @@ Inferno is bad at v stat but always the best at v syst !
 \content{Explain and show that the issue comes from the imbalance between signals and backgrounds}
 
 The scatter plot properties is much more dependent to noise or nuisance parameters than to the parameter of interest.
+
+
+
+
+
+
+
+1. XP Toy 1D
+2. XP Toy 3D
+3. XP Broken 1D 3D
+4. Higgs
+5. Repaired Higgs
 
 
 
