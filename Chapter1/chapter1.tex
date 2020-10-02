@@ -657,6 +657,15 @@ Moreover taking nuisance parameter into account can introduce local maxima in th
 
 \victor{TODO : C'est là que j'attaque les papiers avec linéarisation de l'impact du paramètre de nuisance}
 
+
+
+
+
+
+
+\subsection{Calibration experiment} % (fold)
+\label{sub:calibration_experiment}
+
 $\alpha$ is generally known to a certain extent thanks to other measurements is controlled region where the signal has low probability of appearing or even no influence at all making these measurement independent from $\mu$ (\autoref{eq:calib_integration_1} $\to$ \autoref{eq:calib_integration_2}).
 
 These measurements $D_{calib}$ very often constrains the values of $\alpha$ with a gaussian distribution (\autoref{eq:calib_integration_2} $\to$ \autoref{eq:calib_integration_3}).
@@ -690,6 +699,35 @@ Petite listes des choses faisables pour réduire les biais systématiques.
 
 Example : Calibrant interne en chimie (mesure supplémentaire dont la valeur attendu est connu). Calibrant externe (échantillon dont la valeur attendu est connu).
 
+
+
+
+
+
+\subsection{Improving the likelihood} % (fold)
+\label{sub:improving_the_likelihood}
+
+
+Without systematics the Poisson likelihood contrains most if not all the inforamtion about the parameter of our model.
+With systematics one or several parameters $\alpha$ are included.
+The maximum likelihood is not only depending of $\mu$ but also of $\alpha$
+
+\begin{equation}
+	\hat \mu, \hat \alpha = \argmax_{\mu, \alpha} L(\mu, \alpha)
+\end{equation}
+
+The Poisson likelihood may not enough in this case.
+The data is reduced to a few number $D \to \n_1, n_2, ..., n_K$.
+It was build to find $\mu$ not $\alpha$.
+This is enough for the inference of $\mu$ without systematics as seen previously.
+But most of the information about $\alpha$ is lost.
+This does not feel like the likelihood is capturing all the connection between the data and the parameters.
+
+Here is proposed a quick and dirty way to improve the inference by taking into account the nuisance parameter.
+
+The idea is to use a \emph{blind regressor} (see \autoref{sub:handle_nuisance_parameter}) to produce an additional approximated likelihood.
+It can be seen as using a neural network to both produce additional summary statistics.
+The blind regressor is trained to estimated $p(\alpha | D)$ as a gaussian distribution.
 
 
 

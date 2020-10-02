@@ -427,6 +427,7 @@ This section describes two ways to handle nuisance parameters when learning dire
 \topic{The model can simply learn the marginal posteriors "like a boss"}
 
 The first way is to simply ignore them and directly approximate the marginal posterior $p(\mu|D)$.
+This method is refered to as \textbf{Blind Regressor}.
 The training dataset should include a representative set of samplesets for the problem.
 Meaning that instead of simply sampling a new value $\mu_i$ for each sampleset $D_i$ also sample the nuisance parameters from theirs prior distribution to feed them to the simulator $D_i = G(\mu_i, \alpha_i)$.
 
@@ -466,6 +467,10 @@ The other way is to learn the posterior $p(\mu | D, \alpha)$ then to marginalize
     p(\mu | D) = \int d\alpha ~ p(\alpha | D) ~ p(\mu | D, \alpha)
 \end{equation}
 
+This is inspired by \cite{Baldi_2016}.
+This method is refered to as \textbf{Parametrized Regressor}.
+
+
 \victor{Expliquer que $\alpha$  est en entré du NN }
 \victor{FIGURE : Ajouter un dessin avec l'entré de param de nuisance}
 
@@ -489,7 +494,7 @@ In the case of a MDN $f$ with gaussian kernels, $f$ produces the mixture paramet
   $\hat\sigma$  $\gets$ $\hat\sigma + w_i \times (\bar\mu^2 + \Delta\mu^2)$ \;
  }
 $\hat\sigma$  $\gets$ $\hat\sigma - \hat\mu^2$ \;
-\caption{Marginalizing the nuisance parameters $\alpha$ using MC to compute the integral.}
+\caption{Marginalizing the nuisance parameters $\alpha$ using Monte Carlo to compute the integral.}
 \end{algorithm}
 
 
