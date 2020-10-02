@@ -731,7 +731,20 @@ The idea is to use a \emph{blind regressor} (see \autoref{sub:handle_nuisance_pa
 It can be seen as using a neural network to both produce additional summary statistics.
 The blind regressor is trained to approximate $p(\alpha | D)$ with a gaussian distribution.
 
+Sauf que ça produit un posterior ! PAS une likelihood .... Du coup le nom \textbf{Improved likelihood} est assez bof...
 
+\begin{equation}
+	L(\mu, \alpha) : \mu, \alpha 
+	\to \underbrace{\prod_{i=1}^K Poisson(n_i | \mu \gamma_i(\alpha) + \beta_i(\alpha))}_{\text{Binned Poisson Likelihood}} 
+	\times \underbrace{\mathcal N(\alpha |  NN(D))}_{\text{Not Prior Calibration}}
+\end{equation}
+
+Versus :
+\begin{equation}
+	L(\mu, \alpha) : \mu, \alpha 
+	\to \underbrace{\prod_{i=1}^K Poisson(n_i | \mu \gamma_i(\alpha) + \beta_i(\alpha))}_{\text{Binned Poisson Likelihood}} 
+	\times \underbrace{\mathcal N(\alpha |  Prior)}_{\text{Prior Calibration}}
+\end{equation}
 
 
 
