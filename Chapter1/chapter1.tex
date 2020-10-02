@@ -708,6 +708,8 @@ Example : Calibrant interne en chimie (mesure supplémentaire dont la valeur att
 \label{sub:improving_the_likelihood}
 
 
+\victor{Brouillon}
+
 Without systematics the Poisson likelihood contrains most if not all the inforamtion about the parameter of our model.
 With systematics one or several parameters $\alpha$ are included.
 The maximum likelihood is not only depending of $\mu$ but also of $\alpha$
@@ -717,7 +719,7 @@ The maximum likelihood is not only depending of $\mu$ but also of $\alpha$
 \end{equation}
 
 The Poisson likelihood may not enough in this case.
-The data is reduced to a few number $D \to \n_1, n_2, ..., n_K$.
+The data is reduced to a few number $D \to n_1, n_2, ..., n_K$.
 It was build to find $\mu$ not $\alpha$.
 This is enough for the inference of $\mu$ without systematics as seen previously.
 But most of the information about $\alpha$ is lost.
@@ -727,7 +729,7 @@ Here is proposed a quick and dirty way to improve the inference by taking into a
 
 The idea is to use a \emph{blind regressor} (see \autoref{sub:handle_nuisance_parameter}) to produce an additional approximated likelihood.
 It can be seen as using a neural network to both produce additional summary statistics.
-The blind regressor is trained to estimated $p(\alpha | D)$ as a gaussian distribution.
+The blind regressor is trained to approximate $p(\alpha | D)$ with a gaussian distribution.
 
 
 
