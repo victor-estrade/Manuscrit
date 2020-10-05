@@ -559,7 +559,7 @@ This section deals with the estimation of $\gamma_i$ and $\beta_i$ using the sim
 \victor{Brouillon}
 
 The current knowledge about the mixture of signal and backgrounds events $\gamma$ and $\beta$ is trivial to extract from the model.
-But if the data space is binned in a non-trivial way, e.g. with a histogram on the score of a classifier, the valus of $\gamma_i$ and $\beta_i$ requires to be estimated.
+But if the data space is binned in a non-trivial way, e.g. with a histogram on the score of a classifier, the values of $\gamma_i$ and $\beta_i$ requires to be estimated.
 
 Basically $\gamma_i = \EE [s_i]$ and $\beta_i = \EE [b_i]$ which can be estimated by Monte Carlo.
 Running the simulation to produce many signal events and putting them through the same computation used to measure $n_i$ will give an estimate of $\EE [s_i]$.
@@ -738,6 +738,8 @@ Sauf que ça produit un posterior ! PAS une likelihood .... Du coup le nom \text
 	\to \underbrace{\prod_{i=1}^K Poisson(n_i | \mu \gamma_i(\alpha) + \beta_i(\alpha))}_{\text{Binned Poisson Likelihood}} 
 	\times \underbrace{\mathcal N(\alpha |  NN(D))}_{\text{Not Prior Calibration}}
 \end{equation}
+where $NN(D)$ is the output of the blind regressor.
+
 
 Versus :
 \begin{equation}
@@ -746,7 +748,7 @@ Versus :
 	\times \underbrace{\mathcal N(\alpha |  Prior)}_{\text{Prior Calibration}}
 \end{equation}
 
-
+Peut-être que \textbf{Constraints} est + approprié. C'est une contrainte sur $\alpha$. Donc \textbf{Prior constraint} vs \textbf{Data constraint} ? Ou \textbf{Reg constraint} ? ou \textbf{Infered constraints} ?
 
 
 
