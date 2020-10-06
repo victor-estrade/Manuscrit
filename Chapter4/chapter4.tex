@@ -13,6 +13,18 @@
 
 \topic{Il faut un benchmark solide pour comparer les méthodes}
 
+Plan :
+\begin{itemize}
+	\item Higgs data : \autoref{sec:higgs_data} describe the dataset/problem that motivated this work
+	\item Toy data : \autoref{sec:toy_datasets} describe the toy dataset to explain behaviour of the methods
+	\item Bayesian inference : \autoref{sec:bayesian_inference_on_toys} describe a quick way to get best inference with likelihood
+	\item Constraint / Calibration : \autoref{sec:constraining_nuisance_parameters} the issue and freedom taken to choose the constraint on $\alpha$
+	\item Training : \autoref{sec:training_details} how the methods are trained
+	\item Evaluation : \autoref{sec:higgs_data} methods are evaluated using MSE, Vstat, Vsyst, Hesse vs Minos.
+\end{itemize}
+
+
+
 
 
 
@@ -21,7 +33,8 @@
 
 
 
-
+\victor{NOTE : Higgs to tau tau in ATALS start page : \url{https://atlas.lal.in2p3.fr/physics/past-activities/htautau/}}
+\victor{NOTE : did we found no higgs in the H to tautau ? \url{https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.125.051801}}
 
 
 \subsection{Simulation} % (fold)
@@ -171,6 +184,11 @@ With boostrapping and considering the re-generation as data augmentation the fin
 
 
 
+
+
+
+
+
 \section{Toy datasets} % (fold)
 \label{sec:toy_datasets}
 
@@ -264,6 +282,12 @@ Once again the background and signal distribution are overlapping.
 
 
 
+
+
+
+
+
+
 \section{Bayesian inference on toys} % (fold)
 \label{sec:bayesian_inference_on_toys}
 
@@ -324,6 +348,9 @@ The marginal probabilities are computed from $T_{ij}$ :
 The method presented here is quite simple but leads to very accurate estimation on the toy problems.
 
 
+
+
+
 \subsection{Extract quantities from discretized marginal posterior} % (fold)
 \label{sub:extract_quantities_from_discretized_marginal_posterior}
 
@@ -371,6 +398,220 @@ And all sums over $j$ become sums over $j,k, ...$ which is easy to handle with b
 
 
 
+
+\section{Constraining nuisance parameters} % (fold)
+\label{sec:constraining_nuisance_parameters}
+
+
+
+
+\victor{TODO : Explain how the 2 constraints are chosen, where it happen in computation of studied quantities}
+\victor{TODO : Show that the new calibration is a good fit.}
+
+At some point a constraint on the nuisance parameters $\alpha$ is requiered to avoid mutliple maxima of the likelihood.
+The constraint act as a guide to find the maximum of the likelihood.
+Knowing the range of possible $\alpha$ is also required to train the robust methods.
+
+Here is desccribed how the two contraints methods considered is computed.
+
+
+\subsection{Prior knowledge} % (fold)
+\label{sub:prior_knowledge}
+
+
+As explained in \autoref{sub:calibration_experiment} a side experiment gives access to some measurement $D_{calib}$ which depends only on $\alpha$.
+This experiment leads to a estimation of $\alpha$ in the form of a posterior distribution $p(\alpha | D_{calib}$.
+Most of the time these distribution are gaussian \needcite.
+
+Unfortunatelly these calibration measurement are not included in our simulators neither on the toys nor on the higgs data.
+The constraints then takes the form of a prior distribution.
+
+Although the toy problem shares properties with some real physic experiment they do not represent any real process.
+A prior distribution is pulled out of the hat.
+For the higgs dataset the values are chosen to be quite close to reality \needcite.
+\victor{Maybe \url{https://cds.cern.ch/record/1493615/files/HIG-12-043-pas.pdf} is a good start.}
+
+
+
+
+\url{http://cds.cern.ch/record/1306523/files/CERN-2011-006.pdf?version=1} Page 115 is a good read.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Training details} % (fold)
+\label{sec:training_details}
+
+\victor{Ici je veux ecrire les algo, les détails de comment je mène mes XP. (sans les chiffres, chiffres réservés à Appendix A)}
+
+
+There is several ways of estimating the parameter of interest.
+Two workflows have been identified : the classic one with a histogram and Poisson count maximum likelihood estimator and the direct one with a regression using a dataset wise neural network.
+
+The experimental plan to evaluate the methods is described in this section.
+First the training details are given in \autoref{sub:training_details}.
+Then \autoref{sub:computing_the_estimator} explains how the estimators $\hmu$ and $\hshmu$ are computed.
+\autoref{sub:calibration} is about the calibration.
+\autoref{sub:computing_evaluation_metric} is redondant with previous section ?
+
+\victor{TODO : refaire le plan des subsections}
+
+\content{Pour chaque méthode : expliciter sur quelles données elles sont entrainées et comment on verifi que l'entrainement s'est bien passé}
+
+At first training all methods with the same number of training samples has been considered.
+But evaluating each methods at the best of their performances while emphasizing which method is more data intensive gives better indications to which one is more suited to a given problem.
+
+
+
+
+
+
+
+
+\subsection{Baseline : classifier} % (fold)
+\label{sub:baseline_classifier}
+
+The baseline is a standard classifier trained on the nominal dataset.
+The nominal dataset is a dataset generated with parameter values corresponding to current knowledge.
+In other words the maximum of the prior distribution for $\mu$ and the maximum of the calibrated distribution for $\alpha$.
+
+The baseline gather two classifiers : Gradient Boosting from sklearn \needcite and a neural network trained with cross-entropy loss.
+
+Gradient Boosting is a powerfull classifier, easy to train and delivers very good classification performances for almost no effort.
+Although more recent variants like XGBoost \needcite and NGBoost \needcite are likely to outperfom Gradient Boosting, XGBoost requires effort to avoid over-fitting and NGBoost was unknown to me until recently.
+
+Systematic aware methods (Data Augmentation, Tangent Prop, Pivot) are using regularization on a standard classifier.
+A baseline using the same architecture is required to provide a fair comparison.
+
+
+
+
+
+
+
+\subsection{Data augmentation} % (fold)
+\label{sub:data_augmentation}
+
+
+The simpler method to inforce robustness to the systematic effet is to train the classifier on a mixture of data generated with various values of the nuisance parameter.
+Data augmentation is a neural network trained with cross-entropy on a dataset formed from 1000 sub-datasets.
+Every sub-dataset is generated with the nominal value of $\mu$ and an $\alpha$ sampled from the prior of $\alpha$.
+The full training dataset is 5 times bigger than the nominal one.
+
+
+
+
+
+
+
+\subsection{Tangent propagation} % (fold)
+\label{sub:tangent_propagation}
+
+Tangent propagation is trained using a differentiable generator.
+Tangent propagation virtually has acess to a infinite number of samples.
+On the toy datasets the generative process is written using \emph{torch.dictribution} .
+On the higgs dataset the generator is differentiable only to the nuisance parameters using trick described in \autoref{sub:fast_re_simulator} 
+
+
+
+
+
+
+
+\subsection{Pivot} % (fold)
+\label{sub:pivot}
+
+
+The data used to train Pivot is the same as Data Augmentation.
+
+Pivot is trained with 3 steps.
+First the pretraining of the classifier, then the pretraining of the adversarial part.
+Finally a loop of adversarial correction step and a few recovery steps.
+
+
+
+
+
+
+
+
+\subsection{Inferno} % (fold)
+\label{sub:inferno}
+
+Inferno is trained with the same generator as tangent propagation
+
+
+
+
+\subsection{Regressor} % (fold)
+\label{sub:regressor}
+
+The regressor is trained using a similar generator than Inferno of Tangent Propagation without the need to be differentiable.
+The regressor is simply taking the value of $\alpha$ used to generate of each sampleset as input while the marginal regressor ignores it.
+
+
+
+
+
+
+
+
+
+\subsection{Calibration} % (fold)
+\label{sub:calibration}
+
+
+Not in training.
+Calibrated distributions are narrower than the Prior ones.
+So it is safer to train robust method on the larger ones to ensure robustness on more values.
+Also calibration failure would break robust method otherwise. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \section{Evaluation metric} % (fold)
 \label{sec:evaluation_metric}
 
@@ -380,6 +621,41 @@ Many methods to estimate the parameter of interest and its variance are availabl
 Changing the set of hyper parameter for the learning procedure is considered as changing the method so many methods are to be evaluated.
 Automating the measure of the performances of a proposed method is crucial to select the best method.
 In this section is described a simple but general procedure to measure the performances of a given method.
+
+
+
+
+
+
+\subsection{Fake real data} % (fold)
+\label{sub:fake_real_data}
+
+
+To avoid the look elswhere effect the experimental data is locked away and should be ideally used only once.
+This requires to have every parts of the analysis fixed before unblinding the experimental data.
+To test our inference methods we have to assume that the simulator is perfect and use it to produce fake experimental data.
+
+The true data is produced from the simulator with the chosen true parameter values.
+Object related to the true data are marked with a $\star$ (eg. $D^\star = G(\mu^\star, \alpha^\star) $ )
+This allow to study the properties of the candidates analysis pipelines according to different senario of real experiment and compare them to keep the best one.
+
+
+
+
+
+
+\subsection{Computing the estimator} % (fold)
+\label{sub:computing_the_estimator}
+
+\content{Pour les 2.5 workflow expliciter comment sont calculé $\hmu$ et $\hshmu$. Minos too expensive.}
+
+
+
+
+
+
+
+
 
 
 \subsection{Mean squared error} % (fold)
@@ -399,6 +675,8 @@ The usual criterions to evaluate an estimator $\htheta$ are the bias, the varian
 
 To evaluate these criterion we need to repeat the experiment $N$ times leading to many estimation of the parameters $\hmu^{(k)}$ and $\hshmu^{(k)}$.
 Repeating the experiment can be done through cross-validation methods.
+
+
 
 
 
@@ -434,6 +712,9 @@ it is possible to estimated the criterions
 
 
 
+
+
+
 \subsubsection{Evaluation of the variance estimator} % (fold)
 \label{ssub:evaluation_of_the_variance_estimator}
 
@@ -458,17 +739,19 @@ If this is not the case an approximation is available using \autoref{eq:var_hmu}
 
 
 
-\subsection{Fake real data} % (fold)
-\label{sub:fake_real_data}
 
 
-To avoid the look elswhere effect the experimental data is locked away and should be ideally used only once.
-This requires to have every parts of the analysis fixed before unblinding the experimental data.
-To test our inference methods we have to assume that the simulator is perfect and use it to produce fake experimental data.
 
-The true data is produced from the simulator with the chosen true parameter values.
-Object related to the true data are marked with a $\star$ (eg. $D^\star = G(\mu^\star, \alpha^\star) $ )
-This allow to study the properties of the candidates analysis pipelines according to different senario of real experiment and compare them to keep the best one.
+\subsection{Computing evaluation metric} % (fold)
+\label{sub:computing_evaluation_metric}
+
+
+\content{Cross validation to estimated MSE (many $\mu^\star$, only 3 $\alpha^\star$)}
+\content{Var stat and Var syst. Details about their computation. Many $\tilde \alpha$. Independant of the calibration.}
+
+The estimators $\hmu$ and $\hshmu$ are random variable because of the limited size of the dataset.
+They depends on the true values of the parameters $\mu^\star$ and $\alpha^\star$.
+In the benchmark multiple values of $\mu^\star$ and $\alpha^\star$ have to be tested to evaluate the performances of a given method.
 
 
 
@@ -509,169 +792,6 @@ $\alpha$ is here only noted $\tilde \alpha$ to avoid confusion between the varia
 \end{align}
 So we need to compute the inference assuming the values of the nuisance parameter $\alpha$ sampled from $p(\alpha|D)$ is known and fixed.
 Which is simply doing inference without nuisance parameter.
-
-
-
-
-
-
-
-
-
-
-
-
-\section{Experimental details} % (fold)
-\label{sec:experimental_details}
-
-
-
-\victor{Ici je veux ecrire les algo, les détails de comment je mène mes XP. (sans les chiffres, chiffres réservés à Appendix A)}
-
-
-There is several ways of estimating the parameter of interest.
-Two workflows have been identified : the classic one with a histogram and Poisson count maximum likelihood estimator and the direct one with a regression using a dataset wise neural network.
-
-The experimental plan to evaluate the methods is described in this section.
-First the training details are given in \autoref{sub:training_details}.
-Then \autoref{sub:computing_the_estimator} explains how the estimators $\hmu$ and $\hshmu$ are computed.
-\autoref{sub:calibration} is about the calibration.
-\autoref{sub:computing_evaluation_metric} is redondant with previous section ?
-
-\victor{TODO : refaire le plan des subsections}
-
-
-
-
-
-
-
-
-\subsection{Training details} % (fold)
-\label{sub:training_details}
-
-\content{Pour chaque méthode : expliciter sur quelles données elles sont entrainées et comment on verifi que l'entrainement s'est bien passé}
-
-At first training all methods with the same number of training samples has been considered.
-But evaluating each methods at the best of their performances while emphasizing which method is more data intensive gives better indications to which one is more suited to a given problem.
-
-
-\subsubsection{Baseline : classifier} % (fold)
-\label{ssub:baseline_classifier}
-
-The baseline is a standard classifier trained on the nominal dataset.
-The nominal dataset is a dataset generated with parameter values corresponding to current knowledge.
-In other words the maximum of the prior distribution for $\mu$ and the maximum of the calibrated distribution for $\alpha$.
-
-The baseline gather two classifiers : Gradient Boosting from sklearn \needcite and a neural network trained with cross-entropy loss.
-
-Gradient Boosting is a powerfull classifier, easy to train and delivers very good classification performances for almost no effort.
-Although more recent variants like XGBoost \needcite and NGBoost \needcite are likely to outperfom Gradient Boosting, XGBoost requires effort to avoid over-fitting and NGBoost was unknown to me until recently.
-
-Systematic aware methods (Data Augmentation, Tangent Prop, Pivot) are using regularization on a standard classifier.
-A baseline using the same architecture is required to provide a fair comparison.
-
-
-
-
-\subsubsection{Data augmentation} % (fold)
-\label{ssub:data_augmentation}
-
-
-The simpler method to inforce robustness to the systematic effet is to train the classifier on a mixture of data generated with various values of the nuisance parameter.
-Data augmentation is a neural network trained with cross-entropy on a dataset formed from 1000 sub-datasets.
-Every sub-dataset is generated with the nominal value of $\mu$ and an $\alpha$ sampled from the prior of $\alpha$.
-The full training dataset is 5 times bigger than the nominal one.
-
-
-
-\subsubsection{Tangent propagation} % (fold)
-\label{ssub:tangent_propagation}
-
-Tangent propagation is trained using a differentiable generator.
-Tangent propagation virtually has acess to a infinite number of samples.
-On the toy datasets the generative process is written using \emph{torch.dictribution} .
-On the higgs dataset the generator is differentiable only to the nuisance parameters using trick described in \autoref{sub:fast_re_simulator} 
-
-
-
-
-\subsubsection{Pivot} % (fold)
-\label{ssub:pivot}
-
-
-The data used to train Pivot is the same as Data Augmentation.
-
-Pivot is trained with 3 steps.
-First the pretraining of the classifier, then the pretraining of the adversarial part.
-Finally a loop of adversarial correction step and a few recovery steps.
-
-
-
-
-\subsubsection{Inferno} % (fold)
-\label{ssub:inferno}
-
-Inferno is trained with the same generator as tangent propagation
-
-
-
-
-\subsubsection{Regressor} % (fold)
-\label{ssub:regressor}
-
-The regressor is trained using a similar generator than Inferno of Tangent Propagation without the need to be differentiable.
-The regressor is simply taking the value of $\alpha$ used to generate of each sampleset as input while the marginal regressor ignores it.
-
-
-
-
-
-
-\subsection{Computing the estimator} % (fold)
-\label{sub:computing_the_estimator}
-
-\content{Pour les 2.5 workflow expliciter comment sont calculé $\hmu$ et $\hshmu$. Minos too expensive.}
-
-
-
-
-
-\subsection{Calibration} % (fold)
-\label{sub:calibration}
-
-
-Not in training.
-Calibrated distributions are narrower than the Prior ones.
-So it is safer to train robust method on the larger ones to ensure robustness on more values.
-Also calibration failure would break robust method otherwise. 
-
-
-
-
-
-
-
-\subsection{Computing evaluation metric} % (fold)
-\label{sub:computing_evaluation_metric}
-
-
-\content{Cross validation to estimated MSE (many $\mu^\star$, only 3 $\alpha^\star$)}
-\content{Var stat and Var syst. Details about their computation. Many $\tilde \alpha$. Independant of the calibration.}
-
-The estimators $\hmu$ and $\hshmu$ are random variable because of the limited size of the dataset.
-They depends on the true values of the parameters $\mu^\star$ and $\alpha^\star$.
-In the benchmark multiple values of $\mu^\star$ and $\alpha^\star$ have to be tested to evaluate the performances of a given method.
-
-
-
-
-
-
-
-
-
-
 
 
 
