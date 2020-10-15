@@ -341,13 +341,13 @@ The expected answer is : using a histogram (or something like it) on the score o
 \victor{TODO NEED HELP : How do we prove it ? Where are the papers about it ?}
 
 Let $\hmu$ be a unbiased estimator.
-Cramer-Rao bound for a scalar parameter:
+The Cramer-Rao bound for a scalar parameter states that :
 \begin{equation}
-    \VV[\hmu] \geq \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu^2}  \right ]^{-1}
+    \VV[\hmu] \geq \left ( \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu^2}  \right ] \right ) ^{-1}
 \end{equation}
 where $\mathcal L$ is the likelihood function.
 
-In our problem with a binned poisson likelihood
+In our problem with a binned poisson likelihood (see \autoref{eq:binned_poisson_likelihood})
 \begin{equation}
     \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu^2}  \right ] = \EE \left[ \sum_{i=1}^K n_i \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)^2}  \right ]
 \end{equation}
@@ -362,7 +362,7 @@ recall that $\EE[n_i] = \mu \gamma_i + \beta_i$ because $n_i \sim Poisson(\mu \g
     \EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu^2}  \right ] = \sum_{i=1}^K  \frac{\gamma_i^2}{\EE[n_i]} = \sum_{i=1}^K  \frac{\EE[s_i]^2}{\EE[n_i]}
 \end{equation}
 
-In the one bin case with the old notation using $s$ and $b$ as the expected number of signals ad background we find back :
+\textbf{Small note} : In the one bin case with the old notation using $s$ and $b$ as the expected number of signals ad background we find back :
 \begin{equation}
     \VV[\hmu] \geq \frac{s+b}{s^2} 
 \end{equation}
@@ -370,18 +370,32 @@ Hence the estimator of the standard deviation :
 \begin{equation}
     \frac{1}{\hshmu} = \sqrt{\frac{s^2}{s+b}} = \frac{s}{\sqrt{s+b}} 
 \end{equation}
-So I feel that I am going in the right direction.
+So I feel that I am going in the right direction. \textbf{End of small note}.
 
-Anyway in order to minimize the variance (or its lower bound at least) we need to maximise $\EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu}  \right ]$ \ie 
+In order to minimize the variance (or its lower bound at least) we need to maximise $\EE \left [ \frac{\partial^2 log \mathcal L}{\partial \mu}  \right ]$ \ie 
 \begin{equation}
     \min \left [ \sum_{i=1}^K  \frac{\gamma_i^2}{\EE[n_i]} \right ] ^{-1} = \max \sum_{i=1}^K  \frac{\gamma_i^2}{\EE[n_i]} = \max \sum_{i=1}^K  \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)}
 \end{equation}
-With $\sum_{i=1}^K \gamma_i = \gamma$ and $\sum_{i=1}^K \beta_i = \beta$ fixed. I mean we cannot increase/decrease the values of $\gamma_i$ or $\beta_i$ as we want. We have a budget $\gamma$ and $\beta$ and we are looking for a good or the best repartition of it in our bins.
+
+With $\sum_{i=1}^K \gamma_i = \gamma$ and $\sum_{i=1}^K \beta_i = \beta$ fixed.
+This can be seen as a budget $\gamma$ and $\beta$ and we are looking for a good or the best repartition of this budget in our bins.
+
+\textbf{Informally} : it is better to put all of our (expected signals) $\gamma$ in one bin \ie $\gamma_1 = \gamma$ and $\gamma_{>1} = 0$ and all the (expected backgrounds) $\beta$ in another bin $\beta_2 = \beta$ and $\beta_{\neq 2} = 0$.
+Giving :
+\begin{equation}
+	\sum_{i=1}^K  \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)} = \frac{\gamma^2}{\mu \gamma + 0} + \frac{0}{0 +\beta} = \frac{\gamma}{\mu}
+\end{equation}
+Any other repartition of the budget is smaller ?
+\begin{equation}
+	\sum_{i=1}^K  \frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)} = \frac{\gamma_0^2}{\mu \gamma_0 + \beta_0} + \frac{\gamma_1^2}{\mu \gamma_1 +\beta_1} \leq \frac{\gamma}{\mu}
+\end{equation}
+I believe it's true because $f : x \to x^2$ is a convex function so $\gamma_0^2 + \gamma_1^2 \leq (\gamma_0 + \gamma_1)^2 $.
 
 And here I'm stuck.
-How to prove that a classifier is a good choice ?
-The usefull property of a classifier is to separate signal and background.
-Meaning we can have one or 2 bins with a high value of $\frac{\gamma_i^2}{(\mu \gamma_i + \beta_i)}$ but it will lower this same value in other bins. How do we prove that having one very pure bin is a good idea.
+Assuming that my intuition is right : How do I provide a clean proof that this is the best choice ?
+
+The usefull property of a classifier is to separate signals and backgrounds.
+Meaning we can have one one very pure bin of signals using a classifier or at least it is good way of providing pure bins.
 
 
 
