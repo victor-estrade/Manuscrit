@@ -120,10 +120,10 @@ This indicates that all models works corectly.
     % \label{fig:gg-calib_best_average_errplot_mse}
   \end{subfigure}
 
-
   \caption{MSE of $\hmu$ according to the number of samples on nominal data only. Each curve correspond to a model with a specific set of hyper-parameter.}
   \label{fig:gg_baseline_nominal_n_samples_mse}
 \end{figure}
+
 
 
 \begin{figure}[ht!]
@@ -165,11 +165,68 @@ This indicates that all models works corectly.
 \subsection{Biased models (GG Prior)}
 
 \victor{TODO}
+The predictions are dependent of the true value of the nuisance parameter $\alpha^\star$.
+
+
+\begin{figure}[ht!]
+  \centering
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/GradientBoostingModel/profusion_true_mu_target_bias.png}
+    \caption{Gradient boosting}
+    % \label{fig:gg-prior_GB_profusion_true_mu_target_bias}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/NeuralNetClassifier/profusion_true_mu_target_bias.png}
+    \caption{Neural network classifier}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/DataAugmentation/profusion_true_mu_target_bias.png}
+    \caption{Data augmentation}
+    % \label{fig:gg-prior_GB_profusion_true_mu_target_bias}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/TangentPropClassifier/profusion_true_mu_target_bias.png}
+    \caption{Tangent Prop}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/Inferno/profusion_true_mu_target_bias.png}
+    \caption{Inferno}
+    % \label{fig:gg-prior_GB_profusion_true_mu_target_bias}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/PivotClassifier/profusion_true_mu_target_bias.png}
+    \caption{Pivot classifier}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/Regressor/profusion_true_mu_target_bias.png}
+    \caption{Regressor}
+    % \label{fig:gg-prior_GB_profusion_true_mu_target_bias}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-marginal/Regressor/profusion_true_mu_target_bias.png}
+    \caption{Regressor marginal}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+
+  \caption{Bias of $\hmu$ according to the true values of $\mu$ (x-axis) and $\alpha$ (colors). Each dot correspond to a different hyper-parameter set.}
+  \label{fig:gg_compare_true_mu_target_bias}
+\end{figure}
 
 
 
 
-
+\clearpage
 \subsection{TOY 1D too easy}
 
 \victor{TODO}
@@ -202,6 +259,7 @@ The only extra work the marginal regressor has to do is to infer $\alpha$ to adj
 
 
 
+\clearpage
 \section{Claim 2 : Calib > Prior}
 
 \begin{itemize}
@@ -220,25 +278,25 @@ The only extra work the marginal regressor has to do is to infer $\alpha$ to adj
   \centering
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-prior/GradientBoostingModel/profusion_true_mu_target_mean.png}
-    \caption{Prior calibration}
+    \caption{Gradient boosting. Prior calibration}
     % \label{fig:gg-prior_GB_profusion_n_samples_mse}
   \end{subfigure}%
   \hfill
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-calib/GradientBoostingModel/profusion_true_mu_target_mean.png}
-    \caption{Using data in calibration to infer $\alpha$}
+    \caption{Gradient boosting. Using data in calibration to infer $\alpha$}
     % \label{fig:gg-calib_best_average_errplot_mse}
   \end{subfigure}
 
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-prior/NeuralNetClassifier/profusion_true_mu_target_mean.png}
-    \caption{Prior calibration}
+    \caption{Neural Net classifier. Prior calibration}
     % \label{fig:gg-prior_GB_profusion_n_samples_mse}
   \end{subfigure}%
   \hfill
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-calib/NeuralNetClassifier/profusion_true_mu_target_mean.png}
-    \caption{Using data in calibration to infer $\alpha$}
+    \caption{Neural Net classifier. Using data in calibration to infer $\alpha$}
     % \label{fig:gg-calib_best_average_errplot_mse}
   \end{subfigure}
 
@@ -250,49 +308,49 @@ The only extra work the marginal regressor has to do is to infer $\alpha$ to adj
   \centering
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-prior/DataAugmentation/profusion_true_mu_target_mean.png}
-    \caption{Prior calibration}
+    \caption{Data augmentation. Prior calibration}
     % \label{fig:gg-prior_GB_profusion_n_samples_mse}
   \end{subfigure}%
   \hfill
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-calib/DataAugmentation/profusion_true_mu_target_mean.png}
-    \caption{Using data in calibration to infer $\alpha$}
+    \caption{Data augmentation. Using data in calibration to infer $\alpha$}
     % \label{fig:gg-calib_best_average_errplot_mse}
   \end{subfigure}
 
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-prior/TangentPropClassifier/profusion_true_mu_target_mean.png}
-    \caption{Prior calibration}
+    \caption{Tangent prop. Prior calibration}
     % \label{fig:gg-prior_GB_profusion_n_samples_mse}
   \end{subfigure}%
   \hfill
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-calib/TangentPropClassifier/profusion_true_mu_target_mean.png}
-    \caption{Using data in calibration to infer $\alpha$}
+    \caption{Tangent prop. Using data in calibration to infer $\alpha$}
     % \label{fig:gg-calib_best_average_errplot_mse}
   \end{subfigure}
 
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-prior/PivotClassifier/profusion_true_mu_target_mean.png}
-    \caption{Prior calibration}
+    \caption{Pivot classifier. Prior calibration}
     % \label{fig:gg-prior_GB_profusion_n_samples_mse}
   \end{subfigure}%
   \hfill
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-calib/PivotClassifier/profusion_true_mu_target_mean.png}
-    \caption{Using data in calibration to infer $\alpha$}
+    \caption{Pivot classifier. Using data in calibration to infer $\alpha$}
     % \label{fig:gg-calib_best_average_errplot_mse}
   \end{subfigure}
 
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-prior/Inferno/profusion_true_mu_target_mean.png}
-    \caption{Prior calibration}
+    \caption{Inferno. Prior calibration}
     % \label{fig:gg-prior_GB_profusion_n_samples_mse}
   \end{subfigure}%
   \hfill
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-calib/Inferno/profusion_true_mu_target_mean.png}
-    \caption{Using data in calibration to infer $\alpha$}
+    \caption{Inferno. Using data in calibration to infer $\alpha$}
     % \label{fig:gg-calib_best_average_errplot_mse}
   \end{subfigure}
 
@@ -304,19 +362,19 @@ The only extra work the marginal regressor has to do is to infer $\alpha$ to adj
   \centering
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-prior/Regressor/profusion_true_mu_target_mean.png}
-    \caption{Prior calibration}
+    \caption{Regressor. Prior calibration}
     % \label{fig:gg-prior_GB_profusion_n_samples_mse}
   \end{subfigure}%
   \hfill
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-calib/Regressor/profusion_true_mu_target_mean.png}
-    \caption{Using data in calibration to infer $\alpha$}
+    \caption{Regressor. Using data in calibration to infer $\alpha$}
     % \label{fig:gg-calib_best_average_errplot_mse}
   \end{subfigure}
 
   \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-marginal/Regressor/profusion_true_mu_target_mean.png}
-    \caption{Marginal}
+    \caption{Marginal Regressor.}
     % \label{fig:gg-prior_GB_profusion_n_samples_mse}
   \end{subfigure}%
 
@@ -334,6 +392,37 @@ The only extra work the marginal regressor has to do is to infer $\alpha$ to adj
 
 \victor{TODO}
 
+The good news is that systematic aware learning and the direct approach is giving better results that the baseline (\autoref{fig:compare_gg_best_mse}).
+
+\begin{figure}[ht!]
+  \centering
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/BEST_MSE/GG-prior_best_average_N=2000-boxplot_mse.png}
+    \caption{Boxplot of MSE on Prior}
+    % \label{fig:gg-prior_best_average_boxplot_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/BEST_MSE/GG-prior_best_average_N=2000-errplot_mse.png}
+    \caption{Average MSE $\pm$ variance on Prior}
+    % \label{fig:gg-prior_best_average_errplot_mse}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-calib/BEST_MSE/GG-calib_best_average_N=2000-boxplot_mse.png}
+    \caption{Boxplot of MSE on Calibrated GG}
+    % \label{fig:gg-prior_best_average_boxplot_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-calib/BEST_MSE/GG-calib_best_average_N=2000-errplot_mse.png}
+    \caption{Average MSE $\pm$ variance on Calibrated GG}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \caption{MSE on GG with 2000 test samples. Distribution according to $\mu^\star$ and $\alpha^\star$. The chosen model (hyper-parameter set) for each method is the model with the best average MSE.}
+  \label{fig:compare_gg_best_mse}
+\end{figure}
 
 
 
@@ -344,6 +433,8 @@ The only extra work the marginal regressor has to do is to infer $\alpha$ to adj
 
 
 
+
+\clearpage
 \section{Claim 3 : Nothing works on original Higgs data}
 
 \begin{itemize}
@@ -375,6 +466,7 @@ The only extra work the marginal regressor has to do is to infer $\alpha$ to adj
 
 
 
+\clearpage
 \section{Claim 4 : The difficulty comes from small S/B}
 
 \begin{itemize}
@@ -410,6 +502,7 @@ The only extra work the marginal regressor has to do is to infer $\alpha$ to adj
 
 
 
+\clearpage
 \section{Old result section}
 
 
@@ -551,38 +644,6 @@ This asymetry tends to disapear when the calibration is done on the data (see \a
 \subsection{Compare methods} % (fold)
 \label{sub:compare_methods}
 
-
-The good news is that systematic aware learning and the direct approach is giving better results that the baseline (\autoref{fig:compare_gg_best_mse}).
-
-\begin{figure}[ht!]
-  \centering
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-prior/BEST_MSE/GG-prior_best_average_N=2000-boxplot_mse.png}
-    \caption{Boxplot of MSE on Prior}
-    % \label{fig:gg-prior_best_average_boxplot_mse}
-  \end{subfigure}%
-  \hfill
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-prior/BEST_MSE/GG-prior_best_average_N=2000-errplot_mse.png}
-    \caption{Average MSE $\pm$ variance on Prior}
-    % \label{fig:gg-prior_best_average_errplot_mse}
-  \end{subfigure}
-
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-calib/BEST_MSE/GG-calib_best_average_N=2000-boxplot_mse.png}
-    \caption{Boxplot of MSE on Calibrated GG}
-    % \label{fig:gg-prior_best_average_boxplot_mse}
-  \end{subfigure}%
-  \hfill
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-calib/BEST_MSE/GG-calib_best_average_N=2000-errplot_mse.png}
-    \caption{Average MSE $\pm$ variance on Calibrated GG}
-    % \label{fig:gg-calib_best_average_errplot_mse}
-  \end{subfigure}
-
-  \caption{MSE on GG with 2000 test samples. Distribution according to $\mu^\star$ and $\alpha^\star$. The chosen model (hyper-parameter set) for each method is the model with the best average MSE.}
-  \label{fig:compare_gg_best_mse}
-\end{figure}
 
 
 Inferno is doing very well including on the Prior calibration.
