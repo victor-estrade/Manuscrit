@@ -126,9 +126,41 @@ This indicates that all models works corectly.
 \end{figure}
 
 
+\begin{figure}[ht!]
+  \centering
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/BEST_MSE/GG-prior_best_average_N=50-boxplot_mse.png}
+    \caption{Boxplot of MSE($\hmu$) with 50 test samples}
+    % \label{fig:gg-prior_best_average_boxplot_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/BEST_MSE/GG-prior_best_average_N=100-boxplot_mse.png}
+    \caption{Boxplot of MSE($\hmu$) with 100 test samples}
+    % \label{fig:gg-prior_best_average_errplot_mse}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/BEST_MSE/GG-prior_best_average_N=500-boxplot_mse.png}
+    \caption{Boxplot of MSE($\hmu$) with 500 test samples}
+    % \label{fig:gg-prior_best_average_boxplot_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/BEST_MSE/GG-prior_best_average_N=2000-boxplot_mse.png}
+    \caption{Boxplot of MSE($\hmu$) with 2000 test samples}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \caption{MSE on GG with 2000 test samples. Distribution according to $\mu^\star$ and $\alpha^\star$. The chosen model (hyper-parameter set) for each method is the model with the best average MSE.}
+  \label{fig:compare_gg_best_mse_n_samples}
+\end{figure}
 
 
 
+
+
+\clearpage
 
 \subsection{Biased models (GG Prior)}
 
@@ -141,6 +173,19 @@ This indicates that all models works corectly.
 \subsection{TOY 1D too easy}
 
 \victor{TODO}
+
+Reg-Marginal is very good on the 1D toy problem which may be explained by the simplicity of the problem.
+The average of the only observable $x$ is linearly connected to the parameter of interest (see \autoref{fig:gg_mean_link}).
+The only extra work the marginal regressor has to do is to infer $\alpha$ to adjust its inference which is also very simple in this toy.
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.49\linewidth]{GG/mean_link.png}
+  \caption{link between $\mu^\star$ and the average of $x$ on GG toy problem}
+  \label{fig:gg_mean_link}
+\end{figure}
+
+
 
 
 
@@ -171,9 +216,119 @@ This indicates that all models works corectly.
 
 \victor{TODO}
 
+\begin{figure}[ht!]
+  \centering
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/GradientBoostingModel/profusion_true_mu_target_mean.png}
+    \caption{Prior calibration}
+    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-calib/GradientBoostingModel/profusion_true_mu_target_mean.png}
+    \caption{Using data in calibration to infer $\alpha$}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/NeuralNetClassifier/profusion_true_mu_target_mean.png}
+    \caption{Prior calibration}
+    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-calib/NeuralNetClassifier/profusion_true_mu_target_mean.png}
+    \caption{Using data in calibration to infer $\alpha$}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \caption{Many estimations of the \textbf{baselines models}. Each point is colored according to the value of $\alpha^\star$. The x-axis is representing the value of $\mu^\star$. Each point is the average of the estimated interest parameter ($\hmu$) over cross validation of one neural network classifier (one hyper-parameter set).}
+  \label{fig:gg_baseline_compare_calib_estimator}
+\end{figure}
+
+\begin{figure}[ht!]
+  \centering
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/DataAugmentation/profusion_true_mu_target_mean.png}
+    \caption{Prior calibration}
+    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-calib/DataAugmentation/profusion_true_mu_target_mean.png}
+    \caption{Using data in calibration to infer $\alpha$}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/TangentPropClassifier/profusion_true_mu_target_mean.png}
+    \caption{Prior calibration}
+    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-calib/TangentPropClassifier/profusion_true_mu_target_mean.png}
+    \caption{Using data in calibration to infer $\alpha$}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/PivotClassifier/profusion_true_mu_target_mean.png}
+    \caption{Prior calibration}
+    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-calib/PivotClassifier/profusion_true_mu_target_mean.png}
+    \caption{Using data in calibration to infer $\alpha$}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/Inferno/profusion_true_mu_target_mean.png}
+    \caption{Prior calibration}
+    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-calib/Inferno/profusion_true_mu_target_mean.png}
+    \caption{Using data in calibration to infer $\alpha$}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \caption{Many estimations of the \textbf{systematic aware models}. Each point is colored according to the value of $\alpha^\star$. The x-axis is representing the value of $\mu^\star$. Each point is the average of the estimated interest parameter ($\hmu$) over cross validation of one neural network classifier (one hyper-parameter set).}
+  \label{fig:gg_syst_aware_compare_calib_estimator}
+\end{figure}
+
+\begin{figure}[ht!]
+  \centering
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/Regressor/profusion_true_mu_target_mean.png}
+    \caption{Prior calibration}
+    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-calib/Regressor/profusion_true_mu_target_mean.png}
+    \caption{Using data in calibration to infer $\alpha$}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-marginal/Regressor/profusion_true_mu_target_mean.png}
+    \caption{Marginal}
+    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
+  \end{subfigure}%
+
+  \caption{Many estimations of the \textbf{regressor models}. Each point is colored according to the value of $\alpha^\star$. The x-axis is representing the value of $\mu^\star$. Each point is the average of the estimated interest parameter ($\hmu$) over cross validation of one neural network classifier (one hyper-parameter set).}
+  \label{fig:gg_regressor_compare_calib_estimator}
+\end{figure}
 
 
 
+
+
+\clearpage
 
 \subsection{Calib yields better MSE}
 
@@ -363,115 +518,6 @@ Using the given data to improve calibration leads to an unbiased estimator.
 
 
 
-\begin{figure}[ht!]
-  \centering
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-prior/GradientBoostingModel/profusion_true_mu_target_mean.png}
-    \caption{Prior calibration}
-    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
-  \end{subfigure}%
-  \hfill
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-calib/GradientBoostingModel/profusion_true_mu_target_mean.png}
-    \caption{Using data in calibration to infer $\alpha$}
-    % \label{fig:gg-calib_best_average_errplot_mse}
-  \end{subfigure}
-
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-prior/NeuralNetClassifier/profusion_true_mu_target_mean.png}
-    \caption{Prior calibration}
-    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
-  \end{subfigure}%
-  \hfill
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-calib/NeuralNetClassifier/profusion_true_mu_target_mean.png}
-    \caption{Using data in calibration to infer $\alpha$}
-    % \label{fig:gg-calib_best_average_errplot_mse}
-  \end{subfigure}
-
-  \caption{Many estimations of the \textbf{baselines models}. Each point is colored according to the value of $\alpha^\star$. The x-axis is representing the value of $\mu^\star$. Each point is the average of the estimated interest parameter ($\hmu$) over cross validation of one neural network classifier (one hyper-parameter set).}
-  \label{fig:gg_baseline_compare_calib_estimator}
-\end{figure}
-
-\begin{figure}[ht!]
-  \centering
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-prior/DataAugmentation/profusion_true_mu_target_mean.png}
-    \caption{Prior calibration}
-    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
-  \end{subfigure}%
-  \hfill
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-calib/DataAugmentation/profusion_true_mu_target_mean.png}
-    \caption{Using data in calibration to infer $\alpha$}
-    % \label{fig:gg-calib_best_average_errplot_mse}
-  \end{subfigure}
-
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-prior/TangentPropClassifier/profusion_true_mu_target_mean.png}
-    \caption{Prior calibration}
-    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
-  \end{subfigure}%
-  \hfill
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-calib/TangentPropClassifier/profusion_true_mu_target_mean.png}
-    \caption{Using data in calibration to infer $\alpha$}
-    % \label{fig:gg-calib_best_average_errplot_mse}
-  \end{subfigure}
-
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-prior/PivotClassifier/profusion_true_mu_target_mean.png}
-    \caption{Prior calibration}
-    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
-  \end{subfigure}%
-  \hfill
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-calib/PivotClassifier/profusion_true_mu_target_mean.png}
-    \caption{Using data in calibration to infer $\alpha$}
-    % \label{fig:gg-calib_best_average_errplot_mse}
-  \end{subfigure}
-
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-prior/Inferno/profusion_true_mu_target_mean.png}
-    \caption{Prior calibration}
-    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
-  \end{subfigure}%
-  \hfill
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-calib/Inferno/profusion_true_mu_target_mean.png}
-    \caption{Using data in calibration to infer $\alpha$}
-    % \label{fig:gg-calib_best_average_errplot_mse}
-  \end{subfigure}
-
-  \caption{Many estimations of the \textbf{systematic aware models}. Each point is colored according to the value of $\alpha^\star$. The x-axis is representing the value of $\mu^\star$. Each point is the average of the estimated interest parameter ($\hmu$) over cross validation of one neural network classifier (one hyper-parameter set).}
-  \label{fig:gg_syst_aware_compare_calib_estimator}
-\end{figure}
-
-\begin{figure}[ht!]
-  \centering
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-prior/Regressor/profusion_true_mu_target_mean.png}
-    \caption{Prior calibration}
-    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
-  \end{subfigure}%
-  \hfill
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-calib/Regressor/profusion_true_mu_target_mean.png}
-    \caption{Using data in calibration to infer $\alpha$}
-    % \label{fig:gg-calib_best_average_errplot_mse}
-  \end{subfigure}
-
-  \begin{subfigure}[t]{0.49\linewidth}
-    \includegraphics[width=\linewidth]{COMPARE/GG-marginal/Regressor/profusion_true_mu_target_mean.png}
-    \caption{Marginal}
-    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
-  \end{subfigure}%
-
-  \caption{Many estimations of the \textbf{regressor models}. Each point is colored according to the value of $\alpha^\star$. The x-axis is representing the value of $\mu^\star$. Each point is the average of the estimated interest parameter ($\hmu$) over cross validation of one neural network classifier (one hyper-parameter set).}
-  \label{fig:gg_regressor_compare_calib_estimator}
-\end{figure}
-
-
 
 The 1D toy problem is asymetric by definition which leads to an asymetry in performances when using the prior calibration.
 This asymetry tends to disapear when the calibration is done on the data (see \autoref{fig:gg_baseline_compare_calib_n_samples_mse}).
@@ -536,17 +582,6 @@ The good news is that systematic aware learning and the direct approach is givin
 
   \caption{MSE on GG with 2000 test samples. Distribution according to $\mu^\star$ and $\alpha^\star$. The chosen model (hyper-parameter set) for each method is the model with the best average MSE.}
   \label{fig:compare_gg_best_mse}
-\end{figure}
-
-Reg-Marginal is very good on the 1D toy problem which may be explained by the simplicity of the problem.
-The average of the only observable $x$ is linearly connected to the parameter of interest (see \autoref{fig:gg_mean_link}).
-The only extra work the marginal regressor has to do is to infer $\alpha$ to adjust itsinference which is also very simple in this toy.
-
-\begin{figure}[ht!]
-  \centering
-  \includegraphics[width=0.49\linewidth]{GG/mean_link.png}
-  \caption{link between $\mu^\star$ and the average of $x$ on GG toy problem}
-  \label{fig:gg_mean_link}
 \end{figure}
 
 
