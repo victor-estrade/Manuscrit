@@ -24,7 +24,7 @@ Where do I write about the numerous issues ?
   \item Pivot is unstable
   \item TP requires Jacobian vector product or takes crazy amount of time to train
   \item Regressor requires slow Adam and is probably a pain to train with gaussian mixture
-  \item 
+  \item
 \end{itemize}
 
 
@@ -48,11 +48,11 @@ The benchmark is controlled with many parameters
 \section{Performances on toys} % (fold)
 \label{sec:performances_on_toys}
 
-The idea is to do one subsection for one result 
+The idea is to do one subsection for one result
 \begin{itemize}
   \item Result 1 : The more test samples the better the inference
   \item Result 2 : Calib > Prior as expected
-  \item Result final : Who is the best ? 
+  \item Result final : Who is the best ?
   \item 5. Regressor estimated variance is probably broken
 \end{itemize}
 
@@ -75,11 +75,9 @@ The first one is the small number of samples to do inference (\autoref{sub:perfo
 
 Here is summaried the performances measured according to the number of sample of the test set.
 
-On the nominal test set (\autoref{fig:gg_baseline_nominal_n_samples_mse}) the MSE behave as expected \ie decreases fast ($\frac{1}{\sqrt{N}}$) as the size of the test set increase.
-Only direct regression seems to not depend on the test size.
-This is unexpected and cannot only be explained by the fact that the neural network is trained with fixed dataset size and did not learn to improve as the test set size increase...
-
-
+On the nominal test set (\autoref{fig:gg_baseline_nominal_n_samples_mse}) the MSE behaves as expected \ie decreases fast (probably $\frac{1}{\sqrt{N}}$) as the size of the test set increase.
+Only Pivot seems to have some issues.
+This indicates that all models works corectly.
 
 \begin{figure}[ht!]
   \centering
@@ -137,7 +135,7 @@ This is unexpected and cannot only be explained by the fact that the neural netw
 \end{figure}
 
 
-This is less obvious on the calibrated data where increasing the number of samples does not help that much (\autoref{fig:gg_baseline_n_samples_mse}).
+This is less obvious on the non nominal data (\autoref{fig:gg_baseline_n_samples_mse}).
 
 The 1D toy problem (named GG) is asymetric in $\alpha$.
 Indeed increasing $\alpha$ will move appart the center of the signal and the background distribution.
@@ -239,6 +237,18 @@ Using the given data to improve calibration leads to an unbiased estimator.
 \begin{figure}[ht!]
   \centering
   \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/GradientBoostingModel/profusion_true_mu_target_mean.png}
+    \caption{Prior calibration}
+    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-calib/GradientBoostingModel/profusion_true_mu_target_mean.png}
+    \caption{Using data in calibration to infer $\alpha$}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{0.49\linewidth}
     \includegraphics[width=\linewidth]{COMPARE/GG-prior/NeuralNetClassifier/profusion_true_mu_target_mean.png}
     \caption{Prior calibration}
     % \label{fig:gg-prior_GB_profusion_n_samples_mse}
@@ -249,9 +259,89 @@ Using the given data to improve calibration leads to an unbiased estimator.
     \caption{Using data in calibration to infer $\alpha$}
     % \label{fig:gg-calib_best_average_errplot_mse}
   \end{subfigure}
-  \caption{Many estimations of neural net classifier. Each point is colored according to the value of $\alpha^\star$. The x-axis is representing the value of $\mu^\star$. Each point is the average of the estimated interest parameter ($\hmu$) over cross validation of one neural network classifier (one hyper-parameter set).}
+
+  \caption{Many estimations of the \textbf{baselines models}. Each point is colored according to the value of $\alpha^\star$. The x-axis is representing the value of $\mu^\star$. Each point is the average of the estimated interest parameter ($\hmu$) over cross validation of one neural network classifier (one hyper-parameter set).}
   \label{fig:gg_baseline_compare_calib_estimator}
 \end{figure}
+
+\begin{figure}[ht!]
+  \centering
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/DataAugmentation/profusion_true_mu_target_mean.png}
+    \caption{Prior calibration}
+    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-calib/DataAugmentation/profusion_true_mu_target_mean.png}
+    \caption{Using data in calibration to infer $\alpha$}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/TangentPropClassifier/profusion_true_mu_target_mean.png}
+    \caption{Prior calibration}
+    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-calib/TangentPropClassifier/profusion_true_mu_target_mean.png}
+    \caption{Using data in calibration to infer $\alpha$}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/PivotClassifier/profusion_true_mu_target_mean.png}
+    \caption{Prior calibration}
+    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-calib/PivotClassifier/profusion_true_mu_target_mean.png}
+    \caption{Using data in calibration to infer $\alpha$}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/Inferno/profusion_true_mu_target_mean.png}
+    \caption{Prior calibration}
+    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-calib/Inferno/profusion_true_mu_target_mean.png}
+    \caption{Using data in calibration to infer $\alpha$}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \caption{Many estimations of the \textbf{systematic aware models}. Each point is colored according to the value of $\alpha^\star$. The x-axis is representing the value of $\mu^\star$. Each point is the average of the estimated interest parameter ($\hmu$) over cross validation of one neural network classifier (one hyper-parameter set).}
+  \label{fig:gg_syst_aware_compare_calib_estimator}
+\end{figure}
+
+\begin{figure}[ht!]
+  \centering
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-prior/Regressor/profusion_true_mu_target_mean.png}
+    \caption{Prior calibration}
+    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-calib/Regressor/profusion_true_mu_target_mean.png}
+    \caption{Using data in calibration to infer $\alpha$}
+    % \label{fig:gg-calib_best_average_errplot_mse}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{0.49\linewidth}
+    \includegraphics[width=\linewidth]{COMPARE/GG-Marginal/Regressor/profusion_true_mu_target_mean.png}
+    \caption{Marginal}
+    % \label{fig:gg-prior_GB_profusion_n_samples_mse}
+  \end{subfigure}%
+
+  \caption{Many estimations of the \textbf{regressor models}. Each point is colored according to the value of $\alpha^\star$. The x-axis is representing the value of $\mu^\star$. Each point is the average of the estimated interest parameter ($\hmu$) over cross validation of one neural network classifier (one hyper-parameter set).}
+  \label{fig:gg_regressor_compare_calib_estimator}
+\end{figure}
+
 
 
 The 1D toy problem is asymetric by definition which leads to an asymetry in performances when using the prior calibration.
@@ -531,6 +621,3 @@ The scatter plot properties is much more dependent to noise or nuisance paramete
 3. XP Broken 1D 3D
 4. Higgs
 5. Repaired Higgs
-
-
-
