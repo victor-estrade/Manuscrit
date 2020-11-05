@@ -45,35 +45,26 @@ The benchmark is controlled with many parameters
 
 
 
-\section{Performances on toys} % (fold)
-\label{sec:performances_on_toys}
 
-The idea is to do one subsection for one result
+
+\section{Claim 1 : All methods works correctly on 1D toy}
+\label{sec:claim_1D_toy}
+
 \begin{itemize}
-  \item Result 1 : The more test samples the better the inference
-  \item Result 2 : Calib > Prior as expected
-  \item Result final : Who is the best ?
-  \item 5. Regressor estimated variance is probably broken
+  \item MSE decreases when increasing nb of test samples
+  \item (Prior) many models are biaised : $\hmu$ depends heavily on systematics
+  \item Marginal regressor is better because Toy 1D is too simple
+  \item Regressor's estimated vairance is broken
 \end{itemize}
 
-
-Let's start with the results on the two toy problems (see \autoref{sec:toy_datasets} for details).
+Let's start with the results on the 1D toy problem (see \autoref{sec:toy_datasets} for details).
 Toys provide a fully controled environement on various parameters of the problem to confront the proposed methods against different difficulties.
 The first one is the small number of samples to do inference (\autoref{sub:performance_according_to_sample_size}).
 
 
 
+\subsection{MSE according to number of samples}
 
-
-
-
-
-
-
-\subsection{Performance according to sample size} % (fold)
-\label{sub:performance_according_to_sample_size}
-
-Here is summaried the performances measured according to the number of sample of the test set.
 
 On the nominal test set (\autoref{fig:gg_baseline_nominal_n_samples_mse}) the MSE behaves as expected \ie decreases fast (probably $\frac{1}{\sqrt{N}}$) as the size of the test set increase.
 Only Pivot seems to have some issues.
@@ -133,6 +124,144 @@ This indicates that all models works corectly.
   \caption{MSE of $\hmu$ according to the number of samples on nominal data only. Each curve correspond to a model with a specific set of hyper-parameter.}
   \label{fig:gg_baseline_nominal_n_samples_mse}
 \end{figure}
+
+
+
+
+
+
+\subsection{Biased models (GG Prior)}
+
+\victor{TODO}
+
+
+
+
+
+\subsection{TOY 1D too easy}
+
+\victor{TODO}
+
+
+
+
+
+\subsection{Regressor variance estimation broken}
+
+\victor{TODO}
+
+
+
+
+
+
+
+
+\section{Claim 2 : Calib > Prior}
+
+\begin{itemize}
+  \item Not biased estimators
+  \item Better MSE
+\end{itemize}
+
+
+
+
+\subsection{Calib removes bias}
+
+\victor{TODO}
+
+
+
+
+
+\subsection{Calib yields better MSE}
+
+\victor{TODO}
+
+
+
+
+
+
+
+
+
+
+
+\section{Claim 3 : Nothing works on original Higgs data}
+
+\begin{itemize}
+  \item wrong inference
+  \item Regressor learns constant function
+\end{itemize}
+
+
+
+
+\subsection{Inference is off on Higgs}
+
+\victor{TODO}
+
+
+
+
+\subsection{Regressor learn constant function}
+
+\victor{TODO}
+
+
+
+
+
+
+
+
+
+
+
+\section{Claim 4 : The difficulty comes from small S/B}
+
+\begin{itemize}
+  \item Just increasing S/B fixes inference
+  \item Decreasing S/B on GG breaks inference
+\end{itemize}
+
+
+
+
+\subsection{Fixing higgs with hight S/B}
+
+\victor{TODO}
+
+
+
+
+
+
+\subsection{Breaking toys with low S/B}
+
+\victor{TODO}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Old result section}
+
+
+\subsection{Performance according to sample size} % (fold)
+\label{sub:performance_according_to_sample_size}
+
+Here is summaried the performances measured according to the number of sample of the test set.
 
 
 This is less obvious on the non nominal data (\autoref{fig:gg_baseline_n_samples_mse}).
